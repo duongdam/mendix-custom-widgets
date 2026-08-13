@@ -1,0 +1,50 @@
+{
+    "name": "irisbutton",
+    "widgetName": "IRISButton",
+    "version": "1.0.0",
+    "description": "IRIS Button pluggable widget",
+    "copyright": "IRIS Project",
+    "license": "Apache-2.0",
+    "packagePath": "com.iris.widgets",
+    "config": {
+        "projectPath": ""
+    },
+    "mxpackage": {
+        "name": "IRISButton",
+        "type": "widget",
+        "mpkName": "IRISButton.mpk"
+    },
+    "testProject": {
+        "githubUrl": ""
+    },
+    "scripts": {
+        "start": "cross-env CI=true pluggable-widgets-tools start:web",
+        "dev": "cross-env CI=true pluggable-widgets-tools start:web",
+        "build": "cross-env CI=true pluggable-widgets-tools build:web",
+        "release": "cross-env CI=true pluggable-widgets-tools release:web",
+        "lint": "cross-env CI=true pluggable-widgets-tools lint",
+        "lint:fix": "cross-env CI=true pluggable-widgets-tools lint:fix",
+        "format": "cross-env CI=true pluggable-widgets-tools format",
+        "typecheck": "tsc -p tsconfig.json --noEmit"
+    },
+    "devDependencies": {
+        "@mendix/pluggable-widgets-tools": "^11.11.0",
+        "cross-env": "10.1.0",
+        "mendix": "11.13.0",
+        "typescript": "5.9.3"
+    },
+    "peerDependencies": {
+        "react": "^19.0.0",
+        "react-dom": "^19.0.0",
+        "@types/react": "^19.0.0",
+        "@types/react-dom": "^19.0.0"
+    },
+    "peerDependenciesMeta": {
+        "@types/react": {
+            "optional": true
+        },
+        "@types/react-dom": {
+            "optional": true
+        }
+    }
+}

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<widget id="com.iris.widgets.IRISPanel" pluginWidget="true" needsEntityContext="true" offlineCapable="true"
+        supportedPlatform="Web"
+        xmlns="http://www.mendix.com/widget/1.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.mendix.com/widget/1.0/ ../node_modules/mendix/custom_widget.xsd">
+    <name>IRIS Panel</name>
+    <description>Placeholder panel widget scaffolded with MobX and Ant Design, ready for feature implementation.</description>
+    <icon/>
+    <properties>
+        <propertyGroup caption="General">
+            <property key="title" type="expression" required="false">
+                <caption>Title</caption>
+                <description>Optional panel title.</description>
+                <returnType type="String"/>
+            </property>
+        </propertyGroup>
+    </properties>
+</widget>

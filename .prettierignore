@@ -1,0 +1,10 @@
+node_modules
+dist
+build
+.turbo
+.claude
+*.mpk
+pnpm-lock.yaml
+# Widgets under widgets/* self-format via their own `format` script
+# (pluggable-widgets-tools' bundled Prettier config).
+widgets

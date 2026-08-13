@@ -1,0 +1,8 @@
+node_modules
+dist
+build
+.turbo
+*.mpk
+*.local
+.DS_Store
+.claude

@@ -1,0 +1,30 @@
+{
+    "name": "iris-widgets",
+    "private": true,
+    "version": "0.0.0",
+    "type": "module",
+    "engines": {
+        "node": ">=22.18.0"
+    },
+    "packageManager": "pnpm@11.20.0+sha512.9a6f330a95b66446ea088faf1521405a8a01f07fde7124cc9958dfed52d4bb436737e65b08f85f37b46fcba375092558ac51262b816844b22f63406ed166bfee",
+    "scripts": {
+        "dev": "turbo run dev --filter=@iris/mock-ui",
+        "build": "turbo run build",
+        "lint": "turbo run lint",
+        "typecheck": "turbo run typecheck",
+        "format": "prettier --write .",
+        "format:check": "prettier --check ."
+    },
+    "devDependencies": {
+        "@eslint/js": "9.39.5",
+        "eslint": "9.39.4",
+        "eslint-config-prettier": "10.1.8",
+        "eslint-plugin-react": "7.37.5",
+        "eslint-plugin-react-hooks": "7.1.1",
+        "globals": "17.9.0",
+        "prettier": "3.9.6",
+        "turbo": "2.10.9",
+        "typescript": "5.9.3",
+        "typescript-eslint": "8.66.0"
+    }
+}

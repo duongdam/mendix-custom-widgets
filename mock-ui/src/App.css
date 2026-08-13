@@ -1,0 +1,25 @@
+.app {
+    font-family: system-ui, sans-serif;
+    max-width: 640px;
+    margin: 40px auto;
+    padding: 0 16px;
+}
+
+.app__hint {
+    color: #666;
+    font-size: 14px;
+}
+
+.app section {
+    margin: 24px 0;
+    padding: 16px;
+    border: 1px dashed #ccc;
+    border-radius: 8px;
+}
+
+.app__controls {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 12px;
+    font-size: 14px;
+}

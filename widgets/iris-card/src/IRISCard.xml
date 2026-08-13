@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<widget id="com.iris.widgets.IRISCard" pluginWidget="true" needsEntityContext="true" offlineCapable="true"
+        supportedPlatform="Web"
+        xmlns="http://www.mendix.com/widget/1.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.mendix.com/widget/1.0/ ../node_modules/mendix/custom_widget.xsd">
+    <name>IRIS Card</name>
+    <description>A card widget that shows an editable title and a count of items from a data source.</description>
+    <icon/>
+    <properties>
+        <propertyGroup caption="General">
+            <property key="title" type="attribute" required="true">
+                <caption>Title attribute</caption>
+                <description>Editable attribute shown as the card title.</description>
+                <attributeTypes>
+                    <attributeType name="String"/>
+                </attributeTypes>
+            </property>
+            <property key="items" type="datasource" isList="true" required="false">
+                <caption>Items</caption>
+                <description>Data source whose item count is shown on the card.</description>
+            </property>
+        </propertyGroup>
+    </properties>
+</widget>

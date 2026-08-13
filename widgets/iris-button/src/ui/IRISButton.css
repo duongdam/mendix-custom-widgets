@@ -1,0 +1,18 @@
+.iris-button {
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.iris-button--primary {
+    background-color: #1a73e8;
+    color: #fff;
+}
+
+.iris-button--secondary {
+    background-color: #fff;
+    color: #1a73e8;
+    border-color: #1a73e8;
+}

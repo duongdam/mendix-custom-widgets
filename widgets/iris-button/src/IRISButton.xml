@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<widget id="com.iris.widgets.IRISButton" pluginWidget="true" needsEntityContext="true" offlineCapable="true"
+        supportedPlatform="Web"
+        xmlns="http://www.mendix.com/widget/1.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.mendix.com/widget/1.0/ ../node_modules/mendix/custom_widget.xsd">
+    <name>IRIS Button</name>
+    <description>A simple pluggable button widget with a dynamic caption and click action.</description>
+    <icon/>
+    <properties>
+        <propertyGroup caption="General">
+            <property key="caption" type="expression" required="true">
+                <caption>Caption</caption>
+                <description>The text shown on the button.</description>
+                <returnType type="String"/>
+            </property>
+            <property key="variant" type="enumeration" defaultValue="primary">
+                <caption>Variant</caption>
+                <description>Visual style of the button.</description>
+                <enumerationValues>
+                    <enumerationValue key="primary">Primary</enumerationValue>
+                    <enumerationValue key="secondary">Secondary</enumerationValue>
+                </enumerationValues>
+            </property>
+            <property key="onClick" type="action" required="false">
+                <caption>On click</caption>
+                <description>Action triggered when the button is clicked.</description>
+            </property>
+        </propertyGroup>
+    </properties>
+</widget>
