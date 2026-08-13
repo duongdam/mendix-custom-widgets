@@ -1,7 +1,7 @@
 import { AX_COMMON_VERSION } from "@iris/ax-common";
 
-import { IRISButtonDemo } from "./IRISButtonDemo";
-import { IRISCardDemo } from "./IRISCardDemo";
+// import { IRISButtonDemo } from "./IRISButtonDemo";
+// import { IRISCardDemo } from "./IRISCardDemo";
 import { IRISPanelDemo } from "./IRISPanelDemo";
 import { AxMultiSelectDemo } from "./AxMultiSelectDemo";
 
@@ -16,8 +16,8 @@ export function App() {
                 Studio Pro needed. (@iris/ax-common v{AX_COMMON_VERSION})
             </p>
 
-            <IRISButtonDemo />
-            <IRISCardDemo />
+            {/* <IRISButtonDemo /> */}
+            {/* <IRISCardDemo /> */}
             <IRISPanelDemo />
             <AxMultiSelectDemo />
         </main>
