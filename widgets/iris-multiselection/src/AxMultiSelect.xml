@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<widget
+    id="com.iris.widgets.AxMultiSelect"
+    pluginWidget="true"
+    offlineCapable="true"
+    xmlns="http://www.mendix.com/widget/1.0/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.mendix.com/widget/1.0/ ../node_modules/mendix/custom_widget.xsd"
+>
+    <name>Ax New Selecter</name>
+    <description>High performance multi-selecter widget with virtualization and debounced filter</description>
+    <icon />
+    <properties>
+        <propertyGroup caption="General">
+            <property key="prpHeight" type="expression" required="true" defaultValue="360">
+                <caption>Container Height (px)</caption>
+                <description />
+                <returnType type="Integer" />
+            </property>
+            <property key="prpItemHeight" type="expression" required="true" defaultValue="38">
+                <caption>Row Height (px)</caption>
+                <description />
+                <returnType type="Integer" />
+            </property>
+            <property key="prpPlaceholder" type="expression" required="false" defaultValue="Search...">
+                <caption>Search Placeholder</caption>
+                <description />
+                <returnType type="String" />
+            </property>
+            <property key="prpShowSearch" type="expression" required="false" defaultValue="true">
+                <caption>Show Search</caption>
+                <description />
+                <returnType type="Boolean" />
+            </property>
+            <property key="prpTextSearch" type="expression" required="false" defaultValue="true">
+                <caption>Show Search</caption>
+                <description />
+                <returnType type="String" />
+            </property>
+        </propertyGroup>
+
+        <propertyGroup caption="Type">
+            <property key="type" type="enumeration" required="true" defaultValue="multi">
+                <caption>Type</caption>
+                <description>Type of multi-select list</description>
+                <enumerationValues>
+                    <enumerationValue key="multi">Multi</enumerationValue>
+                    <enumerationValue key="single">Single</enumerationValue>
+                    <enumerationValue key="onlyView">Only View</enumerationValue>
+                </enumerationValues>
+            </property>
+        </propertyGroup>
+
+        <propertyGroup caption="Data Source">
+            <propertyGroup caption="Selected Items">
+                <property key="prpSelectedItems" type="expression" required="false">
+                    <caption>Selected Items</caption>
+                    <description>List of selected items (example: "123,456,789").</description>
+                    <returnType type="String" />
+                </property>
+            </propertyGroup>
+            <propertyGroup caption="Items">
+                <property key="items" type="datasource" isList="true" required="true">
+                    <caption>Items</caption>
+                    <description>Datasource containing the items list</description>
+                </property>
+                <property key="keyAttribute" type="attribute" dataSource="items" required="true">
+                    <caption>Key Attribute</caption>
+                    <description />
+                    <attributeTypes>
+                        <attributeType name="Long" />
+                        <attributeType name="String" />
+                    </attributeTypes>
+                </property>
+                <property key="nameAttribute" type="attribute" dataSource="items" required="true">
+                    <caption>Display Attribute</caption>
+                    <description />
+                    <attributeTypes>
+                        <attributeType name="String" />
+                    </attributeTypes>
+                </property>
+            </propertyGroup>
+        </propertyGroup>
+
+        <propertyGroup caption="Events">
+            <property key="onChange" type="action" required="false">
+                <caption>On Change</caption>
+                <description>Action executed whenever the selected items change</description>
+                <actionVariables>
+                    <actionVariable key="selectedKeys" type="String" required="true" caption="Selected Keys" />
+                </actionVariables>
+            </property>
+        </propertyGroup>
+    </properties>
+</widget>
