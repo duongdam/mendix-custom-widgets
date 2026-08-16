@@ -6,6 +6,7 @@ import type {
     ListValue,
     ObjectItem,
 } from "mendix";
+import type { Big } from "big.js";
 
 /**
  * Lightweight stand-ins for the Mendix Client API, for rendering pluggable widgets
@@ -17,20 +18,18 @@ export function createDynamicValue<T>(value: T): DynamicValue<T> {
     return { status: "available", value } as DynamicValue<T>;
 }
 
-export function createEditableValue<T extends string | boolean | Date>(
-    value: T,
-    onChange?: (value: T) => void,
+export function createEditableValue<T extends string | boolean | Date | Big>(
+    value: T | undefined,
+    onChange?: (value: T | undefined) => void,
 ): EditableValue<T> {
     return {
         status: "available",
         value,
         readOnly: false,
         validation: undefined,
-        setValue: (next: T | undefined) => {
-            if (next !== undefined) {
-                onChange?.(next);
-            }
-        },
+        // Real Mendix EditableValue.setValue(undefined) clears the attribute — unlike the rest
+        // of this file's DynamicValue helpers, this must forward `undefined` too, not swallow it.
+        setValue: (next: T | undefined) => onChange?.(next),
         setValidator: () => {},
     } as unknown as EditableValue<T>;
 }
@@ -43,9 +42,9 @@ export function createActionValue(fn: () => void): ActionValue {
     } as unknown as ActionValue;
 }
 
-export function createListAttributeValue<T extends string | boolean | Date>(
+export function createListAttributeValue<T extends string | boolean | Date | Big>(
     id: string,
-    getValue: (item: ObjectItem) => T,
+    getValue: (item: ObjectItem) => T | undefined,
 ): ListAttributeValue<T> {
     return {
         id: id as unknown as ListAttributeValue<T>["id"],

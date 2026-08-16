@@ -1,6 +1,6 @@
 .app {
     font-family: system-ui, sans-serif;
-    max-width: 640px;
+    max-width: 1200px;
     margin: 40px auto;
     padding: 0 16px;
 }
@@ -19,7 +19,22 @@
 
 .app__controls {
     display: flex;
+    flex-wrap: wrap;
     gap: 16px;
     margin-bottom: 12px;
     font-size: 14px;
+}
+
+.app__log-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin-top: 8px;
+}
+
+.app__log-table th,
+.app__log-table td {
+    text-align: left;
+    padding: 4px 8px;
+    border-bottom: 1px solid #eee;
 }

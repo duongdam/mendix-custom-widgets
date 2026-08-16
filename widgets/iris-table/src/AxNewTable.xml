@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<widget
+    id="com.iris.widgets.AxNewTable"
+    pluginWidget="true"
+    needsEntityContext="true"
+    offlineCapable="true"
+    supportedPlatform="Web"
+    xmlns="http://www.mendix.com/widget/1.0/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.mendix.com/widget/1.0/ ../node_modules/mendix/custom_widget.xsd"
+>
+    <name>Ax New Table</name>
+    <description>
+        Dynamic data table backed by react-data-table-component. Columns and rows are both driven by
+        datasources (typically a microflow/nanoflow), so the widget never needs a fixed set of Mendix
+        attributes at design time. Pagination, sorting and search are entirely action-driven: the widget
+        writes the relevant Integer/String attributes below and then executes "On Fetch Data" — it does
+        NOT use Mendix's built-in list offset/limit paging, because columns (and therefore the query
+        behind them) are fully dynamic. Configure the same microflow/nanoflow behind "On Fetch Data" to
+        read those attributes and refresh the Data Items datasource accordingly.
+    </description>
+    <icon />
+    <properties>
+        <propertyGroup caption="Data Source">
+            <propertyGroup caption="Columns">
+                <property key="columns" type="datasource" isList="true" required="true">
+                    <caption>Columns</caption>
+                    <description>Datasource describing the table's columns (usually from a microflow/nanoflow).</description>
+                </property>
+                <property key="columnKeyAttr" type="attribute" dataSource="columns" required="true">
+                    <caption>Column Key</caption>
+                    <description>Matches a key in each row's Row Values JSON.</description>
+                    <attributeTypes>
+                        <attributeType name="String" />
+                    </attributeTypes>
+                </property>
+                <property key="columnLabelAttr" type="attribute" dataSource="columns" required="true">
+                    <caption>Column Label</caption>
+                    <description>Header text shown for the column.</description>
+                    <attributeTypes>
+                        <attributeType name="String" />
+                    </attributeTypes>
+                </property>
+                <property key="columnOrderAttr" type="attribute" dataSource="columns" required="false">
+                    <caption>Column Order</caption>
+                    <description>Optional sort order of the columns (ascending). Falls back to datasource order.</description>
+                    <attributeTypes>
+                        <attributeType name="Integer" />
+                        <attributeType name="Long" />
+                    </attributeTypes>
+                </property>
+                <property key="columnWidthAttr" type="attribute" dataSource="columns" required="false">
+                    <caption>Column Width</caption>
+                    <description>CSS width for the column, e.g. "120px".</description>
+                    <attributeTypes>
+                        <attributeType name="String" />
+                    </attributeTypes>
+                </property>
+                <property key="columnMinWidthAttr" type="attribute" dataSource="columns" required="false">
+                    <caption>Column Min Width</caption>
+                    <description>CSS min-width for the column, e.g. "80px".</description>
+                    <attributeTypes>
+                        <attributeType name="String" />
+                    </attributeTypes>
+                </property>
+                <property key="columnGrowAttr" type="attribute" dataSource="columns" required="false">
+                    <caption>Column Grow</caption>
+                    <description>Relative flex-grow weight (react-data-table-component "grow").</description>
+                    <attributeTypes>
+                        <attributeType name="Integer" />
+                        <attributeType name="Long" />
+                    </attributeTypes>
+                </property>
+                <property key="columnSortableAttr" type="attribute" dataSource="columns" required="false">
+                    <caption>Column Sortable</caption>
+                    <description>Whether this column can be sorted. Defaults to false when unbound.</description>
+                    <attributeTypes>
+                        <attributeType name="Boolean" />
+                    </attributeTypes>
+                </property>
+                <property key="columnVisibleAttr" type="attribute" dataSource="columns" required="false">
+                    <caption>Column Visible</caption>
+                    <description>Whether this column is shown. Defaults to true when unbound.</description>
+                    <attributeTypes>
+                        <attributeType name="Boolean" />
+                    </attributeTypes>
+                </property>
+                <property key="columnAlignAttr" type="attribute" dataSource="columns" required="false">
+                    <caption>Column Align</caption>
+                    <description>"left", "center" or "right". Defaults to left when unbound.</description>
+                    <attributeTypes>
+                        <attributeType name="String" />
+                        <attributeType name="Enum" />
+                    </attributeTypes>
+                </property>
+                <property key="columnWrapAttr" type="attribute" dataSource="columns" required="false">
+                    <caption>Column Wrap Text</caption>
+                    <description>Whether long cell text should wrap instead of truncating.</description>
+                    <attributeTypes>
+                        <attributeType name="Boolean" />
+                    </attributeTypes>
+                </property>
+                <property key="columnFormatTypeAttr" type="attribute" dataSource="columns" required="false">
+                    <caption>Column Format Type</caption>
+                    <description>"text" | "number" | "currency" | "date" | "badge". Defaults to "text" when unbound.</description>
+                    <attributeTypes>
+                        <attributeType name="String" />
+                        <attributeType name="Enum" />
+                    </attributeTypes>
+                </property>
+                <property key="columnFormatPatternAttr" type="attribute" dataSource="columns" required="false">
+                    <caption>Column Format Pattern</caption>
+                    <description>Extra formatter parameter, e.g. decimal digits, currency code, or a date pattern.</description>
+                    <attributeTypes>
+                        <attributeType name="String" />
+                    </attributeTypes>
+                </property>
+            </propertyGroup>
+
+            <propertyGroup caption="Rows">
+                <property key="dataItems" type="datasource" isList="true" required="true">
+                    <caption>Data Items</caption>
+                    <description>Datasource containing the current page of rows.</description>
+                </property>
+                <property key="rowKeyAttr" type="attribute" dataSource="dataItems" required="true">
+                    <caption>Row Key</caption>
+                    <description>Unique, stable identifier for the row (react-data-table-component keyField).</description>
+                    <attributeTypes>
+                        <attributeType name="String" />
+                        <attributeType name="Long" />
+                    </attributeTypes>
+                </property>
+                <property key="rowValuesAttr" type="attribute" dataSource="dataItems" required="true">
+                    <caption>Row Values (JSON)</caption>
+                    <description>JSON object mapping each Column Key to that cell's raw value, e.g. {"name": "Acme", "revenue": 1200.5}.</description>
+                    <attributeTypes>
+                        <attributeType name="String" />
+                    </attributeTypes>
+                </property>
+            </propertyGroup>
+        </propertyGroup>
+
+        <propertyGroup caption="Pagination">
+            <property key="enableServerPagination" type="boolean" defaultValue="true">
+                <caption>Enable Pagination</caption>
+                <description />
+            </property>
+            <property key="paginationMode" type="enumeration" defaultValue="pages">
+                <caption>Pagination Mode</caption>
+                <description>"Pages" shows react-data-table-component's built-in page footer and replaces rows every fetch. "Load more" hides the footer and appends rows via a Load More button, gated on Has More.</description>
+                <enumerationValues>
+                    <enumerationValue key="pages">Pages</enumerationValue>
+                    <enumerationValue key="loadMore">Load more</enumerationValue>
+                </enumerationValues>
+            </property>
+            <property key="defaultPageSize" type="integer" defaultValue="10">
+                <caption>Default Page Size</caption>
+                <description />
+            </property>
+            <property key="pageSizeOptions" type="string" defaultValue="10,20,50,100">
+                <caption>Page Size Options</caption>
+                <description>Comma-separated list of selectable page sizes.</description>
+            </property>
+            <property key="fetchDataAction" type="action" required="false">
+                <caption>On Fetch Data</caption>
+                <description>
+                    Executed (no parameters) whenever page, limit, sort or search text changes, after the
+                    attributes below have been written. Configure this microflow/nanoflow to read those
+                    attributes and refresh the Data Items datasource with the matching page of data.
+                </description>
+            </property>
+            <property key="offsetAttribute" type="attribute" required="false">
+                <caption>Offset Attribute</caption>
+                <description>Written with (page - 1) * limit before "On Fetch Data" executes. Required when Enable Pagination is on.</description>
+                <attributeTypes>
+                    <attributeType name="Integer" />
+                    <attributeType name="Long" />
+                </attributeTypes>
+            </property>
+            <property key="limitAttribute" type="attribute" required="false">
+                <caption>Limit Attribute</caption>
+                <description>Written with the current page size before "On Fetch Data" executes. Required when Enable Pagination is on.</description>
+                <attributeTypes>
+                    <attributeType name="Integer" />
+                    <attributeType name="Long" />
+                </attributeTypes>
+            </property>
+            <property key="totalCountAttribute" type="attribute" required="false">
+                <caption>Total Count Attribute</caption>
+                <description>Read back after "On Fetch Data" resolves to compute Has More/total rows. If left unbound, Has More falls back to "this page returned a full page of rows".</description>
+                <attributeTypes>
+                    <attributeType name="Integer" />
+                    <attributeType name="Long" />
+                </attributeTypes>
+            </property>
+        </propertyGroup>
+
+        <propertyGroup caption="Sorting">
+            <property key="enableServerSort" type="boolean" defaultValue="true">
+                <caption>Enable Sorting</caption>
+                <description />
+            </property>
+            <property key="defaultSortFieldKey" type="string" required="false">
+                <caption>Default Sort Column Key</caption>
+                <description>A Column Key to sort by initially.</description>
+            </property>
+            <property key="defaultSortAsc" type="boolean" defaultValue="true">
+                <caption>Default Sort Ascending</caption>
+                <description />
+            </property>
+            <property key="sortFieldAttribute" type="attribute" required="false">
+                <caption>Sort Field Attribute</caption>
+                <description>Written with the active Column Key before "On Fetch Data" re-executes on a sort change.</description>
+                <attributeTypes>
+                    <attributeType name="String" />
+                </attributeTypes>
+            </property>
+            <property key="sortDirectionAttribute" type="attribute" required="false">
+                <caption>Sort Direction Attribute</caption>
+                <description>Written with "asc" or "desc" before "On Fetch Data" re-executes on a sort change.</description>
+                <attributeTypes>
+                    <attributeType name="String" />
+                </attributeTypes>
+            </property>
+            <property key="onSortAction" type="action" required="false">
+                <caption>On Sort</caption>
+                <description>
+                    Auxiliary notification fired alongside "On Fetch Data" whenever the sort changes (e.g. to
+                    persist a user's sort preference). It does not itself retrieve data.
+                </description>
+                <actionVariables>
+                    <actionVariable key="sortField" type="String" required="true" caption="Sort Field" />
+                    <actionVariable key="sortDirection" type="String" required="true" caption="Sort Direction" />
+                </actionVariables>
+            </property>
+        </propertyGroup>
+
+        <propertyGroup caption="Search">
+            <property key="showSearch" type="boolean" defaultValue="true">
+                <caption>Show Search Box</caption>
+                <description />
+            </property>
+            <property key="searchPlaceholder" type="string" defaultValue="Search...">
+                <caption>Search Placeholder</caption>
+                <description />
+            </property>
+            <property key="searchDebounce" type="integer" defaultValue="400">
+                <caption>Search Debounce (ms)</caption>
+                <description />
+            </property>
+            <property key="filterTextAttribute" type="attribute" required="false">
+                <caption>Filter Text Attribute</caption>
+                <description>Written with the current search text before "On Fetch Data" re-executes; search also resets to page 1.</description>
+                <attributeTypes>
+                    <attributeType name="String" />
+                </attributeTypes>
+            </property>
+        </propertyGroup>
+
+        <propertyGroup caption="Selection">
+            <property key="enableRowSelection" type="boolean" defaultValue="false">
+                <caption>Enable Row Selection</caption>
+                <description />
+            </property>
+            <property key="selectableRowsHighlight" type="boolean" defaultValue="true">
+                <caption>Highlight Selected Rows</caption>
+                <description />
+            </property>
+            <property key="selectableRowsSingle" type="boolean" defaultValue="false">
+                <caption>Single Row Selection</caption>
+                <description />
+            </property>
+            <property key="onSelectionChangeAction" type="action" required="false">
+                <caption>On Selection Change</caption>
+                <description>Executed whenever the selected rows change.</description>
+                <actionVariables>
+                    <actionVariable key="selectedKeys" type="String" required="true" caption="Selected Keys" />
+                </actionVariables>
+            </property>
+        </propertyGroup>
+
+        <propertyGroup caption="Row Interaction">
+            <property key="expandableRows" type="boolean" defaultValue="false">
+                <caption>Enable Expandable Rows</caption>
+                <description />
+            </property>
+            <property key="expandOnRowClicked" type="boolean" defaultValue="false">
+                <caption>Expand On Row Click</caption>
+                <description />
+            </property>
+            <property key="pointerOnHover" type="boolean" defaultValue="true">
+                <caption>Pointer Cursor On Hover</caption>
+                <description />
+            </property>
+            <property key="onRowClick" type="action" required="false">
+                <caption>On Row Click</caption>
+                <description>Executed when a row is clicked.</description>
+                <actionVariables>
+                    <actionVariable key="rowKey" type="String" required="true" caption="Row Key" />
+                </actionVariables>
+            </property>
+        </propertyGroup>
+
+        <propertyGroup caption="Appearance">
+            <property key="striped" type="boolean" defaultValue="false">
+                <caption>Striped Rows</caption>
+                <description />
+            </property>
+            <property key="highlightOnHover" type="boolean" defaultValue="true">
+                <caption>Highlight On Hover</caption>
+                <description />
+            </property>
+            <property key="dense" type="boolean" defaultValue="false">
+                <caption>Dense</caption>
+                <description />
+            </property>
+            <property key="responsive" type="boolean" defaultValue="true">
+                <caption>Responsive</caption>
+                <description />
+            </property>
+            <property key="fixedHeader" type="boolean" defaultValue="true">
+                <caption>Fixed Header</caption>
+                <description />
+            </property>
+            <property key="fixedHeaderScrollHeight" type="string" defaultValue="400px">
+                <caption>Fixed Header Scroll Height</caption>
+                <description />
+            </property>
+            <property key="persistTableHead" type="boolean" defaultValue="true">
+                <caption>Persist Table Head</caption>
+                <description>Keep the header visible even while loading or when there is no data.</description>
+            </property>
+            <property key="noDataText" type="string" defaultValue="There are no records to display">
+                <caption>No Data Text</caption>
+                <description />
+            </property>
+            <property key="loadingText" type="string" defaultValue="Loading...">
+                <caption>Loading Text</caption>
+                <description />
+            </property>
+        </propertyGroup>
+    </properties>
+</widget>

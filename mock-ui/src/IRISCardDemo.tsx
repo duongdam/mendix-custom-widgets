@@ -41,7 +41,7 @@ export function IRISCardDemo() {
             <IRISCard
                 name="iris-card-preview"
                 class=""
-                title={createEditableValue(title, setTitle)}
+                title={createEditableValue(title, next => setTitle(next ?? ""))}
                 items={createListValue(items)}
             />
         </section>

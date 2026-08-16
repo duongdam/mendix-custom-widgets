@@ -1,17 +1,18 @@
 packages:
-    - "shared/*"
-    - "widgets/*"
-    - "mock-ui"
+  - "shared/*"
+  - "widgets/*"
+  - "mock-ui"
 allowBuilds:
-    "@parcel/watcher": true
-    "@swc/core": true
-    core-js: true
-    unrs-resolver: true
+  "@parcel/watcher": true
+  "@swc/core": true
+  core-js: true
+  esbuild: true
+  unrs-resolver: true
 minimumReleaseAgeExclude:
-    - "@turbo/darwin-64@2.10.9"
-    - "@turbo/darwin-arm64@2.10.9"
-    - "@turbo/linux-64@2.10.9"
-    - "@turbo/linux-arm64@2.10.9"
-    - "@turbo/windows-64@2.10.9"
-    - "@turbo/windows-arm64@2.10.9"
-    - turbo@2.10.9
+  - "@turbo/darwin-64@2.10.9"
+  - "@turbo/darwin-arm64@2.10.9"
+  - "@turbo/linux-64@2.10.9"
+  - "@turbo/linux-arm64@2.10.9"
+  - "@turbo/windows-64@2.10.9"
+  - "@turbo/windows-arm64@2.10.9"
+  - turbo@2.10.9
