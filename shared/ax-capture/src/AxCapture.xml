@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<widget id="com.iris.widgets.AxCapture" pluginWidget="true" needsEntityContext="false" offlineCapable="true"
+        supportedPlatform="Web"
+        xmlns="http://www.mendix.com/widget/1.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.mendix.com/widget/1.0/ ../node_modules/mendix/custom_widget.xsd">
+    <name>Ax Capture</name>
+    <description>Captures a named page element as a PNG image or PDF file and downloads it, using html2canvas-pro.</description>
+    <icon/>
+    <properties>
+        <propertyGroup caption="General">
+            <property key="targetName" type="string" required="true">
+                <caption>Target element name</caption>
+                <description>The "Name" (Common tab, in Studio Pro) of the element to capture. The widget locates it on the page via its "mx-name-&lt;name&gt;" CSS class.</description>
+            </property>
+            <property key="fileName" type="string" required="true" defaultValue="capture">
+                <caption>File name</caption>
+                <description>Base name of the downloaded file, without extension. The actual file is saved as "{fileName}_yyyy-MM-dd_{timestamp}.png/pdf".</description>
+            </property>
+            <property key="format" type="enumeration" defaultValue="png">
+                <caption>Format</caption>
+                <description>Output format for the captured file.</description>
+                <enumerationValues>
+                    <enumerationValue key="png">PNG</enumerationValue>
+                    <enumerationValue key="pdf">PDF</enumerationValue>
+                </enumerationValues>
+            </property>
+        </propertyGroup>
+        <propertyGroup caption="Button">
+            <property key="showButton" type="boolean" defaultValue="true">
+                <caption>Show button</caption>
+                <description>Show the built-in capture button. When off, the button stays in the page but is visually hidden, so it can still be triggered programmatically (for example from a custom JS action).</description>
+            </property>
+            <property key="buttonCaption" type="expression" required="true">
+                <caption>Button caption</caption>
+                <description>Text shown on the capture button.</description>
+                <returnType type="String"/>
+            </property>
+        </propertyGroup>
+    </properties>
+</widget>

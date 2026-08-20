@@ -1,0 +1,35 @@
+.ax-capture-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 16px;
+    border: 1px solid #1677ff;
+    border-radius: 4px;
+    background-color: #1677ff;
+    color: #ffffff;
+    font-size: 14px;
+    line-height: 1.5;
+    cursor: pointer;
+    transition: opacity 0.15s ease-in-out;
+}
+
+.ax-capture-button:hover:not(:disabled) {
+    opacity: 0.85;
+}
+
+.ax-capture-button:disabled {
+    cursor: progress;
+    opacity: 0.65;
+}
+
+.ax-capture-button--hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}

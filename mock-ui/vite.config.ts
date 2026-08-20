@@ -24,6 +24,6 @@ export default defineConfig({
         // Force these into the initial dep-scan pass instead of being discovered lazily once
         // AxNewTableDemo's module graph is crawled — a late "cold" discovery pass has been
         // observed to pre-bundle react/react-dom a second time, breaking hooks.
-        include: ["react", "react-dom", "react-data-table-component"],
+        include: ["react", "react-dom", "react-data-table-component", "html2canvas-pro", "jspdf/dist/jspdf.umd.min.js"],
     },
 });

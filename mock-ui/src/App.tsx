@@ -5,6 +5,7 @@ import { AX_COMMON_VERSION } from "@iris/ax-common";
 import { IRISPanelDemo } from "./IRISPanelDemo";
 import { AxMultiSelectDemo } from "./AxMultiSelectDemo";
 import { AxNewTableDemo } from "./AxNewTableDemo";
+import { AxCaptureDemo } from "./AxCaptureDemo";
 
 import "./App.css";
 
@@ -22,6 +23,7 @@ export function App() {
             <IRISPanelDemo />
             <AxMultiSelectDemo />
             <AxNewTableDemo />
+            <AxCaptureDemo />
         </main>
     );
 }
