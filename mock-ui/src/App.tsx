@@ -6,6 +6,7 @@ import { IRISPanelDemo } from "./IRISPanelDemo";
 import { AxMultiSelectDemo } from "./AxMultiSelectDemo";
 import { AxNewTableDemo } from "./AxNewTableDemo";
 import { AxCaptureDemo } from "./AxCaptureDemo";
+import { IRISWorldMapDemo } from "./IRISWorldMapDemo";
 
 import "./App.css";
 
@@ -24,6 +25,7 @@ export function App() {
             <AxMultiSelectDemo />
             <AxNewTableDemo />
             <AxCaptureDemo />
+            <IRISWorldMapDemo />
         </main>
     );
 }

@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<widget
+    id="com.iris.widgets.IRISWorldMap"
+    pluginWidget="true"
+    needsEntityContext="true"
+    offlineCapable="true"
+    supportedPlatform="Web"
+    xmlns="http://www.mendix.com/widget/1.0/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.mendix.com/widget/1.0/ ../node_modules/mendix/custom_widget.xsd"
+>
+    <name>IRIS World Map</name>
+    <description>
+        Interactive world map (AG Charts Enterprise Maps) that highlights countries and plots
+        business locations as size-scaled bubble markers from a Mendix datasource, with optional
+        connection lines between them. Geographic rendering (country geometry, tooltips, zoom/pan)
+        is fully owned by AG Charts; this widget only supplies business data, interaction and
+        visual theme. Requires an AG Charts Enterprise licence for production use — see the
+        widget's README.
+    </description>
+    <icon />
+    <properties>
+        <propertyGroup caption="Regions">
+            <property key="regions" type="datasource" isList="true" required="true">
+                <caption>Regions</caption>
+                <description>Datasource of business locations to plot on the map.</description>
+            </property>
+            <property key="regionIdAttr" type="attribute" dataSource="regions" required="true">
+                <caption>Region ID</caption>
+                <description>Unique, stable identifier for the region.</description>
+                <attributeTypes>
+                    <attributeType name="String" />
+                    <attributeType name="Long" />
+                </attributeTypes>
+            </property>
+            <property key="regionCountryCodeAttr" type="attribute" dataSource="regions" required="true">
+                <caption>Country Code</caption>
+                <description>ISO 3166-1 alpha-2 or alpha-3 country code, e.g. "KR" or "KOR".</description>
+                <attributeTypes>
+                    <attributeType name="String" />
+                </attributeTypes>
+            </property>
+            <property key="regionNameAttr" type="attribute" dataSource="regions" required="true">
+                <caption>Name</caption>
+                <description>Display name shown in the tooltip, e.g. "Korea HQ".</description>
+                <attributeTypes>
+                    <attributeType name="String" />
+                </attributeTypes>
+            </property>
+            <property key="regionLatitudeAttr" type="attribute" dataSource="regions" required="true">
+                <caption>Latitude</caption>
+                <description>Marker latitude in decimal degrees.</description>
+                <attributeTypes>
+                    <attributeType name="Decimal" />
+                    <attributeType name="Integer" />
+                    <attributeType name="Long" />
+                </attributeTypes>
+            </property>
+            <property key="regionLongitudeAttr" type="attribute" dataSource="regions" required="true">
+                <caption>Longitude</caption>
+                <description>Marker longitude in decimal degrees.</description>
+                <attributeTypes>
+                    <attributeType name="Decimal" />
+                    <attributeType name="Integer" />
+                    <attributeType name="Long" />
+                </attributeTypes>
+            </property>
+            <property key="regionStatusAttr" type="attribute" dataSource="regions" required="false">
+                <caption>Status</caption>
+                <description>Free-text status used to color the marker, e.g. "active" / "warning" / "inactive".</description>
+                <attributeTypes>
+                    <attributeType name="String" />
+                    <attributeType name="Enum" />
+                </attributeTypes>
+            </property>
+            <property key="regionCategoryAttr" type="attribute" dataSource="regions" required="false">
+                <caption>Category</caption>
+                <description>Optional grouping shown in the tooltip, e.g. "Factory" / "Office" / "Warehouse".</description>
+                <attributeTypes>
+                    <attributeType name="String" />
+                    <attributeType name="Enum" />
+                </attributeTypes>
+            </property>
+            <property key="regionValueAttr" type="attribute" dataSource="regions" required="false">
+                <caption>Value</caption>
+                <description>
+                    Optional numeric metric shown in the tooltip and used to size the bubble marker
+                    (see Min/Max Marker Size). Regions without a value get a fixed-size marker.
+                </description>
+                <attributeTypes>
+                    <attributeType name="Decimal" />
+                    <attributeType name="Integer" />
+                    <attributeType name="Long" />
+                </attributeTypes>
+            </property>
+        </propertyGroup>
+
+        <propertyGroup caption="Connections">
+            <property key="connections" type="datasource" isList="true" required="false">
+                <caption>Connections</caption>
+                <description>Optional datasource of lines drawn between two region country codes.</description>
+            </property>
+            <property key="connectionFromCodeAttr" type="attribute" dataSource="connections" required="false">
+                <caption>From Country Code</caption>
+                <description>Must match a Region's Country Code.</description>
+                <attributeTypes>
+                    <attributeType name="String" />
+                </attributeTypes>
+            </property>
+            <property key="connectionToCodeAttr" type="attribute" dataSource="connections" required="false">
+                <caption>To Country Code</caption>
+                <description>Must match a Region's Country Code.</description>
+                <attributeTypes>
+                    <attributeType name="String" />
+                </attributeTypes>
+            </property>
+        </propertyGroup>
+
+        <propertyGroup caption="Map">
+            <property key="enableZoom" type="boolean" defaultValue="true">
+                <caption>Enable Zoom &amp; Pan</caption>
+                <description>Scroll/pinch to zoom, drag to pan, double-click to reset.</description>
+            </property>
+        </propertyGroup>
+
+        <propertyGroup caption="Appearance">
+            <property key="defaultCountryFill" type="string" defaultValue="#E5E9F0">
+                <caption>Default Country Fill</caption>
+                <description>Fallback fill for any country outside the six continent datasets (e.g. Antarctica).</description>
+            </property>
+            <property key="countryStroke" type="string" defaultValue="#FFFFFF">
+                <caption>Country Stroke</caption>
+                <description />
+            </property>
+            <property key="markerColor" type="string" defaultValue="#1F2937">
+                <caption>Marker Color</caption>
+                <description />
+            </property>
+            <property key="minMarkerSize" type="integer" defaultValue="6">
+                <caption>Min Marker Size (px)</caption>
+                <description>Bubble size for the smallest Value (or the fixed size when Value is unbound).</description>
+            </property>
+            <property key="maxMarkerSize" type="integer" defaultValue="32">
+                <caption>Max Marker Size (px)</caption>
+                <description>Bubble size for the largest Value.</description>
+            </property>
+            <property key="showLabels" type="boolean" defaultValue="false">
+                <caption>Show Region Labels</caption>
+                <description>Always show each region's name next to its marker instead of only on hover.</description>
+            </property>
+            <property key="showConnectionLines" type="boolean" defaultValue="true">
+                <caption>Show Connection Lines</caption>
+                <description />
+            </property>
+            <property key="connectionLineColor" type="string" defaultValue="#334155">
+                <caption>Connection Line Color</caption>
+                <description />
+            </property>
+            <property key="connectionLineWidth" type="decimal" defaultValue="1.5">
+                <caption>Connection Line Width</caption>
+                <description />
+            </property>
+        </propertyGroup>
+
+        <propertyGroup caption="Interaction">
+            <property key="selectedRegionIdAttribute" type="attribute" required="false">
+                <caption>Selected Region ID Attribute</caption>
+                <description>Written with the clicked region's ID.</description>
+                <attributeTypes>
+                    <attributeType name="String" />
+                </attributeTypes>
+            </property>
+            <property key="onRegionClick" type="action" required="false">
+                <caption>On Region Click</caption>
+                <description>Executed after the Selected Region ID Attribute (if any) has been written.</description>
+                <actionVariables>
+                    <actionVariable key="regionId" type="String" required="true" caption="Region ID" />
+                    <actionVariable key="countryCode" type="String" required="true" caption="Country Code" />
+                </actionVariables>
+            </property>
+        </propertyGroup>
+    </properties>
+</widget>

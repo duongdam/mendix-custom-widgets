@@ -2,6 +2,7 @@ import { ReactElement, useCallback, useRef, useState } from "react";
 
 import { AxCaptureContainerProps } from "../typings/AxCaptureProps";
 import { captureElement } from "./utils/capture";
+
 import "./ui/AxCapture.css";
 
 export function AxCapture({

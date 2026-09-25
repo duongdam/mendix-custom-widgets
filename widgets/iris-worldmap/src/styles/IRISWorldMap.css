@@ -1,0 +1,29 @@
+.iris-worldmap {
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    min-height: 420px;
+    overflow: hidden;
+    border-radius: 12px;
+    /* The "ocean" — AG Charts' own background is left transparent so this shows through. A plain
+       dark fill here (an earlier version) read as "just one flat black colour"; a light background
+       is what lets category-coloured countries actually look colourful, like the AG Charts
+       reference example this was modelled on. */
+    background: #ffffff;
+    box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.08);
+}
+
+/* AG Charts renders its own root as a plain, unstyled div directly inside ours — stretch it via
+   flex (not height: 100%, which can't resolve against an ancestor sized only by min-height) so
+   its .ag-charts-wrapper below has a real, definite height to size itself against in turn. */
+.iris-worldmap > div {
+    flex: 1 1 auto;
+    min-width: 0;
+    min-height: 0;
+}
+
+.iris-worldmap .ag-charts-wrapper {
+    width: 100%;
+    height: 100%;
+}
