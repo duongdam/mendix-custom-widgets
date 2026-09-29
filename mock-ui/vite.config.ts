@@ -32,6 +32,9 @@ export default defineConfig({
             "jspdf/dist/jspdf.umd.min.js",
             "ag-charts-react",
             "ag-charts-enterprise",
+            "antd",
+            "dayjs",
+            "big.js",
         ],
     },
 });

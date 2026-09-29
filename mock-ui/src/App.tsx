@@ -3,6 +3,11 @@ import { AX_COMMON_VERSION } from "@iris/ax-common";
 // import { IRISButtonDemo } from "./IRISButtonDemo";
 // import { IRISCardDemo } from "./IRISCardDemo";
 import { IRISPanelDemo } from "./IRISPanelDemo";
+import { IRISProgressDemo } from "./IRISProgressDemo";
+import { IRISSelectDemo } from "./IRISSelectDemo";
+import { IRISDatePickerDemo } from "./IRISDatePickerDemo";
+import { IRISSegmentedDemo } from "./IRISSegmentedDemo";
+import { IRISStepsDemo } from "./IRISStepsDemo";
 import { AxMultiSelectDemo } from "./AxMultiSelectDemo";
 import { AxNewTableDemo } from "./AxNewTableDemo";
 import { AxCaptureDemo } from "./AxCaptureDemo";
@@ -22,6 +27,11 @@ export function App() {
             {/* <IRISButtonDemo /> */}
             {/* <IRISCardDemo /> */}
             <IRISPanelDemo />
+            <IRISProgressDemo />
+            <IRISSelectDemo />
+            <IRISDatePickerDemo />
+            <IRISSegmentedDemo />
+            <IRISStepsDemo />
             <AxMultiSelectDemo />
             <AxNewTableDemo />
             <AxCaptureDemo />

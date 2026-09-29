@@ -112,6 +112,7 @@ function WorldMapSyncComponent(props: WorldMapSyncProps): ReactElement | null {
             store={store}
             fills={fills}
             markerColor={props.markerColor}
+            markerColorMode={props.markerColorMode}
             minMarkerSize={props.minMarkerSize}
             maxMarkerSize={props.maxMarkerSize}
             showLabels={props.showLabels}

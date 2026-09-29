@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<widget id="com.iris.widgets.IRISSteps" pluginWidget="true" needsEntityContext="true" offlineCapable="true"
+        supportedPlatform="Web"
+        xmlns="http://www.mendix.com/widget/1.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.mendix.com/widget/1.0/ ../node_modules/mendix/custom_widget.xsd">
+    <name>IRIS Steps</name>
+    <description>Ant Design Steps (wizard / process indicator), with the current step stored in an Integer attribute.</description>
+    <icon/>
+    <properties>
+        <propertyGroup caption="General">
+            <propertyGroup caption="Data source">
+                <property key="current" type="attribute" required="true">
+                    <caption>Current step</caption>
+                    <description>0-based index of the current step (0 = first step).</description>
+                    <attributeTypes>
+                        <attributeType name="Integer"/>
+                        <attributeType name="Long"/>
+                    </attributeTypes>
+                </property>
+                <property key="itemsSource" type="enumeration" defaultValue="static">
+                    <caption>Steps source</caption>
+                    <description/>
+                    <enumerationValues>
+                        <enumerationValue key="static">Static</enumerationValue>
+                        <enumerationValue key="datasource">Data source</enumerationValue>
+                    </enumerationValues>
+                </property>
+                <property key="staticItems" type="object" isList="true" required="false">
+                    <caption>Steps</caption>
+                    <description>Only used when Steps source is Static.</description>
+                    <properties>
+                        <propertyGroup caption="Step">
+                            <property key="title" type="textTemplate" required="true">
+                                <caption>Title</caption>
+                                <description/>
+                            </property>
+                            <property key="description" type="textTemplate" required="false">
+                                <caption>Description</caption>
+                                <description/>
+                            </property>
+                        </propertyGroup>
+                    </properties>
+                </property>
+                <property key="itemsDatasource" type="datasource" isList="true" required="false">
+                    <caption>Steps</caption>
+                    <description>Only used when Steps source is Data source. Sort it in step order.</description>
+                </property>
+                <property key="itemTitle" type="textTemplate" dataSource="itemsDatasource" required="false">
+                    <caption>Step title</caption>
+                    <description/>
+                </property>
+                <property key="itemDescription" type="textTemplate" dataSource="itemsDatasource" required="false">
+                    <caption>Step description</caption>
+                    <description/>
+                </property>
+            </propertyGroup>
+            <propertyGroup caption="Behavior">
+                <property key="clickable" type="boolean" defaultValue="false">
+                    <caption>Clickable</caption>
+                    <description>Let users jump to a step by clicking it (writes Current step).</description>
+                </property>
+                <property key="status" type="enumeration" defaultValue="process">
+                    <caption>Current step status</caption>
+                    <description/>
+                    <enumerationValues>
+                        <enumerationValue key="process">In progress</enumerationValue>
+                        <enumerationValue key="wait">Waiting</enumerationValue>
+                        <enumerationValue key="finish">Finished</enumerationValue>
+                        <enumerationValue key="error">Error</enumerationValue>
+                    </enumerationValues>
+                </property>
+                <property key="errorWhen" type="expression" required="false">
+                    <caption>Show error when</caption>
+                    <description>When true, the current step is shown as Error.</description>
+                    <returnType type="Boolean"/>
+                </property>
+            </propertyGroup>
+        </propertyGroup>
+        <propertyGroup caption="Appearance">
+            <propertyGroup caption="Appearance">
+                <property key="stepsType" type="enumeration" defaultValue="default">
+                    <caption>Type</caption>
+                    <description/>
+                    <enumerationValues>
+                        <enumerationValue key="default">Default</enumerationValue>
+                        <enumerationValue key="navigation">Navigation</enumerationValue>
+                        <enumerationValue key="dot">Dot</enumerationValue>
+                        <enumerationValue key="inline">Inline</enumerationValue>
+                        <enumerationValue key="panel">Panel</enumerationValue>
+                    </enumerationValues>
+                </property>
+                <property key="orientation" type="enumeration" defaultValue="horizontal">
+                    <caption>Orientation</caption>
+                    <description/>
+                    <enumerationValues>
+                        <enumerationValue key="horizontal">Horizontal</enumerationValue>
+                        <enumerationValue key="vertical">Vertical</enumerationValue>
+                    </enumerationValues>
+                </property>
+                <property key="titlePlacement" type="enumeration" defaultValue="horizontal">
+                    <caption>Title placement</caption>
+                    <description>Vertical puts the title under the icon.</description>
+                    <enumerationValues>
+                        <enumerationValue key="horizontal">Beside icon</enumerationValue>
+                        <enumerationValue key="vertical">Below icon</enumerationValue>
+                    </enumerationValues>
+                </property>
+                <property key="size" type="enumeration" defaultValue="medium">
+                    <caption>Size</caption>
+                    <description/>
+                    <enumerationValues>
+                        <enumerationValue key="medium">Medium</enumerationValue>
+                        <enumerationValue key="small">Small</enumerationValue>
+                    </enumerationValues>
+                </property>
+            </propertyGroup>
+        </propertyGroup>
+        <propertyGroup caption="Events">
+            <propertyGroup caption="Events">
+                <property key="onChangeAction" type="action" required="false">
+                    <caption>On change</caption>
+                    <description>Runs after Current step changes by a click.</description>
+                </property>
+            </propertyGroup>
+        </propertyGroup>
+    </properties>
+</widget>

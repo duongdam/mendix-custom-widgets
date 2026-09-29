@@ -7,6 +7,8 @@ import { ActionValue, EditableValue, ListAttributeValue, ListValue, Option } fro
 import { Big } from "big.js";
 import { CSSProperties } from "react";
 
+export type MarkerColorModeEnum = "fixed" | "status" | "category";
+
 export interface IRISWorldMapContainerProps {
     name: string;
     class: string;
@@ -27,6 +29,7 @@ export interface IRISWorldMapContainerProps {
     enableZoom: boolean;
     defaultCountryFill: string;
     countryStroke: string;
+    markerColorMode: MarkerColorModeEnum;
     markerColor: string;
     minMarkerSize: number;
     maxMarkerSize: number;
@@ -64,6 +67,7 @@ export interface IRISWorldMapPreviewProps {
     enableZoom: boolean;
     defaultCountryFill: string;
     countryStroke: string;
+    markerColorMode: MarkerColorModeEnum;
     markerColor: string;
     minMarkerSize: number | null;
     maxMarkerSize: number | null;

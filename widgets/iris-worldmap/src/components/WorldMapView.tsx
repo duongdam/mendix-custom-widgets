@@ -25,12 +25,15 @@ export interface CountryFillConfig {
     stroke: string;
 }
 
+export type MarkerColorMode = "fixed" | "status" | "category";
+
 export interface WorldMapViewProps {
     className?: string;
     style?: CSSProperties;
     store: WorldMapStore;
     fills: CountryFillConfig;
     markerColor: string;
+    markerColorMode: MarkerColorMode;
     minMarkerSize: number;
     maxMarkerSize: number;
     showLabels: boolean;
@@ -53,6 +56,28 @@ function convertLowerCamelCaseToTitleCase(value: string): string {
         }
         return acc + char;
     }, "");
+}
+
+// AG Charts' legend is per-series, not per-value-within-a-series — the same reason the continent
+// colours above need one series each. So colouring markers "by status"/"by category" needs the
+// same trick: one map-marker series per distinct value (falling back to "Unspecified"), each left
+// without an explicit fill so AG Charts assigns it the next colour in its categorical palette.
+function groupRegionsByField(
+    regions: Region[],
+    field: "status" | "category"
+): Array<{ label: string; regions: Region[] }> {
+    const byValue = new Map<string, Region[]>();
+    for (const region of regions) {
+        const raw = region[field];
+        const label = raw ? raw.charAt(0).toUpperCase() + raw.slice(1) : "Unspecified";
+        const existing = byValue.get(label);
+        if (existing) {
+            existing.push(region);
+        } else {
+            byValue.set(label, [region]);
+        }
+    }
+    return [...byValue.entries()].map(([label, items]) => ({ label, regions: items }));
 }
 
 const compactNumberFormatter = new Intl.NumberFormat("en-US", {
@@ -161,6 +186,7 @@ function WorldMapViewComponent({
     store,
     fills,
     markerColor,
+    markerColorMode,
     minMarkerSize,
     maxMarkerSize,
     showLabels,
@@ -228,16 +254,32 @@ function WorldMapViewComponent({
             });
         }
 
-        series.push({
-            type: "map-marker",
+        const markerTooltip = {
+            renderer: (params: { datum: unknown }) => {
+                const region = params.datum as Region;
+                return {
+                    heading: region.category ?? region.name,
+                    title: region.name,
+                    data: [
+                        ...(region.value !== undefined
+                            ? [{ label: "Value", value: region.value.toLocaleString() }]
+                            : []),
+                        ...(region.status ? [{ label: "Status", value: region.status }] : [])
+                    ]
+                };
+            }
+        };
+        const markerListeners = {
+            seriesNodeClick: (event: { datum: unknown }) => onRegionClick(event.datum as Region)
+        };
+        const markerCommon = {
             idKey: "id",
             latitudeKey: "latitude",
             longitudeKey: "longitude",
             sizeKey: hasValues ? "value" : undefined,
+            sizeName: "Value",
             labelKey: showLabels ? "name" : undefined,
             label: { enabled: showLabels, color: "#1F2937", fontSize: 11 },
-            data: store.regions,
-            fill: markerColor,
             fillOpacity: 0.75,
             stroke: "#ffffff",
             strokeWidth: 1.5,
@@ -246,27 +288,33 @@ function WorldMapViewComponent({
             minSize: minMarkerSize,
             maxSize: maxMarkerSize,
             cursor: "pointer",
-            showInLegend: false,
             highlight: { highlightedItem: { fillOpacity: 1, strokeWidth: 2 } },
-            tooltip: {
-                renderer: params => {
-                    const region = params.datum as Region;
-                    return {
-                        heading: region.category ?? region.name,
-                        title: region.name,
-                        data: [
-                            ...(region.value !== undefined
-                                ? [{ label: "Value", value: region.value.toLocaleString() }]
-                                : []),
-                            ...(region.status ? [{ label: "Status", value: region.status }] : [])
-                        ]
-                    };
-                }
-            },
-            listeners: {
-                seriesNodeClick: event => onRegionClick(event.datum as Region)
+            tooltip: markerTooltip,
+            listeners: markerListeners
+        } as const;
+
+        // "Fixed" is one flat-coloured series (the simple case, no legend clutter). "By
+        // status"/"By category" split the regions into one series per distinct value instead —
+        // see groupRegionsByField for why a single series with colorKey can't do this.
+        if (markerColorMode === "fixed") {
+            series.push({
+                type: "map-marker",
+                data: store.regions,
+                fill: markerColor,
+                showInLegend: false,
+                ...markerCommon
+            });
+        } else {
+            for (const group of groupRegionsByField(store.regions, markerColorMode)) {
+                series.push({
+                    type: "map-marker",
+                    title: group.label,
+                    data: group.regions,
+                    showInLegend: true,
+                    ...markerCommon
+                });
             }
-        });
+        }
 
         return {
             background: { fill: "transparent" },
@@ -277,6 +325,7 @@ function WorldMapViewComponent({
         } as AgChartOptions;
     }, [
         fills,
+        markerColorMode,
         showConnectionLines,
         connectionsGeography,
         connectionLineColor,

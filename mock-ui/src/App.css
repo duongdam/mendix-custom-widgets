@@ -38,3 +38,14 @@
     padding: 4px 8px;
     border-bottom: 1px solid #eee;
 }
+
+.app__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+}
+
+.app h3 {
+    font-size: 14px;
+    margin: 12px 0 6px;
+}

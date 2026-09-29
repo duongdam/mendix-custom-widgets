@@ -18,15 +18,29 @@ export function createDynamicValue<T>(value: T): DynamicValue<T> {
     return { status: "available", value } as DynamicValue<T>;
 }
 
+export interface EditableValueMockOptions<T> {
+    /** Possible values — set for Enumeration / Boolean attributes. */
+    universe?: T[];
+    /** Caption per value, used by `formatter.format` (e.g. enum captions). */
+    format?: (value: T | undefined) => string;
+    readOnly?: boolean;
+    validation?: string;
+}
+
 export function createEditableValue<T extends string | boolean | Date | Big>(
     value: T | undefined,
     onChange?: (value: T | undefined) => void,
+    options: EditableValueMockOptions<T> = {},
 ): EditableValue<T> {
+    const format = options.format ?? ((v: T | undefined) => (v === undefined ? "" : String(v)));
     return {
         status: "available",
         value,
-        readOnly: false,
-        validation: undefined,
+        displayValue: format(value),
+        universe: options.universe,
+        formatter: { format },
+        readOnly: options.readOnly ?? false,
+        validation: options.validation,
         // Real Mendix EditableValue.setValue(undefined) clears the attribute — unlike the rest
         // of this file's DynamicValue helpers, this must forward `undefined` too, not swallow it.
         setValue: (next: T | undefined) => onChange?.(next),

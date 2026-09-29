@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<widget id="com.iris.widgets.IRISProgress" pluginWidget="true" needsEntityContext="true" offlineCapable="true"
+        supportedPlatform="Web"
+        xmlns="http://www.mendix.com/widget/1.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.mendix.com/widget/1.0/ ../node_modules/mendix/custom_widget.xsd">
+    <name>IRIS Progress</name>
+    <description>Ant Design progress indicator (line, circle or dashboard) driven by Mendix values.</description>
+    <icon/>
+    <properties>
+        <propertyGroup caption="General">
+            <propertyGroup caption="Data">
+                <property key="value" type="expression" required="true">
+                    <caption>Value</caption>
+                    <description>Current progress value.</description>
+                    <returnType type="Decimal"/>
+                </property>
+                <property key="maxValue" type="expression" required="false">
+                    <caption>Maximum value</caption>
+                    <description>Value that counts as 100%. Defaults to 100, so Value can be passed as a percentage directly.</description>
+                    <returnType type="Decimal"/>
+                </property>
+                <property key="successValue" type="expression" required="false">
+                    <caption>Success value</caption>
+                    <description>Optional secondary segment (e.g. completed vs. in progress), on the same scale as Value.</description>
+                    <returnType type="Decimal"/>
+                </property>
+            </propertyGroup>
+            <propertyGroup caption="Display">
+                <property key="progressType" type="enumeration" defaultValue="line">
+                    <caption>Type</caption>
+                    <description/>
+                    <enumerationValues>
+                        <enumerationValue key="line">Line</enumerationValue>
+                        <enumerationValue key="circle">Circle</enumerationValue>
+                        <enumerationValue key="dashboard">Dashboard</enumerationValue>
+                    </enumerationValues>
+                </property>
+                <property key="showInfo" type="boolean" defaultValue="true">
+                    <caption>Show info</caption>
+                    <description>Show the percentage / label next to or inside the indicator.</description>
+                </property>
+                <property key="label" type="textTemplate" required="false">
+                    <caption>Label</caption>
+                    <description>Replaces the default percentage text, e.g. "{1} / {2} tasks". Leave empty to show the percentage.</description>
+                </property>
+            </propertyGroup>
+        </propertyGroup>
+        <propertyGroup caption="Status">
+            <propertyGroup caption="Status">
+                <property key="status" type="enumeration" defaultValue="auto">
+                    <caption>Status</caption>
+                    <description>Auto shows success once 100% is reached.</description>
+                    <enumerationValues>
+                        <enumerationValue key="auto">Auto</enumerationValue>
+                        <enumerationValue key="normal">Normal</enumerationValue>
+                        <enumerationValue key="active">Active (animated)</enumerationValue>
+                        <enumerationValue key="success">Success</enumerationValue>
+                        <enumerationValue key="exception">Exception</enumerationValue>
+                    </enumerationValues>
+                </property>
+                <property key="exceptionWhen" type="expression" required="false">
+                    <caption>Show exception when</caption>
+                    <description>When this evaluates to true, the status is forced to Exception (red).</description>
+                    <returnType type="Boolean"/>
+                </property>
+            </propertyGroup>
+        </propertyGroup>
+        <propertyGroup caption="Appearance">
+            <propertyGroup caption="Size">
+                <property key="lineSize" type="enumeration" defaultValue="medium">
+                    <caption>Line size</caption>
+                    <description>Only used by the Line type.</description>
+                    <enumerationValues>
+                        <enumerationValue key="medium">Medium</enumerationValue>
+                        <enumerationValue key="small">Small</enumerationValue>
+                    </enumerationValues>
+                </property>
+                <property key="circleSize" type="integer" defaultValue="120">
+                    <caption>Circle size (px)</caption>
+                    <description>Diameter for the Circle and Dashboard types.</description>
+                </property>
+                <property key="steps" type="integer" defaultValue="0">
+                    <caption>Steps</caption>
+                    <description>Split a Line into this many segments. 0 = continuous.</description>
+                </property>
+            </propertyGroup>
+            <propertyGroup caption="Colors">
+                <property key="strokeColor" type="expression" required="false">
+                    <caption>Stroke color</caption>
+                    <description>CSS color of the progress bar, e.g. '#1677ff'. Leave empty to follow the status color.</description>
+                    <returnType type="String"/>
+                </property>
+                <property key="railColor" type="expression" required="false">
+                    <caption>Rail color</caption>
+                    <description>CSS color of the unfilled part.</description>
+                    <returnType type="String"/>
+                </property>
+                <property key="strokeLinecap" type="enumeration" defaultValue="round">
+                    <caption>Line cap</caption>
+                    <description/>
+                    <enumerationValues>
+                        <enumerationValue key="round">Round</enumerationValue>
+                        <enumerationValue key="square">Square</enumerationValue>
+                        <enumerationValue key="butt">Butt</enumerationValue>
+                    </enumerationValues>
+                </property>
+            </propertyGroup>
+        </propertyGroup>
+        <propertyGroup caption="Events">
+            <propertyGroup caption="Events">
+                <property key="onClick" type="action" required="false">
+                    <caption>On click</caption>
+                    <description/>
+                </property>
+            </propertyGroup>
+        </propertyGroup>
+    </properties>
+</widget>

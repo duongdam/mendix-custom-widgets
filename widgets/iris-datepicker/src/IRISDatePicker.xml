@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<widget id="com.iris.widgets.IRISDatePicker" pluginWidget="true" needsEntityContext="true" offlineCapable="true"
+        supportedPlatform="Web"
+        xmlns="http://www.mendix.com/widget/1.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.mendix.com/widget/1.0/ ../node_modules/mendix/custom_widget.xsd">
+    <name>IRIS Date Picker</name>
+    <description>Ant Design DatePicker, or RangePicker when an end attribute is set.</description>
+    <icon/>
+    <properties>
+        <propertyGroup caption="General">
+            <propertyGroup caption="Data source">
+                <property key="startAttribute" type="attribute" required="true">
+                    <caption>Date attribute</caption>
+                    <description>The selected date, or the range start when End attribute is set.</description>
+                    <attributeTypes>
+                        <attributeType name="DateTime"/>
+                    </attributeTypes>
+                </property>
+                <property key="endAttribute" type="attribute" required="false">
+                    <caption>End attribute</caption>
+                    <description>Set this to turn the widget into a range picker.</description>
+                    <attributeTypes>
+                        <attributeType name="DateTime"/>
+                    </attributeTypes>
+                </property>
+            </propertyGroup>
+            <propertyGroup caption="Behavior">
+                <property key="picker" type="enumeration" defaultValue="date">
+                    <caption>Picker</caption>
+                    <description>Granularity. Without time, values are stored at the start (and range ends at the end) of the chosen day/week/month/quarter/year.</description>
+                    <enumerationValues>
+                        <enumerationValue key="date">Date</enumerationValue>
+                        <enumerationValue key="week">Week</enumerationValue>
+                        <enumerationValue key="month">Month</enumerationValue>
+                        <enumerationValue key="quarter">Quarter</enumerationValue>
+                        <enumerationValue key="year">Year</enumerationValue>
+                    </enumerationValues>
+                </property>
+                <property key="showTime" type="boolean" defaultValue="false">
+                    <caption>Show time</caption>
+                    <description>Also pick hours and minutes (Date picker only).</description>
+                </property>
+                <property key="format" type="string" required="false">
+                    <caption>Display format</caption>
+                    <description>dayjs format, e.g. DD/MM/YYYY or DD/MM/YYYY HH:mm. Leave empty for the default of the picker.</description>
+                </property>
+                <property key="minDate" type="expression" required="false">
+                    <caption>Minimum date</caption>
+                    <description/>
+                    <returnType type="DateTime"/>
+                </property>
+                <property key="maxDate" type="expression" required="false">
+                    <caption>Maximum date</caption>
+                    <description/>
+                    <returnType type="DateTime"/>
+                </property>
+                <property key="showPresets" type="boolean" defaultValue="false">
+                    <caption>Show presets</caption>
+                    <description>Quick picks such as Today / Last 7 days (Date picker only).</description>
+                </property>
+                <property key="placeholder" type="textTemplate" required="false">
+                    <caption>Placeholder</caption>
+                    <description/>
+                </property>
+                <property key="endPlaceholder" type="textTemplate" required="false">
+                    <caption>End placeholder</caption>
+                    <description>Range picker only.</description>
+                </property>
+                <property key="allowClear" type="boolean" defaultValue="true">
+                    <caption>Allow clear</caption>
+                    <description/>
+                </property>
+            </propertyGroup>
+        </propertyGroup>
+        <propertyGroup caption="Appearance">
+            <propertyGroup caption="Appearance">
+                <property key="size" type="enumeration" defaultValue="medium">
+                    <caption>Size</caption>
+                    <description/>
+                    <enumerationValues>
+                        <enumerationValue key="medium">Medium</enumerationValue>
+                        <enumerationValue key="small">Small</enumerationValue>
+                        <enumerationValue key="large">Large</enumerationValue>
+                    </enumerationValues>
+                </property>
+                <property key="variant" type="enumeration" defaultValue="outlined">
+                    <caption>Variant</caption>
+                    <description/>
+                    <enumerationValues>
+                        <enumerationValue key="outlined">Outlined</enumerationValue>
+                        <enumerationValue key="filled">Filled</enumerationValue>
+                        <enumerationValue key="borderless">Borderless</enumerationValue>
+                        <enumerationValue key="underlined">Underlined</enumerationValue>
+                    </enumerationValues>
+                </property>
+                <property key="fullWidth" type="boolean" defaultValue="true">
+                    <caption>Full width</caption>
+                    <description/>
+                </property>
+            </propertyGroup>
+        </propertyGroup>
+        <propertyGroup caption="Events">
+            <propertyGroup caption="Events">
+                <property key="onChangeAction" type="action" required="false">
+                    <caption>On change</caption>
+                    <description/>
+                </property>
+            </propertyGroup>
+        </propertyGroup>
+    </properties>
+</widget>

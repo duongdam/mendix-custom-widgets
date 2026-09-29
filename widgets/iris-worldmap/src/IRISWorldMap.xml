@@ -132,9 +132,23 @@
                 <caption>Country Stroke</caption>
                 <description />
             </property>
+            <property key="markerColorMode" type="enumeration" defaultValue="fixed">
+                <caption>Marker Color Mode</caption>
+                <description>
+                    Fixed: every marker uses Marker Color. By Status/By Category: markers are
+                    coloured automatically per distinct Status/Category value, each with its own
+                    legend entry (falls back to a single "undefined" colour for regions missing
+                    that attribute).
+                </description>
+                <enumerationValues>
+                    <enumerationValue key="fixed">Fixed Color</enumerationValue>
+                    <enumerationValue key="status">By Status</enumerationValue>
+                    <enumerationValue key="category">By Category</enumerationValue>
+                </enumerationValues>
+            </property>
             <property key="markerColor" type="string" defaultValue="#1F2937">
                 <caption>Marker Color</caption>
-                <description />
+                <description>Only used when Marker Color Mode is Fixed Color.</description>
             </property>
             <property key="minMarkerSize" type="integer" defaultValue="6">
                 <caption>Min Marker Size (px)</caption>

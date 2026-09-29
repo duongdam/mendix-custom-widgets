@@ -33,11 +33,17 @@ A pnpm/Turborepo monorepo of Mendix Pluggable Widgets for the IRIS project — b
 ```
 iris-widgets/
 ├── shared/
-│   └── ax-common/            # @iris/ax-common — shared TS utilities consumed by widgets/mock-ui
+│   ├── ax-common/            # @iris/ax-common — shared TS utilities consumed by widgets/mock-ui
+│   └── antd-kit/             # @iris/antd-kit — shared Ant Design theme, IrisAntdProvider, Mendix value helpers
 ├── widgets/
 │   ├── iris-button/           # IRISButton — simple button, DynamicValue caption + ActionValue
 │   ├── iris-card/              # IRISCard — editable title + item-count card
 │   ├── iris-panel/             # IRISPanel — MobX + Ant Design panel scaffold
+│   ├── iris-progress/          # IRISProgress — antd Progress (line/circle/dashboard) via @iris/antd-kit
+│   ├── iris-select/            # IRISSelect — antd Select (enum or data source options, search) via @iris/antd-kit
+│   ├── iris-datepicker/        # IRISDatePicker — antd DatePicker / RangePicker via @iris/antd-kit
+│   ├── iris-segmented/         # IRISSegmented — antd Segmented toggle via @iris/antd-kit
+│   ├── iris-steps/             # IRISSteps — antd Steps wizard indicator via @iris/antd-kit
 │   └── iris-multiselection/    # AxMultiSelect — virtualized multi-select list (react-window)
 ├── mock-ui/                    # Vite app that renders every widget against mocked Mendix props
 ├── pnpm-workspace.yaml
