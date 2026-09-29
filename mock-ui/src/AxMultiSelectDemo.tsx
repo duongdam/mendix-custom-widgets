@@ -14,6 +14,19 @@ function toBig(value: number): Big {
     return { toString: () => String(value), valueOf: () => String(value) } as unknown as Big;
 }
 
+const PREVIEW_KEY_COUNT = 20;
+
+/** "a,b,c,…" → "N selected: a, b, c … (+M more)" so large selections don't flood the page. */
+function summarizeKeys(keys: string): string {
+    if (!keys.includes(",")) {
+        return keys;
+    }
+    const all = keys.split(",");
+    const shown = all.slice(0, PREVIEW_KEY_COUNT).join(", ");
+    const rest = all.length - PREVIEW_KEY_COUNT;
+    return `${all.length} selected: ${shown}${rest > 0 ? ` … (+${rest} more)` : ""}`;
+}
+
 export function AxMultiSelectDemo() {
     const [type, setType] = useState<"multi" | "single" | "onlyView">("multi");
     const [itemCount, setItemCount] = useState(200);
@@ -106,7 +119,7 @@ export function AxMultiSelectDemo() {
                 onChange={onChange}
             />
             <p>
-                Last change: <code>{lastChange}</code> ({changeCount} time(s))
+                Last change: <code>{summarizeKeys(lastChange)}</code> ({changeCount} time(s))
             </p>
         </section>
     );

@@ -25,3 +25,10 @@ export interface TableRow {
     key: string;
     values: Record<string, unknown>;
 }
+
+/** State of a row for the action column, e.g. a download job. */
+export interface RowState {
+    state: string;
+    percent?: number;
+    message?: string;
+}

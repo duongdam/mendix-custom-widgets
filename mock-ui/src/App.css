@@ -49,3 +49,9 @@
     font-size: 14px;
     margin: 12px 0 6px;
 }
+
+/* Long unbroken values (e.g. AxMultiSelect's "Last change" ID list) must wrap instead of
+   stretching the page horizontally. */
+.app code {
+    overflow-wrap: anywhere;
+}

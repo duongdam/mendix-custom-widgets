@@ -301,6 +301,131 @@
             </property>
         </propertyGroup>
 
+        <propertyGroup caption="Action Column">
+            <propertyGroup caption="Action Column">
+                <property key="showActionColumn" type="boolean" defaultValue="false">
+                    <caption>Show Action Column</caption>
+                    <description>Adds a last column with per-row action icons and an optional progress bar.</description>
+                </property>
+                <property key="actionColumnLabel" type="string" defaultValue="Actions">
+                    <caption>Column Header</caption>
+                    <description />
+                </property>
+                <property key="actionColumnWidth" type="string" defaultValue="200px">
+                    <caption>Column Width</caption>
+                    <description>CSS width, e.g. "200px".</description>
+                </property>
+                <property key="actions" type="object" isList="true" required="false">
+                    <caption>Actions</caption>
+                    <description>Buttons shown in the action column, in this order. Each one is shown only for rows whose state matches its "Show When".</description>
+                    <properties>
+                        <propertyGroup caption="Action">
+                            <property key="actionKey" type="string" required="true">
+                                <caption>Key</caption>
+                                <description>Identifier of the action, e.g. "download", "retry", "remove".</description>
+                            </property>
+                            <property key="icon" type="icon" required="false">
+                                <caption>Icon</caption>
+                                <description />
+                            </property>
+                            <property key="caption" type="textTemplate" required="false">
+                                <caption>Caption</caption>
+                                <description>Text next to the icon. Leave empty for an icon-only button.</description>
+                            </property>
+                            <property key="tooltip" type="textTemplate" required="false">
+                                <caption>Tooltip</caption>
+                                <description>Shown on hover; also used as the accessible label of icon-only buttons.</description>
+                            </property>
+                            <property key="buttonStyle" type="enumeration" defaultValue="text">
+                                <caption>Style</caption>
+                                <description />
+                                <enumerationValues>
+                                    <enumerationValue key="text">Text (icon only look)</enumerationValue>
+                                    <enumerationValue key="outlined">Outlined</enumerationValue>
+                                    <enumerationValue key="primary">Primary</enumerationValue>
+                                    <enumerationValue key="link">Link</enumerationValue>
+                                </enumerationValues>
+                            </property>
+                            <property key="danger" type="boolean" defaultValue="false">
+                                <caption>Danger</caption>
+                                <description>Red styling, e.g. for Remove.</description>
+                            </property>
+                            <property key="confirmMessage" type="textTemplate" required="false">
+                                <caption>Confirm Message</caption>
+                                <description>When set, the user must confirm before On Click runs.</description>
+                            </property>
+                            <property key="showWhen" type="string" defaultValue="*">
+                                <caption>Show When State</caption>
+                                <description>Comma-separated row states this action is visible in, e.g. "none,done". "*" = always. Rows without a state are "none".</description>
+                            </property>
+                            <property key="onClick" type="action" required="false">
+                                <caption>On Click</caption>
+                                <description />
+                                <actionVariables>
+                                    <actionVariable key="rowKey" type="String" required="true" caption="Row Key" />
+                                    <actionVariable key="actionKey" type="String" required="true" caption="Action Key" />
+                                </actionVariables>
+                            </property>
+                        </propertyGroup>
+                    </properties>
+                </property>
+            </propertyGroup>
+            <propertyGroup caption="Row State">
+                <property key="rowStateItems" type="datasource" isList="true" required="false">
+                    <caption>Row State Items</caption>
+                    <description>Optional list with the current state of rows (e.g. a download job per row). Rows without a state object fall back to State From Row Values, then to "none".</description>
+                </property>
+                <property key="stateRowKeyAttr" type="attribute" dataSource="rowStateItems" required="false">
+                    <caption>State Row Key</caption>
+                    <description>Must match the Row Key of the row the state belongs to.</description>
+                    <attributeTypes>
+                        <attributeType name="String" />
+                        <attributeType name="Long" />
+                    </attributeTypes>
+                </property>
+                <property key="stateAttr" type="attribute" dataSource="rowStateItems" required="false">
+                    <caption>State</caption>
+                    <description>e.g. "downloading", "error", "done".</description>
+                    <attributeTypes>
+                        <attributeType name="String" />
+                        <attributeType name="Enum" />
+                    </attributeTypes>
+                </property>
+                <property key="statePercentAttr" type="attribute" dataSource="rowStateItems" required="false">
+                    <caption>Progress Percent</caption>
+                    <description>Progress from 0 to 100, shown while the state is a Progress State.</description>
+                    <attributeTypes>
+                        <attributeType name="Integer" />
+                        <attributeType name="Long" />
+                        <attributeType name="Decimal" />
+                    </attributeTypes>
+                </property>
+                <property key="stateMessageAttr" type="attribute" dataSource="rowStateItems" required="false">
+                    <caption>State Message</caption>
+                    <description>Optional text shown as a tooltip on the progress bar, e.g. an error reason.</description>
+                    <attributeTypes>
+                        <attributeType name="String" />
+                    </attributeTypes>
+                </property>
+                <property key="stateJsonKey" type="string" required="false">
+                    <caption>State From Row Values</caption>
+                    <description>Optional key in the row's Row Values JSON whose value is used as the state when the row has no state object, e.g. "status".</description>
+                </property>
+                <property key="progressStates" type="string" defaultValue="downloading">
+                    <caption>Progress States</caption>
+                    <description>Comma-separated states that show an animated progress bar.</description>
+                </property>
+                <property key="errorStates" type="string" defaultValue="error">
+                    <caption>Error States</caption>
+                    <description>Comma-separated states that show a red progress bar (when a percent is known).</description>
+                </property>
+                <property key="progressRefreshInterval" type="integer" defaultValue="1000">
+                    <caption>Refresh Interval (ms)</caption>
+                    <description>While any row is in a Progress State, Row State Items is reloaded at this interval. 0 disables polling.</description>
+                </property>
+            </propertyGroup>
+        </propertyGroup>
+
         <propertyGroup caption="Appearance">
             <property key="striped" type="boolean" defaultValue="false">
                 <caption>Striped Rows</caption>

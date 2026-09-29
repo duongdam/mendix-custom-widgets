@@ -3,11 +3,41 @@
  * WARNING: All changes made to this file will be overwritten
  * @author Mendix Widgets Framework Team
  */
-import { ActionValue, EditableValue, ListAttributeValue, ListValue, Option } from "mendix";
+import { ActionValue, DynamicValue, EditableValue, ListAttributeValue, ListValue, Option, WebIcon } from "mendix";
 import { Big } from "big.js";
 import { CSSProperties } from "react";
 
 export type PaginationModeEnum = "pages" | "loadMore";
+
+export type ButtonStyleEnum = "text" | "outlined" | "primary" | "link";
+
+export interface ActionsType {
+    actionKey: string;
+    icon?: DynamicValue<WebIcon>;
+    caption?: DynamicValue<string>;
+    tooltip?: DynamicValue<string>;
+    buttonStyle: ButtonStyleEnum;
+    danger: boolean;
+    confirmMessage?: DynamicValue<string>;
+    showWhen: string;
+    onClick?: ActionValue<{ rowKey: Option<string>; actionKey: Option<string> }>;
+}
+
+export interface ActionsPreviewType {
+    actionKey: string;
+    icon:
+        | { type: "glyph"; iconClass: string }
+        | { type: "image"; imageUrl: string; iconUrl: string }
+        | { type: "icon"; iconClass: string }
+        | undefined;
+    caption: string;
+    tooltip: string;
+    buttonStyle: ButtonStyleEnum;
+    danger: boolean;
+    confirmMessage: string;
+    showWhen: string;
+    onClick: {} | null;
+}
 
 export interface AxNewTableContainerProps {
     name: string;
@@ -56,6 +86,19 @@ export interface AxNewTableContainerProps {
     expandOnRowClicked: boolean;
     pointerOnHover: boolean;
     onRowClick?: ActionValue<{ rowKey: Option<string> }>;
+    showActionColumn: boolean;
+    actionColumnLabel: string;
+    actionColumnWidth: string;
+    actions: ActionsType[];
+    rowStateItems?: ListValue;
+    stateRowKeyAttr?: ListAttributeValue<string | Big>;
+    stateAttr?: ListAttributeValue<string>;
+    statePercentAttr?: ListAttributeValue<Big>;
+    stateMessageAttr?: ListAttributeValue<string>;
+    stateJsonKey: string;
+    progressStates: string;
+    errorStates: string;
+    progressRefreshInterval: number;
     striped: boolean;
     highlightOnHover: boolean;
     dense: boolean;
@@ -120,6 +163,19 @@ export interface AxNewTablePreviewProps {
     expandOnRowClicked: boolean;
     pointerOnHover: boolean;
     onRowClick: {} | null;
+    showActionColumn: boolean;
+    actionColumnLabel: string;
+    actionColumnWidth: string;
+    actions: ActionsPreviewType[];
+    rowStateItems: {} | { caption: string } | { type: string } | null;
+    stateRowKeyAttr: string;
+    stateAttr: string;
+    statePercentAttr: string;
+    stateMessageAttr: string;
+    stateJsonKey: string;
+    progressStates: string;
+    errorStates: string;
+    progressRefreshInterval: number | null;
     striped: boolean;
     highlightOnHover: boolean;
     dense: boolean;

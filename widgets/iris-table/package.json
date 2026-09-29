@@ -28,6 +28,8 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
+    "@iris/antd-kit": "workspace:*",
+    "antd": "6.5.4",
     "big.js": "^6.2.2",
     "classnames": "^2.5.1",
     "mobx": "^6.16.0",

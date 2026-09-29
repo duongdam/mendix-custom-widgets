@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Big from "big.js";
-import type { ActionValue, EditableValue, Option } from "mendix";
+import type { ActionValue, DynamicValue, EditableValue, Option } from "mendix";
 
 import { AxNewTable } from "../../widgets/iris-table/src/AxNewTable";
+import type { ActionsType } from "../../widgets/iris-table/typings/AxNewTableProps";
+import { ICONS } from "./mocks/actionIcons";
 import { createEditableValue, createListAttributeValue, createListValue } from "./mocks/mendixMocks";
 import {
     generateMockRows,
@@ -17,6 +19,22 @@ import {
 const DATASET_SIZES = [50, 237, 1000];
 const PAGE_SIZES = [10, 20, 50];
 const NETWORK_DELAYS = [0, 400, 1500];
+const DOWNLOAD_TICK_MS = 500;
+// Chance per tick that a running download fails — so Retry can be tried out.
+const DOWNLOAD_FAILURE_RATE = 0.02;
+
+type ActionPreset = "download" | "approval";
+
+interface JobRecord {
+    rowKey: string;
+    state: "downloading" | "error" | "done";
+    percent: number;
+    message?: string;
+}
+
+function dyn(value: string): DynamicValue<string> {
+    return { status: "available", value } as DynamicValue<string>;
+}
 
 interface ServerLogEntry {
     id: number;
@@ -43,6 +61,8 @@ export function AxNewTableDemo() {
     const [enableSelection, setEnableSelection] = useState(true);
     const [enableExpandable, setEnableExpandable] = useState(true);
     const [showSearch, setShowSearch] = useState(true);
+    const [showActionColumn, setShowActionColumn] = useState(true);
+    const [actionPreset, setActionPreset] = useState<ActionPreset>("download");
 
     const dataset = useMemo(() => generateMockRows(datasetSize), [datasetSize]);
 
@@ -51,6 +71,11 @@ export function AxNewTableDemo() {
     const [lastSelection, setLastSelection] = useState("—");
     const [lastSort, setLastSort] = useState("—");
     const [lastRowClick, setLastRowClick] = useState("—");
+    // Simulated server-side download jobs, one per row. Stands in for the persistent state
+    // objects a real download microflow would create and update.
+    const [jobs, setJobs] = useState<Record<string, JobRecord>>({});
+    const [stateReloads, setStateReloads] = useState(0);
+    const [lastAction, setLastAction] = useState("—");
 
     const paramsRef = useRef<QueryParams>({ offset: 0, limit: pageSize });
     const requestIdRef = useRef(0);
@@ -192,6 +217,110 @@ export function AxNewTableDemo() {
         [],
     );
 
+    // One shared handler stands in for the per-action microflows configured in Studio Pro.
+    const runAction = useCallback((actionKey: string, rowKey: string) => {
+        setLastAction(`${actionKey} → row ${rowKey}`);
+        setJobs(current => {
+            const next = { ...current };
+            if (actionKey === "download" || actionKey === "retry") {
+                next[rowKey] = { rowKey, state: "downloading", percent: 0 };
+            } else if (actionKey === "remove") {
+                delete next[rowKey];
+            }
+            return next;
+        });
+    }, []);
+
+    const actions = useMemo<ActionsType[]>(() => {
+        const onClick = (actionKey: string) =>
+            ({
+                canExecute: true,
+                isExecuting: false,
+                execute: ({ rowKey }: { rowKey: Option<string> }) => rowKey && runAction(actionKey, rowKey),
+            }) as unknown as ActionsType["onClick"];
+        const action = (config: Partial<ActionsType> & { actionKey: string }): ActionsType => ({
+            buttonStyle: "text",
+            danger: false,
+            showWhen: "*",
+            onClick: onClick(config.actionKey),
+            ...config,
+        });
+
+        if (actionPreset === "download") {
+            return [
+                action({ actionKey: "download", icon: ICONS.download, tooltip: dyn("Download"), showWhen: "none,done" }),
+                action({ actionKey: "retry", icon: ICONS.retry, tooltip: dyn("Retry"), showWhen: "error" }),
+                action({
+                    actionKey: "remove",
+                    icon: ICONS.remove,
+                    tooltip: dyn("Remove"),
+                    danger: true,
+                    confirmMessage: dyn("Remove this file?"),
+                    showWhen: "*",
+                }),
+            ];
+        }
+        // Approval preset: state comes from the row's own "status" value (State From Row Values).
+        return [
+            action({ actionKey: "edit", icon: ICONS.edit, tooltip: dyn("Edit") }),
+            action({
+                actionKey: "approve",
+                icon: ICONS.approve,
+                caption: dyn("Approve"),
+                buttonStyle: "outlined",
+                showWhen: "pending",
+            }),
+            action({ actionKey: "reject", icon: ICONS.reject, tooltip: dyn("Reject"), danger: true, showWhen: "pending" }),
+        ];
+    }, [actionPreset, runAction]);
+
+    // Advance every running download; some fail at random so Retry can be exercised.
+    const hasRunningJobs = Object.values(jobs).some(job => job.state === "downloading");
+    useEffect(() => {
+        if (!hasRunningJobs) {
+            return;
+        }
+        const timer = window.setInterval(() => {
+            setJobs(current => {
+                const next: Record<string, JobRecord> = {};
+                for (const [key, job] of Object.entries(current)) {
+                    if (job.state !== "downloading") {
+                        next[key] = job;
+                    } else if (Math.random() < DOWNLOAD_FAILURE_RATE) {
+                        next[key] = { ...job, state: "error", message: "Network error — click Retry" };
+                    } else {
+                        const percent = Math.min(100, job.percent + 4 + Math.random() * 12);
+                        next[key] = { ...job, percent, state: percent >= 100 ? "done" : "downloading" };
+                    }
+                }
+                return next;
+            });
+        }, DOWNLOAD_TICK_MS);
+        return () => window.clearInterval(timer);
+    }, [hasRunningJobs]);
+
+    const rowStateItems = useMemo(() => {
+        const records = actionPreset === "download" ? Object.values(jobs) : [];
+        // reload() is what the widget polls while a row is in progress — count it to show polling works.
+        return { ...createListValue(records), reload: () => setStateReloads(count => count + 1) };
+    }, [jobs, actionPreset]);
+    const stateRowKeyAttr = useMemo(
+        () => createListAttributeValue<string | Big>("mock.JobRowKey", item => (item as unknown as JobRecord).rowKey),
+        [],
+    );
+    const stateAttr = useMemo(
+        () => createListAttributeValue<string>("mock.JobState", item => (item as unknown as JobRecord).state),
+        [],
+    );
+    const statePercentAttr = useMemo(
+        () => createListAttributeValue<Big>("mock.JobPercent", item => new Big((item as unknown as JobRecord).percent)),
+        [],
+    );
+    const stateMessageAttr = useMemo(
+        () => createListAttributeValue<string>("mock.JobMessage", item => (item as unknown as JobRecord).message),
+        [],
+    );
+
     const columnsValue = useMemo(() => createListValue(MOCK_COLUMNS), []);
     const columnKeyAttr = useMemo(() => createListAttributeValue("mock.ColumnKey", item => (item as unknown as MockColumnRecord).key), []);
     const columnLabelAttr = useMemo(
@@ -306,6 +435,21 @@ export function AxNewTableDemo() {
                 <label>
                     <input type="checkbox" checked={showSearch} onChange={e => setShowSearch(e.target.checked)} /> Search box
                 </label>
+                <label>
+                    <input
+                        type="checkbox"
+                        checked={showActionColumn}
+                        onChange={e => setShowActionColumn(e.target.checked)}
+                    />{" "}
+                    Action column
+                </label>
+                <label>
+                    Actions preset{" "}
+                    <select value={actionPreset} onChange={e => setActionPreset(e.target.value as ActionPreset)}>
+                        <option value="download">Download / Retry / Remove (Row State Items)</option>
+                        <option value="approval">Edit / Approve / Reject (state from row status)</option>
+                    </select>
+                </label>
             </div>
 
             <AxNewTable
@@ -354,6 +498,19 @@ export function AxNewTableDemo() {
                 expandOnRowClicked={false}
                 pointerOnHover
                 onRowClick={onRowClick}
+                showActionColumn={showActionColumn}
+                actionColumnLabel="Actions"
+                actionColumnWidth="200px"
+                actions={actions}
+                rowStateItems={rowStateItems}
+                stateRowKeyAttr={stateRowKeyAttr}
+                stateAttr={stateAttr}
+                statePercentAttr={statePercentAttr}
+                stateMessageAttr={stateMessageAttr}
+                stateJsonKey={actionPreset === "approval" ? "status" : ""}
+                progressStates="downloading"
+                errorStates="error"
+                progressRefreshInterval={1000}
                 striped
                 highlightOnHover
                 dense={false}
@@ -367,7 +524,8 @@ export function AxNewTableDemo() {
 
             <p>
                 Last sort: <code>{lastSort}</code> · Last selection: <code>{lastSelection}</code> · Last row click:{" "}
-                <code>{lastRowClick}</code>
+                <code>{lastRowClick}</code> · Last action: <code>{lastAction}</code> · State reloads:{" "}
+                <code>{stateReloads}</code>
             </p>
 
             <details open>

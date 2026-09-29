@@ -7,7 +7,8 @@ import { AxNewTableContainerProps } from "../../typings/AxNewTableProps";
 import { TableStore } from "../store/TableStore";
 import { normalizeColumns, RawColumnInput } from "../utils/columnMapper";
 import { parseJsonObject } from "../utils/parseJson";
-import { TableRow } from "../types/TableTypes";
+import { RowState, TableRow } from "../types/TableTypes";
+import { NO_STATE, parseStateList } from "../utils/rowState";
 import { AxNewTableContainer } from "./AxNewTableContainer";
 
 export interface AxNewTableSyncProps extends AxNewTableContainerProps {
@@ -87,6 +88,57 @@ function AxNewTableSyncComponent(props: AxNewTableSyncProps): ReactElement {
         // effect is what writes it, so depending on it would immediately re-run against its own output.
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [rows, props.dataItems.status, props.totalCountAttribute, props.paginationMode, store]);
+
+    // --- Action column: Mendix `rowStateItems` datasource -> store.rowStates ---
+    const { rowStateItems, stateRowKeyAttr, stateAttr, statePercentAttr, stateMessageAttr } = props;
+    const rowStates = useMemo(() => {
+        const map = new Map<string, RowState>();
+        if (rowStateItems?.status !== ValueStatus.Available || !rowStateItems.items) {
+            return map;
+        }
+        for (const item of rowStateItems.items) {
+            const key = stateRowKeyAttr?.get(item)?.value;
+            if (key === undefined) {
+                continue;
+            }
+            const percent = bigToNumber(statePercentAttr?.get(item)?.value);
+            map.set(String(key), {
+                state: (stateAttr?.get(item)?.value || NO_STATE).toLowerCase(),
+                percent:
+                    percent !== undefined && Number.isFinite(percent) ? Math.min(100, Math.max(0, percent)) : undefined,
+                message: stateMessageAttr?.get(item)?.value || undefined
+            });
+        }
+        return map;
+    }, [rowStateItems, stateRowKeyAttr, stateAttr, statePercentAttr, stateMessageAttr]);
+
+    useEffect(() => {
+        // Keep the last known states while the datasource is reloading, so bars don't flicker.
+        if (rowStateItems?.status === ValueStatus.Loading) {
+            return;
+        }
+        store.setRowStates(rowStates);
+    }, [rowStates, rowStateItems?.status, store]);
+
+    // Poll the state datasource only while some row is in a progress state. The ref keeps the
+    // interval from restarting on every reload (each reload hands us a new ListValue object).
+    const progressStates = useMemo(() => parseStateList(props.progressStates), [props.progressStates]);
+    const hasActiveProgress = useMemo(
+        () => [...rowStates.values()].some(rowState => progressStates.has(rowState.state)),
+        [rowStates, progressStates]
+    );
+    const rowStateItemsRef = useRef(rowStateItems);
+    useEffect(() => {
+        rowStateItemsRef.current = rowStateItems;
+    }, [rowStateItems]);
+
+    useEffect(() => {
+        if (!hasActiveProgress || props.progressRefreshInterval <= 0) {
+            return;
+        }
+        const timer = window.setInterval(() => rowStateItemsRef.current?.reload(), props.progressRefreshInterval);
+        return () => window.clearInterval(timer);
+    }, [hasActiveProgress, props.progressRefreshInterval]);
 
     // --- Pagination/sort/search: store -> Mendix attributes + fetchDataAction ---
     // Reading these store fields here (component is wrapped in `observer`) is what makes the

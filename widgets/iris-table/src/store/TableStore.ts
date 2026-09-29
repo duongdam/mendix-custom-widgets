@@ -1,5 +1,5 @@
 import { makeAutoObservable } from "mobx";
-import { ColumnDef, SortDirection, TableRow } from "../types/TableTypes";
+import { ColumnDef, RowState, SortDirection, TableRow } from "../types/TableTypes";
 
 export interface TableStoreInit {
     limit?: number;
@@ -22,6 +22,8 @@ export class TableStore {
     sortDirection: SortDirection | undefined;
     selectedRows: TableRow[] = [];
     filterText: string | undefined = undefined;
+    // Row key -> action column state (e.g. a download job), fed from the Row State Items datasource.
+    rowStates = new Map<string, RowState>();
 
     // Accepts the widget's default page size/sort so the very first render already has the
     // right values — initializing them later via an effect would trigger an extra fetch.
@@ -74,6 +76,10 @@ export class TableStore {
         this.selectedRows = rows;
     }
 
+    setRowStates(rowStates: Map<string, RowState>): void {
+        this.rowStates = rowStates;
+    }
+
     setLoading(loading: boolean): void {
         this.loading = loading;
     }
@@ -90,5 +96,6 @@ export class TableStore {
         this.sortDirection = undefined;
         this.selectedRows = [];
         this.filterText = undefined;
+        this.rowStates = new Map();
     }
 }

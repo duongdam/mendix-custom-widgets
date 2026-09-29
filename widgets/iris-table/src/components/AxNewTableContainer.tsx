@@ -1,5 +1,6 @@
 import { ReactElement, useEffect, useMemo, useState } from "react";
 import { observer } from "mobx-react-lite";
+import { IrisAntdProvider } from "@iris/antd-kit";
 import DataTable, { ExpanderComponentProps, SortOrder, TableColumn as RdtColumn } from "react-data-table-component";
 
 import { AxNewTableContainerProps } from "../../typings/AxNewTableProps";
@@ -8,6 +9,8 @@ import { TableRow } from "../types/TableTypes";
 import { toRdtColumns } from "../utils/columnMapper";
 import { formatCellValue } from "../utils/formatters";
 import { useDebounce } from "../hooks/useDebounce";
+import { parseStateList } from "../utils/rowState";
+import { ActionCell, ActionConfig } from "./ActionCell";
 
 export interface AxNewTableContainerComponentProps extends AxNewTableContainerProps {
     store: TableStore;
@@ -56,7 +59,62 @@ function SearchBox({ placeholder, debounceMs, onChange }: SearchBoxProps): React
 function AxNewTableContainerComponent(props: AxNewTableContainerComponentProps): ReactElement {
     const { store } = props;
 
-    const rdtColumns = useMemo<Array<RdtColumn<TableRow>>>(() => toRdtColumns(store.columns), [store.columns]);
+    const { showActionColumn, actionColumnLabel, actionColumnWidth, stateJsonKey } = props;
+    const { columns } = store;
+
+    const actions = useMemo<ActionConfig[]>(
+        () =>
+            (props.actions ?? []).map(action => ({
+                key: action.actionKey,
+                icon: action.icon?.status === "available" ? action.icon.value : undefined,
+                caption: action.caption?.value || undefined,
+                tooltip: action.tooltip?.value || undefined,
+                buttonStyle: action.buttonStyle,
+                danger: action.danger,
+                confirmMessage: action.confirmMessage?.value || undefined,
+                showWhen: parseStateList(action.showWhen),
+                onClick: action.onClick
+            })),
+        [props.actions]
+    );
+    const progressStates = useMemo(() => parseStateList(props.progressStates), [props.progressStates]);
+    const errorStates = useMemo(() => parseStateList(props.errorStates), [props.errorStates]);
+
+    const rdtColumns = useMemo<Array<RdtColumn<TableRow>>>(() => {
+        const dataColumns = toRdtColumns(columns);
+        if (!showActionColumn) {
+            return dataColumns;
+        }
+        return [
+            ...dataColumns,
+            {
+                id: "__ax_action__",
+                name: actionColumnLabel,
+                width: actionColumnWidth || undefined,
+                button: true,
+                cell: (row: TableRow) => (
+                    <ActionCell
+                        row={row}
+                        store={store}
+                        actions={actions}
+                        progressStates={progressStates}
+                        errorStates={errorStates}
+                        stateJsonKey={stateJsonKey || undefined}
+                    />
+                )
+            }
+        ];
+    }, [
+        store,
+        columns,
+        showActionColumn,
+        actionColumnLabel,
+        actionColumnWidth,
+        actions,
+        progressStates,
+        errorStates,
+        stateJsonKey
+    ]);
 
     const pageSizeOptions = useMemo(() => parsePageSizeOptions(props.pageSizeOptions), [props.pageSizeOptions]);
 
@@ -86,73 +144,75 @@ function AxNewTableContainerComponent(props: AxNewTableContainerComponentProps):
         store.totalCount ?? store.offset + store.dataItems.length + (store.hasMore ? store.limit : 0);
 
     return (
-        <div className="ax-table-container">
-            <DataTable<TableRow>
-                columns={rdtColumns}
-                data={store.dataItems}
-                keyField="key"
-                pagination={props.enableServerPagination && isPagesMode}
-                paginationServer
-                paginationPage={store.page}
-                paginationDefaultPage={store.page}
-                paginationPerPage={store.limit}
-                paginationTotalRows={paginationTotalRows}
-                paginationRowsPerPageOptions={pageSizeOptions}
-                onChangePage={newPage => store.setPage(newPage)}
-                onChangeRowsPerPage={newLimit => store.setLimit(newLimit)}
-                sortServer={props.enableServerSort}
-                defaultSortFieldId={props.defaultSortFieldKey || undefined}
-                defaultSortAsc={props.defaultSortAsc}
-                onSort={(column: RdtColumn<TableRow>, direction: SortOrder) => {
-                    if (props.enableServerSort) {
-                        store.setSort(
-                            String(column.sortField ?? column.id ?? ""),
-                            direction === SortOrder.DESC ? "desc" : "asc"
-                        );
+        <IrisAntdProvider>
+            <div className="ax-table-container">
+                <DataTable<TableRow>
+                    columns={rdtColumns}
+                    data={store.dataItems}
+                    keyField="key"
+                    pagination={props.enableServerPagination && isPagesMode}
+                    paginationServer
+                    paginationPage={store.page}
+                    paginationDefaultPage={store.page}
+                    paginationPerPage={store.limit}
+                    paginationTotalRows={paginationTotalRows}
+                    paginationRowsPerPageOptions={pageSizeOptions}
+                    onChangePage={newPage => store.setPage(newPage)}
+                    onChangeRowsPerPage={newLimit => store.setLimit(newLimit)}
+                    sortServer={props.enableServerSort}
+                    defaultSortFieldId={props.defaultSortFieldKey || undefined}
+                    defaultSortAsc={props.defaultSortAsc}
+                    onSort={(column: RdtColumn<TableRow>, direction: SortOrder) => {
+                        if (props.enableServerSort) {
+                            store.setSort(
+                                String(column.sortField ?? column.id ?? ""),
+                                direction === SortOrder.DESC ? "desc" : "asc"
+                            );
+                        }
+                    }}
+                    selectableRows={props.enableRowSelection}
+                    selectableRowsHighlight={props.selectableRowsHighlight}
+                    selectableRowsSingle={props.selectableRowsSingle}
+                    onSelectedRowsChange={state => props.onSelectionChange(state.selectedRows)}
+                    expandableRows={props.expandableRows}
+                    expandableRowsComponent={ExpandedRow}
+                    expandOnRowClicked={props.expandOnRowClicked}
+                    onRowClicked={row => props.onRowClickHandler(row)}
+                    pointerOnHover={props.pointerOnHover}
+                    striped={props.striped}
+                    highlightOnHover={props.highlightOnHover}
+                    dense={props.dense}
+                    responsive={props.responsive}
+                    fixedHeader={props.fixedHeader}
+                    fixedHeaderScrollHeight={props.fixedHeaderScrollHeight}
+                    persistTableHead={props.persistTableHead}
+                    progressPending={store.loading}
+                    progressComponent={<div className="ax-table-loading">{props.loadingText}</div>}
+                    noDataComponent={<div className="ax-table-loading">{props.noDataText}</div>}
+                    subHeader={
+                        props.showSearch ? (
+                            <SearchBox
+                                placeholder={props.searchPlaceholder}
+                                debounceMs={props.searchDebounce}
+                                onChange={text => store.setFilterText(text || undefined)}
+                            />
+                        ) : undefined
                     }
-                }}
-                selectableRows={props.enableRowSelection}
-                selectableRowsHighlight={props.selectableRowsHighlight}
-                selectableRowsSingle={props.selectableRowsSingle}
-                onSelectedRowsChange={state => props.onSelectionChange(state.selectedRows)}
-                expandableRows={props.expandableRows}
-                expandableRowsComponent={ExpandedRow}
-                expandOnRowClicked={props.expandOnRowClicked}
-                onRowClicked={row => props.onRowClickHandler(row)}
-                pointerOnHover={props.pointerOnHover}
-                striped={props.striped}
-                highlightOnHover={props.highlightOnHover}
-                dense={props.dense}
-                responsive={props.responsive}
-                fixedHeader={props.fixedHeader}
-                fixedHeaderScrollHeight={props.fixedHeaderScrollHeight}
-                persistTableHead={props.persistTableHead}
-                progressPending={store.loading}
-                progressComponent={<div className="ax-table-loading">{props.loadingText}</div>}
-                noDataComponent={<div className="ax-table-loading">{props.noDataText}</div>}
-                subHeader={
-                    props.showSearch ? (
-                        <SearchBox
-                            placeholder={props.searchPlaceholder}
-                            debounceMs={props.searchDebounce}
-                            onChange={text => store.setFilterText(text || undefined)}
-                        />
-                    ) : undefined
-                }
-            />
-            {!isPagesMode && (
-                <div className="ax-table-load-more">
-                    <button
-                        type="button"
-                        className="ax-table-load-more-button"
-                        disabled={!store.hasMore || store.loading}
-                        onClick={() => store.setPage(store.page + 1)}
-                    >
-                        {store.loading ? props.loadingText : "Load more"}
-                    </button>
-                </div>
-            )}
-        </div>
+                />
+                {!isPagesMode && (
+                    <div className="ax-table-load-more">
+                        <button
+                            type="button"
+                            className="ax-table-load-more-button"
+                            disabled={!store.hasMore || store.loading}
+                            onClick={() => store.setPage(store.page + 1)}
+                        >
+                            {store.loading ? props.loadingText : "Load more"}
+                        </button>
+                    </div>
+                )}
+            </div>
+        </IrisAntdProvider>
     );
 }
 

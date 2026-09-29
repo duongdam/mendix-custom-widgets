@@ -53,3 +53,28 @@
     text-align: center;
     color: #8c8c8c;
 }
+
+.ax-table-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+}
+
+.ax-table-progress {
+    flex: 1;
+    min-width: 72px;
+    margin: 0;
+}
+
+.ax-table-action-buttons {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-shrink: 0;
+    gap: 2px;
+}
+
+img.ax-table-action-icon {
+    width: 14px;
+    height: 14px;
+}
