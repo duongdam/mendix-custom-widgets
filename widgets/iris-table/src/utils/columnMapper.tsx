@@ -2,6 +2,7 @@ import { ReactElement } from "react";
 import { TableColumn as RdtColumn } from "react-data-table-component";
 import { ColumnAlign, ColumnDef, ColumnFormatType, TableRow } from "../types/TableTypes";
 import { formatCellValue } from "./formatters";
+import { BadgeCell } from "../components/BadgeCell";
 
 const ALIGN_VALUES: ColumnAlign[] = ["left", "center", "right"];
 const FORMAT_TYPE_VALUES: ColumnFormatType[] = ["text", "number", "currency", "date", "badge"];
@@ -19,6 +20,7 @@ export interface RawColumnInput {
     wrap?: boolean;
     formatType?: string;
     formatPattern?: string;
+    badgeColors?: Record<string, string>;
 }
 
 function toColumnAlign(value: string | undefined): ColumnAlign {
@@ -29,7 +31,7 @@ function toFormatType(value: string | undefined): ColumnFormatType {
     return (FORMAT_TYPE_VALUES as string[]).includes(value ?? "") ? (value as ColumnFormatType) : "text";
 }
 
-// Mendix columns datasource (already reduced to plain values by AxNewTableSync) -> normalized,
+// Mendix columns datasource (already reduced to plain values by AxNewCustomTableSync) -> normalized,
 // sorted, defaulted ColumnDef[]. Kept as a pure function so it stays easy to unit test.
 export function normalizeColumns(raw: RawColumnInput[]): ColumnDef[] {
     return raw
@@ -46,17 +48,28 @@ export function normalizeColumns(raw: RawColumnInput[]): ColumnDef[] {
             align: toColumnAlign(c.align),
             wrap: c.wrap ?? false,
             formatType: toFormatType(c.formatType),
-            formatPattern: c.formatPattern
+            formatPattern: c.formatPattern,
+            badgeColors: c.badgeColors
         }))
         .sort((a, b) => a.order - b.order);
 }
 
-function renderCell(column: ColumnDef, row: TableRow): ReactElement | string {
+export function renderCell(column: ColumnDef, row: TableRow): ReactElement | string {
     const text = formatCellValue(column.formatType, row.values[column.key], column.formatPattern);
     if (column.formatType === "badge") {
-        return <span className="ax-table-badge">{text}</span>;
+        return <BadgeCell text={text} badgeColors={column.badgeColors} />;
     }
     return text;
+}
+
+// Only used for client-side sorting (dynamic mode). Numeric values compare numerically, so "9" < "10".
+export function compareValues(a: unknown, b: unknown): number {
+    const na = Number(a);
+    const nb = Number(b);
+    if (a !== "" && b !== "" && a != null && b != null && !Number.isNaN(na) && !Number.isNaN(nb)) {
+        return na - nb;
+    }
+    return String(a ?? "").localeCompare(String(b ?? ""), undefined, { numeric: true, sensitivity: "base" });
 }
 
 // ColumnDef[] -> react-data-table-component columns. `visible: false` columns are omitted
@@ -70,6 +83,8 @@ export function toRdtColumns(columns: ColumnDef[]): Array<RdtColumn<TableRow>> {
             name: column.label,
             sortable: column.sortable,
             sortField: column.key,
+            selector: (row: TableRow) => row.values[column.key] as string | number,
+            sortFunction: (a: TableRow, b: TableRow) => compareValues(a.values[column.key], b.values[column.key]),
             wrap: column.wrap,
             width: column.width,
             minWidth: column.minWidth,

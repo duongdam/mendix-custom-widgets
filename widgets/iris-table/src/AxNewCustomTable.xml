@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<widget
+    id="com.iris.widgets.AxNewCustomTable"
+    pluginWidget="true"
+    needsEntityContext="true"
+    offlineCapable="true"
+    supportedPlatform="Web"
+    xmlns="http://www.mendix.com/widget/1.0/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.mendix.com/widget/1.0/ ../node_modules/mendix/custom_widget.xsd"
+>
+    <name>Ax New Custom Table</name>
+    <description>
+        Data table backed by react-data-table-component with two modes. "Dynamic" (default) renders from
+        a Header JSON + Data JSON pair, all loaded at once; paging, sorting and search run client-side.
+        "Datasource" renders from Columns/Data Items datasources (typically a microflow/nanoflow) with
+        action-driven paging and search: the widget writes the Offset/Limit/Filter attributes and then
+        executes "On Fetch Data", which should refresh Data Items with the matching page.
+    </description>
+    <icon />
+    <properties>
+        <propertyGroup caption="Data Mode">
+            <property key="prpDataMode" type="enumeration" defaultValue="dynamic">
+                <caption>Data Mode</caption>
+                <description>"Datasource" uses the Columns/Data Items datasources with server-driven paging. "Dynamic" renders from Header JSON + Data JSON, all loaded at once; paging, sorting and search then run client-side, and Scroll Mode chooses between pages and virtual scroll.</description>
+                <enumerationValues>
+                    <enumerationValue key="dynamic">Dynamic (JSON)</enumerationValue>
+                    <enumerationValue key="datasource">Datasource</enumerationValue>
+                </enumerationValues>
+            </property>
+            <property key="prpScrollMode" type="enumeration" defaultValue="virtual">
+                <caption>Scroll Mode (Dynamic)</caption>
+                <description>Dynamic mode only. "Pages" shows the page footer and uses the Pagination settings below. "Virtual scroll" has no pages: all rows scroll in one window and only the visible rows are rendered, so very large data stays fast. In Virtual scroll the Pagination settings are ignored, rows have a fixed height (long text is truncated), expandable rows are not supported, and the scroll height comes from "Fixed Header Scroll Height" (in px).</description>
+                <enumerationValues>
+                    <enumerationValue key="pages">Pages</enumerationValue>
+                    <enumerationValue key="virtual">Virtual scroll</enumerationValue>
+                </enumerationValues>
+            </property>
+            <property key="prpHeaderJson" type="attribute" required="false">
+                <caption>Header JSON</caption>
+                <description>Dynamic mode. JSON array of columns, e.g. [{"header":"No","label":"No","width":50}]. "header" is the field name in Data JSON; "label" defaults to it. Optional: hidden (true hides the column), sortable, align, wrap, visible, formatType, formatPattern, minWidth, grow, badgeColors (for formatType "badge": {"pending":"orange","done":"green"}; tones blue/green/red/orange/purple/gray or #hex; common status words are colored automatically).</description>
+                <attributeTypes>
+                    <attributeType name="String" />
+                </attributeTypes>
+            </property>
+            <property key="prpDataJson" type="attribute" required="false">
+                <caption>Data JSON</caption>
+                <description>Dynamic mode. JSON array of row objects, e.g. [{"RowKey":"1","No":"1","Name":"test"}]. Each row's "RowKey" field is its unique key. A row with "HasInvalid": true is disabled — greyed out, not clickable and not selectable (select all skips it).</description>
+                <attributeTypes>
+                    <attributeType name="String" />
+                </attributeTypes>
+            </property>
+            <property key="prpIsLoading" type="attribute" required="false">
+                <caption>Is Loading</caption>
+                <description>When true, the table shows its loading state. Works in both modes.</description>
+                <attributeTypes>
+                    <attributeType name="Boolean" />
+                </attributeTypes>
+            </property>
+        </propertyGroup>
+
+        <propertyGroup caption="Data Source">
+            <propertyGroup caption="Columns">
+                <property key="prpColumns" type="datasource" isList="true" required="false">
+                    <caption>Columns</caption>
+                    <description>Datasource describing the table's columns (usually from a microflow/nanoflow).</description>
+                </property>
+                <property key="prpColumnKeyAttr" type="attribute" dataSource="prpColumns" required="false">
+                    <caption>Column Key</caption>
+                    <description>Matches a key in each row's Row Values JSON.</description>
+                    <attributeTypes>
+                        <attributeType name="String" />
+                    </attributeTypes>
+                </property>
+                <property key="prpColumnLabelAttr" type="attribute" dataSource="prpColumns" required="false">
+                    <caption>Column Label</caption>
+                    <description>Header text shown for the column.</description>
+                    <attributeTypes>
+                        <attributeType name="String" />
+                    </attributeTypes>
+                </property>
+                <property key="prpColumnWidthAttr" type="attribute" dataSource="prpColumns" required="false">
+                    <caption>Column Width</caption>
+                    <description>CSS width for the column, e.g. "120px". Unbound = automatic width.</description>
+                    <attributeTypes>
+                        <attributeType name="String" />
+                    </attributeTypes>
+                </property>
+                <property key="prpColumnSortableAttr" type="attribute" dataSource="prpColumns" required="false">
+                    <caption>Column Sortable</caption>
+                    <description>Whether this column can be sorted (client-side, within the loaded page). Defaults to false when unbound.</description>
+                    <attributeTypes>
+                        <attributeType name="Boolean" />
+                    </attributeTypes>
+                </property>
+                <property key="prpColumnVisibleAttr" type="attribute" dataSource="prpColumns" required="false">
+                    <caption>Column Visible</caption>
+                    <description>Whether this column is shown. Defaults to true when unbound.</description>
+                    <attributeTypes>
+                        <attributeType name="Boolean" />
+                    </attributeTypes>
+                </property>
+            </propertyGroup>
+
+            <propertyGroup caption="Rows">
+                <property key="prpDataItems" type="datasource" isList="true" required="false">
+                    <caption>Data Items</caption>
+                    <description>Datasource containing the current page of rows.</description>
+                </property>
+                <property key="prpRowKeyAttr" type="attribute" dataSource="prpDataItems" required="false">
+                    <caption>Row Key</caption>
+                    <description>Unique, stable identifier for the row (react-data-table-component keyField).</description>
+                    <attributeTypes>
+                        <attributeType name="String" />
+                        <attributeType name="Long" />
+                    </attributeTypes>
+                </property>
+                <property key="prpRowValuesAttr" type="attribute" dataSource="prpDataItems" required="false">
+                    <caption>Row Values (JSON)</caption>
+                    <description>JSON object mapping each Column Key to that cell's raw value, e.g. {"name": "Acme", "revenue": 1200.5}.</description>
+                    <attributeTypes>
+                        <attributeType name="String" />
+                    </attributeTypes>
+                </property>
+            </propertyGroup>
+        </propertyGroup>
+
+        <propertyGroup caption="Pagination">
+            <property key="prpEnableServerPagination" type="boolean" defaultValue="true">
+                <caption>Enable Pagination</caption>
+                <description>Shows the page footer. In Dynamic mode it is ignored when Scroll Mode is "Virtual scroll".</description>
+            </property>
+            <property key="prpPaginationMode" type="enumeration" defaultValue="pages">
+                <caption>Pagination Mode</caption>
+                <description>Datasource mode only. "Pages" shows react-data-table-component's built-in page footer and replaces rows every fetch. "Load more" hides the footer and appends rows via a Load More button, gated on Has More. Dynamic mode always uses pages (or Virtual scroll).</description>
+                <enumerationValues>
+                    <enumerationValue key="pages">Pages</enumerationValue>
+                    <enumerationValue key="loadMore">Load more</enumerationValue>
+                </enumerationValues>
+            </property>
+            <property key="prpDefaultPageSize" type="integer" defaultValue="10">
+                <caption>Default Page Size</caption>
+                <description>Initial number of rows per page. Ignored when Scroll Mode is "Virtual scroll".</description>
+            </property>
+            <property key="prpPageSizeOptions" type="string" defaultValue="10,20,50,100">
+                <caption>Page Size Options</caption>
+                <description>Comma-separated list of selectable page sizes. Ignored when Scroll Mode is "Virtual scroll".</description>
+            </property>
+            <property key="prpFetchDataAction" type="action" required="false">
+                <caption>On Fetch Data</caption>
+                <description>Executed (no parameters) whenever page, limit or search text changes, after the attributes below have been written. Configure this microflow/nanoflow to read those attributes and refresh the Data Items datasource with the matching page of data. Datasource mode only.</description>
+            </property>
+            <property key="prpOffsetAttribute" type="attribute" required="false">
+                <caption>Offset Attribute</caption>
+                <description>Written with (page - 1) * limit before "On Fetch Data" executes. Datasource mode only.</description>
+                <attributeTypes>
+                    <attributeType name="Integer" />
+                    <attributeType name="Long" />
+                </attributeTypes>
+            </property>
+            <property key="prpLimitAttribute" type="attribute" required="false">
+                <caption>Limit Attribute</caption>
+                <description>Written with the current page size before "On Fetch Data" executes. Datasource mode only.</description>
+                <attributeTypes>
+                    <attributeType name="Integer" />
+                    <attributeType name="Long" />
+                </attributeTypes>
+            </property>
+            <property key="prpTotalCountAttribute" type="attribute" required="false">
+                <caption>Total Count Attribute</caption>
+                <description>Read back after "On Fetch Data" resolves to compute Has More/total rows. If left unbound, Has More falls back to "this page returned a full page of rows". Datasource mode only.</description>
+                <attributeTypes>
+                    <attributeType name="Integer" />
+                    <attributeType name="Long" />
+                </attributeTypes>
+            </property>
+        </propertyGroup>
+
+        <propertyGroup caption="Search">
+            <property key="prpShowSearch" type="boolean" defaultValue="true">
+                <caption>Show Search Box</caption>
+                <description />
+            </property>
+            <property key="prpSearchPlaceholder" type="string" defaultValue="Search...">
+                <caption>Search Placeholder</caption>
+                <description />
+            </property>
+            <property key="prpSearchDebounce" type="integer" defaultValue="400">
+                <caption>Search Debounce (ms)</caption>
+                <description />
+            </property>
+            <property key="prpFilterTextAttribute" type="attribute" required="false">
+                <caption>Filter Text Attribute</caption>
+                <description>Written with the current search text before "On Fetch Data" re-executes; search also resets to page 1. Datasource mode only.</description>
+                <attributeTypes>
+                    <attributeType name="String" />
+                </attributeTypes>
+            </property>
+        </propertyGroup>
+
+        <propertyGroup caption="Selection">
+            <property key="prpEnableRowSelection" type="boolean" defaultValue="true">
+                <caption>Enable Row Selection</caption>
+                <description />
+            </property>
+            <property key="prpSelectableRowsHighlight" type="boolean" defaultValue="true">
+                <caption>Highlight Selected Rows</caption>
+                <description />
+            </property>
+            <property key="prpSelectableRowsSingle" type="boolean" defaultValue="false">
+                <caption>Single Row Selection</caption>
+                <description />
+            </property>
+            <property key="prpOnSelectionChangeAction" type="action" required="false">
+                <caption>On Selection Change</caption>
+                <description>Executed whenever the selected rows change.</description>
+                <actionVariables>
+                    <actionVariable key="selectedKeys" type="String" caption="Selected Keys" />
+                </actionVariables>
+            </property>
+        </propertyGroup>
+
+        <propertyGroup caption="Row Interaction">
+            <property key="prpExpandableRows" type="boolean" defaultValue="false">
+                <caption>Enable Expandable Rows</caption>
+                <description />
+            </property>
+            <property key="prpExpandOnRowClicked" type="boolean" defaultValue="false">
+                <caption>Expand On Row Click</caption>
+                <description />
+            </property>
+            <property key="prpPointerOnHover" type="boolean" defaultValue="true">
+                <caption>Pointer Cursor On Hover</caption>
+                <description />
+            </property>
+            <property key="prpOnRowClick" type="action" required="false">
+                <caption>On Row Click</caption>
+                <description>Executed when a row is clicked.</description>
+                <actionVariables>
+                    <actionVariable key="rowKey" type="String" caption="Row Key" />
+                </actionVariables>
+            </property>
+            <property key="prpOnRowDoubleClick" type="action" required="false">
+                <caption>On Row Double Click</caption>
+                <description>Executed when a row is double-clicked. Not fired for rows flagged "HasInvalid". Note that a double click also counts as two single clicks.</description>
+                <actionVariables>
+                    <actionVariable key="rowKey" type="String" caption="Row Key" />
+                </actionVariables>
+            </property>
+        </propertyGroup>
+
+        <propertyGroup caption="Appearance">
+            <property key="prpStriped" type="boolean" defaultValue="false">
+                <caption>Striped Rows</caption>
+                <description />
+            </property>
+            <property key="prpHighlightOnHover" type="boolean" defaultValue="true">
+                <caption>Highlight On Hover</caption>
+                <description />
+            </property>
+            <property key="prpDense" type="boolean" defaultValue="false">
+                <caption>Dense</caption>
+                <description />
+            </property>
+            <property key="prpResponsive" type="boolean" defaultValue="true">
+                <caption>Responsive</caption>
+                <description />
+            </property>
+            <property key="prpFixedHeader" type="boolean" defaultValue="true">
+                <caption>Fixed Header</caption>
+                <description />
+            </property>
+            <property key="prpFixedHeaderScrollHeight" type="string" defaultValue="400px">
+                <caption>Fixed Header Scroll Height</caption>
+                <description />
+            </property>
+            <property key="prpPersistTableHead" type="boolean" defaultValue="true">
+                <caption>Persist Table Head</caption>
+                <description>Keep the header visible even while loading or when there is no data.</description>
+            </property>
+            <property key="prpNoDataText" type="string" defaultValue="There are no records to display">
+                <caption>No Data Text</caption>
+                <description />
+            </property>
+            <property key="prpLoadingText" type="string" defaultValue="Loading...">
+                <caption>Loading Text</caption>
+                <description />
+            </property>
+        </propertyGroup>
+    </properties>
+</widget>

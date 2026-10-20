@@ -9,7 +9,8 @@ import { IRISDatePickerDemo } from "./IRISDatePickerDemo";
 import { IRISSegmentedDemo } from "./IRISSegmentedDemo";
 import { IRISStepsDemo } from "./IRISStepsDemo";
 import { AxMultiSelectDemo } from "./AxMultiSelectDemo";
-import { AxNewTableDemo } from "./AxNewTableDemo";
+import { AxNewCustomTableDemo } from "./AxNewCustomTableDemo";
+import { AxNewCustomTableDynamicDemo } from "./AxNewCustomTableDynamicDemo";
 import { AxCaptureDemo } from "./AxCaptureDemo";
 import { IRISWorldMapDemo } from "./IRISWorldMapDemo";
 
@@ -33,7 +34,8 @@ export function App() {
             <IRISSegmentedDemo />
             <IRISStepsDemo />
             <AxMultiSelectDemo />
-            <AxNewTableDemo />
+            <AxNewCustomTableDemo />
+            <AxNewCustomTableDynamicDemo />
             <AxCaptureDemo />
             <IRISWorldMapDemo />
         </main>

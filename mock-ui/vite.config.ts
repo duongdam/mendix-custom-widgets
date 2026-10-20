@@ -22,7 +22,7 @@ export default defineConfig({
     },
     optimizeDeps: {
         // Force these into the initial dep-scan pass instead of being discovered lazily once
-        // AxNewTableDemo's module graph is crawled — a late "cold" discovery pass has been
+        // AxNewCustomTableDemo's module graph is crawled — a late "cold" discovery pass has been
         // observed to pre-bundle react/react-dom a second time, breaking hooks.
         include: [
             "react",

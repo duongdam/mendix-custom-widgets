@@ -19,16 +19,11 @@ export interface ColumnDef {
     wrap: boolean;
     formatType: ColumnFormatType;
     formatPattern?: string;
+    /** Badge columns: lowercase cell value -> tone name (blue, green, red, orange, purple, gray) or a #hex color. */
+    badgeColors?: Record<string, string>;
 }
 
 export interface TableRow {
     key: string;
     values: Record<string, unknown>;
-}
-
-/** State of a row for the action column, e.g. a download job. */
-export interface RowState {
-    state: string;
-    percent?: number;
-    message?: string;
 }

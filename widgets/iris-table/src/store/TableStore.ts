@@ -1,10 +1,8 @@
-import { makeAutoObservable } from "mobx";
-import { ColumnDef, RowState, SortDirection, TableRow } from "../types/TableTypes";
+import { makeAutoObservable, observable } from "mobx";
+import { ColumnDef, TableRow } from "../types/TableTypes";
 
 export interface TableStoreInit {
     limit?: number;
-    sortField?: string;
-    sortDirection?: SortDirection;
 }
 
 export class TableStore {
@@ -18,20 +16,22 @@ export class TableStore {
     totalCount: number | undefined = undefined;
 
     loading = false;
-    sortField: string | undefined;
-    sortDirection: SortDirection | undefined;
     selectedRows: TableRow[] = [];
     filterText: string | undefined = undefined;
-    // Row key -> action column state (e.g. a download job), fed from the Row State Items datasource.
-    rowStates = new Map<string, RowState>();
+    // Bumped on every search change so client-side paging can jump back to page 1.
+    filterVersion = 0;
 
-    // Accepts the widget's default page size/sort so the very first render already has the
+    // Accepts the widget's default page size so the very first render already has the
     // right values — initializing them later via an effect would trigger an extra fetch.
     constructor(init: TableStoreInit = {}) {
         this.limit = init.limit ?? 10;
-        this.sortField = init.sortField;
-        this.sortDirection = init.sortDirection;
-        makeAutoObservable(this);
+        // Row arrays are replaced wholesale, never mutated in place. Tracking them by reference keeps
+        // MobX from wrapping every row object in a deep observable (very slow at tens of thousands of rows).
+        makeAutoObservable(this, {
+            columns: observable.ref,
+            dataItems: observable.ref,
+            selectedRows: observable.ref
+        });
     }
 
     get offset(): number {
@@ -61,23 +61,14 @@ export class TableStore {
         this.page = 1;
     }
 
-    setSort(field: string | undefined, direction: SortDirection | undefined): void {
-        this.sortField = field;
-        this.sortDirection = direction;
-        this.page = 1;
-    }
-
     setFilterText(text: string | undefined): void {
         this.filterText = text;
+        this.filterVersion += 1;
         this.page = 1;
     }
 
     setSelectedRows(rows: TableRow[]): void {
         this.selectedRows = rows;
-    }
-
-    setRowStates(rowStates: Map<string, RowState>): void {
-        this.rowStates = rowStates;
     }
 
     setLoading(loading: boolean): void {
@@ -92,10 +83,7 @@ export class TableStore {
         this.hasMore = true;
         this.totalCount = undefined;
         this.loading = false;
-        this.sortField = undefined;
-        this.sortDirection = undefined;
         this.selectedRows = [];
         this.filterText = undefined;
-        this.rowStates = new Map();
     }
 }
