@@ -250,7 +250,7 @@
         </propertyGroup>
 
         <propertyGroup caption="Appearance">
-            <property key="prpStriped" type="boolean" defaultValue="false">
+            <property key="prpStriped" type="boolean" defaultValue="true">
                 <caption>Striped Rows</caption>
                 <description />
             </property>

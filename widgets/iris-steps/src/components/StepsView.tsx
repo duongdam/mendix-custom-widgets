@@ -30,7 +30,8 @@ export function StepsView(props: StepsViewProps): ReactElement {
         <IrisAntdProvider>
             <div className={classNames("iris-steps", props.className)} style={props.style}>
                 <Steps
-                    items={props.items}
+                    // antd v6 renamed the step item's `description` to `content`.
+                    items={props.items.map(({ description, ...item }) => ({ ...item, content: description }))}
                     current={props.current}
                     status={props.status}
                     type={props.type}

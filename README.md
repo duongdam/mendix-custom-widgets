@@ -44,6 +44,7 @@ iris-widgets/
 │   ├── iris-datepicker/        # IRISDatePicker — antd DatePicker / RangePicker via @iris/antd-kit
 │   ├── iris-segmented/         # IRISSegmented — antd Segmented toggle via @iris/antd-kit
 │   ├── iris-steps/             # IRISSteps — antd Steps wizard indicator via @iris/antd-kit
+│   ├── iris-gantt/             # IRISGantt — DHTMLX Gantt (block > group > task, drag & drop, ~10k tasks)
 │   └── iris-multiselection/    # AxMultiSelect — virtualized multi-select list (react-window)
 ├── mock-ui/                    # Vite app that renders every widget against mocked Mendix props
 ├── pnpm-workspace.yaml

@@ -35,6 +35,7 @@ export default defineConfig({
             "antd",
             "dayjs",
             "big.js",
+            "dhtmlx-gantt",
         ],
     },
 });

@@ -20,7 +20,6 @@ const HEADER_JSON = JSON.stringify(
         grow: column.grow,
         sortable: column.sortable ?? false,
         hidden: column.visible === false ? true : undefined,
-        align: column.align,
         wrap: column.wrap,
         formatType: column.formatType,
         formatPattern: column.formatPattern,
@@ -43,7 +42,7 @@ function buildDataJson(size: number): string {
 export function AxNewCustomTableDynamicDemo() {
     const [size, setSize] = useState(DATASET_SIZES[2]!);
     const [loading, setLoading] = useState(false);
-    const [scrollMode, setScrollMode] = useState<"pages" | "virtual">("pages");
+    const [scrollMode, setScrollMode] = useState<"pages" | "virtual">("virtual");
     const [lastSelection, setLastSelection] = useState("—");
     const [lastDoubleClick, setLastDoubleClick] = useState("—");
     const onRowDoubleClick = useMemo(

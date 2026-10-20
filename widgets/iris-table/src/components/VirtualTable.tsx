@@ -392,6 +392,7 @@ export function VirtualTable(props: VirtualTableProps): ReactElement {
                                     style={cellStyle(column)}
                                     onClick={() => headerSort(column)}
                                 >
+                                    <span className="ax-custom-table-vcell-text">{column.label}</span>
                                     {column.sortable && (
                                         <svg
                                             className={`ax-custom-table-sort-icon${
@@ -405,7 +406,6 @@ export function VirtualTable(props: VirtualTableProps): ReactElement {
                                             <path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z" />
                                         </svg>
                                     )}
-                                    <span className="ax-custom-table-vcell-text">{column.label}</span>
                                 </div>
                             );
                         })}

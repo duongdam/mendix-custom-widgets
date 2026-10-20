@@ -12,6 +12,7 @@
     },
     "dependencies": {
         "@iris/ax-common": "workspace:*",
+        "antd": "6.5.4",
         "big.js": "^6.2.2",
         "react": "19.2.8",
         "react-dom": "19.2.8"

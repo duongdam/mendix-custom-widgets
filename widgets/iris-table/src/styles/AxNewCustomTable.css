@@ -160,7 +160,7 @@
 
 .ax-custom-table-sort-icon {
     flex-shrink: 0;
-    margin-right: 4px;
+    margin-left: 4px;
     fill: currentColor;
     opacity: 0;
     transition: transform 0.25s, opacity 0.25s;
