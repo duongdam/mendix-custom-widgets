@@ -17,6 +17,8 @@ export interface ColumnDef {
     visible: boolean;
     align: ColumnAlign;
     wrap: boolean;
+    /** Dynamic tree rows: the column that holds the expand icon and indentation (default: first column). */
+    treeColumn?: boolean;
     formatType: ColumnFormatType;
     formatPattern?: string;
     /** Badge columns: lowercase cell value -> tone name (blue, green, red, orange, purple, gray) or a #hex color. */

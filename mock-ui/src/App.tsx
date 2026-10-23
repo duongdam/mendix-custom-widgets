@@ -11,7 +11,7 @@ import { IRISDatePickerDemo } from "./IRISDatePickerDemo";
 import { IRISSegmentedDemo } from "./IRISSegmentedDemo";
 import { IRISStepsDemo } from "./IRISStepsDemo";
 import { AxMultiSelectDemo } from "./AxMultiSelectDemo";
-import { AxNewCustomTableDemo } from "./AxNewCustomTableDemo";
+import { AxNewCustomTableDatasourceDemo } from "./AxNewCustomTableDatasourceDemo";
 import { AxNewCustomTableDynamicDemo } from "./AxNewCustomTableDynamicDemo";
 import { AxCaptureDemo } from "./AxCaptureDemo";
 import { IRISWorldMapDemo } from "./IRISWorldMapDemo";
@@ -36,7 +36,7 @@ const DEMOS: [DemoEntry, ...DemoEntry[]] = [
     { key: "segmented", label: "IRISSegmented", component: IRISSegmentedDemo },
     { key: "steps", label: "IRISSteps", component: IRISStepsDemo },
     { key: "multi-select", label: "AxMultiSelect", component: AxMultiSelectDemo },
-    { key: "new-table", label: "AxNewCustomTable", component: AxNewCustomTableDemo },
+    { key: "new-table", label: "AxNewCustomTable", component: AxNewCustomTableDatasourceDemo },
     { key: "new-table-dynamic", label: "AxNewCustomTable (Dynamic)", component: AxNewCustomTableDynamicDemo },
     { key: "capture", label: "AxCapture", component: AxCaptureDemo },
     { key: "world-map", label: "IRISWorldMap", component: IRISWorldMapDemo },

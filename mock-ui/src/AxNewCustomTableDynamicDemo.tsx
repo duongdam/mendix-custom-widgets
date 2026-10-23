@@ -5,7 +5,7 @@ import { AxNewCustomTable } from "../../widgets/iris-table/src/AxNewCustomTable"
 import { createEditableValue } from "./mocks/mendixMocks";
 import { generateMockRows, MOCK_COLUMNS } from "./mocks/tableFixtures";
 
-const DATASET_SIZES = [0, 50, 237, 1000, 50000];
+const DATASET_SIZES = [0, 50, 237, 1000, 50000, 500000];
 
 // Same columns/rows as the Datasource demo, expressed as the JSON strings a Dynamic-mode table receives.
 const BADGE_COLORS = { active: "green", pending: "orange", suspended: "red", archived: "gray" };
@@ -21,6 +21,7 @@ const HEADER_JSON = JSON.stringify(
         sortable: column.sortable ?? false,
         hidden: column.visible === false ? true : undefined,
         wrap: column.wrap,
+        treeColumn: column.key === "name" ? true : undefined,
         formatType: column.formatType,
         formatPattern: column.formatPattern,
         badgeColors: column.formatType === "badge" ? BADGE_COLORS : undefined,
@@ -28,14 +29,36 @@ const HEADER_JSON = JSON.stringify(
 );
 
 // Every 9th row is flagged HasInvalid so the disabled-row behaviour can be tried out.
+// Rows come in blocks of 7 that form a 3-level tree through ParentRowKey:
+//   0 ─┬─ 1 ─┬─ 3        (level 1 -> level 2 -> level 3)
+//      │     └─ 4
+//      └─ 2 ──── 5
+//   6                    (a lone level-1 row)
+const TREE_PARENT_OFFSET: Record<number, number | undefined> = { 1: 0, 2: 0, 3: 1, 4: 1, 5: 2 };
+
 function buildDataJson(size: number): string {
+    const rows = generateMockRows(size);
     return JSON.stringify(
-        generateMockRows(size).map((row, index) => ({
-            RowKey: row.key,
-            ...row.values,
-            HasInvalid: index % 9 === 8,
-        })),
+        rows.map((row, index) => {
+            const offset = TREE_PARENT_OFFSET[index % 7];
+            return {
+                RowKey: row.key,
+                ParentRowKey:
+                    offset === undefined ? undefined : rows[index - (index % 7) + offset]?.key,
+                ...row.values,
+                HasInvalid: index % 9 === 8,
+            };
+        }),
     );
+}
+
+// Printing hundreds of thousands of keys would make the page itself slow, so long selections are summarised.
+function summarizeKeys(keys: Option<string>): string {
+    if (!keys) {
+        return "(none)";
+    }
+    const list = keys.split(",");
+    return list.length > 20 ? `${list.slice(0, 20).join(",")} … (${list.length.toLocaleString()} rows)` : keys;
 }
 
 /** Dynamic mode: all rows are handed over at once as headerJson + dataJson; paging/sort/search are client-side. */
@@ -66,7 +89,7 @@ export function AxNewCustomTableDynamicDemo() {
                 canExecute: true,
                 isExecuting: false,
                 execute: ({ selectedKeys }: { selectedKeys: Option<string> }) =>
-                    setLastSelection(selectedKeys ? selectedKeys : "(none)"),
+                    setLastSelection(summarizeKeys(selectedKeys)),
             }) as unknown as ActionValue<{ selectedKeys: Option<string> }>,
         [],
     );
@@ -125,7 +148,7 @@ export function AxNewCustomTableDynamicDemo() {
                 prpSelectableRowsSingle={false}
                 prpOnSelectionChangeAction={onSelectionChangeAction}
                 prpOnRowDoubleClick={onRowDoubleClick}
-                prpExpandableRows={false}
+                prpExpandableRows
                 prpExpandOnRowClicked={false}
                 prpPointerOnHover
                 prpStriped
@@ -137,6 +160,8 @@ export function AxNewCustomTableDynamicDemo() {
                 prpPersistTableHead
                 prpNoDataText="No rows match your search"
                 prpLoadingText="Loading..."
+                prpTotalText="Total {count} items"
+                prpLoadMoreText="Load more"
             />
 
             <p>

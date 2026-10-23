@@ -1,13 +1,13 @@
 import { ReactElement, useState } from "react";
 
 import { AxNewCustomTableContainerProps } from "../typings/AxNewCustomTableProps";
-import { AxNewCustomTableSync } from "./AxNewCustomTableSync";
+import { TableDataSync } from "./components/TableDataSync";
 import { TableStore } from "./store/TableStore";
 
-import "./styles/AxNewCustomTable.css";
+import "./ui/AxNewCustomTable.css";
 
 export function AxNewCustomTable(props: AxNewCustomTableContainerProps): ReactElement {
     const [store] = useState(() => new TableStore({ limit: props.prpDefaultPageSize }));
 
-    return <AxNewCustomTableSync {...props} store={store} />;
+    return <TableDataSync {...props} store={store} />;
 }

@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 
-import "./styles/AxNewCustomTable.css";
+import "./ui/AxNewCustomTable.css";
 
 export function preview(): ReactElement {
     return (
@@ -14,5 +14,5 @@ export function preview(): ReactElement {
 }
 
 export function getPreviewCss(): string {
-    return require("./styles/AxNewCustomTable.css");
+    return require("./ui/AxNewCustomTable.css");
 }

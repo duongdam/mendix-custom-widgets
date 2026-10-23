@@ -27,7 +27,6 @@ export default defineConfig({
         include: [
             "react",
             "react-dom",
-            "react-data-table-component",
             "html2canvas-pro",
             "jspdf/dist/jspdf.umd.min.js",
             "ag-charts-react",

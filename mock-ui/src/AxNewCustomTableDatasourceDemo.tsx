@@ -15,6 +15,15 @@ import {
 } from "./mocks/tableFixtures";
 
 const DATASET_SIZES = [50, 237, 1000];
+
+// Rows come in blocks of 7 forming a 3-level tree (1 -> 2,3; 2 -> 4,5; 3 -> 6; 7 alone), linked
+// through ParentRowKey. Paging is server-side, so a child only nests under a parent on the same page.
+const TREE_PARENT_OFFSET: Record<number, number | undefined> = { 1: 0, 2: 0, 3: 1, 4: 1, 5: 2 };
+function mockParentKey(key: string): string | undefined {
+    const index = Number(key) - 1;
+    const offset = TREE_PARENT_OFFSET[index % 7];
+    return offset === undefined ? undefined : String(index - (index % 7) + offset + 1);
+}
 const PAGE_SIZES = [10, 20, 50];
 const NETWORK_DELAYS = [0, 400, 1500];
 interface ServerLogEntry {
@@ -34,7 +43,7 @@ interface ServerLogEntry {
  * wrote, "queries" the in-memory dataset after an artificial delay, and hands back one page —
  * exactly what a real "On Fetch Data" microflow does against a database.
  */
-export function AxNewCustomTableDemo() {
+export function AxNewCustomTableDatasourceDemo() {
     const [datasetSize, setDatasetSize] = useState(DATASET_SIZES[1]!);
     const [pageSize, setPageSize] = useState(PAGE_SIZES[0]!);
     const [networkDelay, setNetworkDelay] = useState(NETWORK_DELAYS[1]!);
@@ -163,7 +172,7 @@ export function AxNewCustomTableDemo() {
         [],
     );
 
-    const columnsValue = useMemo(() => createListValue(MOCK_COLUMNS), []);
+    const columnsValue = useMemo(() => createListValue(MOCK_COLUMNS.filter(column => column.key !== "id")), []);
     const columnKeyAttr = useMemo(() => createListAttributeValue("mock.ColumnKey", item => (item as unknown as MockColumnRecord).key), []);
     const columnLabelAttr = useMemo(
         () => createListAttributeValue("mock.ColumnLabel", item => (item as unknown as MockColumnRecord).label),
@@ -188,7 +197,10 @@ export function AxNewCustomTableDemo() {
         [],
     );
     const rowValuesAttr = useMemo(
-        () => createListAttributeValue("mock.RowValues", item => JSON.stringify((item as unknown as MockRowRecord).values)),
+        () => createListAttributeValue("mock.RowValues", item => {
+            const row = item as unknown as MockRowRecord;
+            return JSON.stringify({ ...row.values, ParentRowKey: mockParentKey(row.key) });
+        }),
         [],
     );
 
@@ -290,6 +302,8 @@ export function AxNewCustomTableDemo() {
                 prpPersistTableHead
                 prpNoDataText="No rows match your search"
                 prpLoadingText="Loading from mock server..."
+                prpTotalText="Total {count} items"
+                prpLoadMoreText="Load more"
             />
 
             <p>

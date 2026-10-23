@@ -1,9 +1,22 @@
-import { ColumnFormatType } from "../types/TableTypes";
+import { ColumnFormatType } from "../types/tableTypes";
 
 export type Formatter = (value: unknown, pattern?: string) => string;
 
 function formatText(value: unknown): string {
     return value == null ? "" : String(value);
+}
+
+// Creating an Intl.NumberFormat is expensive (~20µs), and a big table formats hundreds of
+// thousands of cells (render, search), so one instance per pattern is reused.
+const numberFormats = new Map<string, Intl.NumberFormat>();
+
+function numberFormat(key: string, create: () => Intl.NumberFormat): Intl.NumberFormat {
+    let format = numberFormats.get(key);
+    if (!format) {
+        format = create();
+        numberFormats.set(key, format);
+    }
+    return format;
 }
 
 function formatNumber(value: unknown, pattern?: string): string {
@@ -12,11 +25,12 @@ function formatNumber(value: unknown, pattern?: string): string {
         return "";
     }
     const digits = pattern ? Number(pattern) : undefined;
-    const options =
-        digits !== undefined && !Number.isNaN(digits)
-            ? { minimumFractionDigits: digits, maximumFractionDigits: digits }
-            : undefined;
-    return new Intl.NumberFormat(undefined, options).format(num);
+    const fixed = digits !== undefined && !Number.isNaN(digits);
+    return numberFormat(`n:${fixed ? digits : ""}`, () =>
+        fixed
+            ? new Intl.NumberFormat(undefined, { minimumFractionDigits: digits, maximumFractionDigits: digits })
+            : new Intl.NumberFormat(undefined)
+    ).format(num);
 }
 
 function formatCurrency(value: unknown, pattern?: string): string {
@@ -24,7 +38,11 @@ function formatCurrency(value: unknown, pattern?: string): string {
     if (Number.isNaN(num)) {
         return "";
     }
-    return new Intl.NumberFormat(undefined, { style: "currency", currency: pattern || "USD" }).format(num);
+    const currency = pattern || "USD";
+    return numberFormat(
+        `c:${currency}`,
+        () => new Intl.NumberFormat(undefined, { style: "currency", currency })
+    ).format(num);
 }
 
 function formatDate(value: unknown, pattern?: string): string {

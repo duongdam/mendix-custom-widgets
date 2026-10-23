@@ -629,15 +629,9 @@ importers:
       react:
         specifier: ^19.0.0
         version: 19.2.8
-      react-data-table-component:
-        specifier: ^8.8.0
-        version: 8.8.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       react-dom:
         specifier: ^19.0.0
         version: 19.2.8(react@19.2.8)
-      react-window:
-        specifier: ^1.8.10
-        version: 1.8.11(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
     devDependencies:
       '@mendix/pluggable-widgets-tools':
         specifier: ^11.11.0
@@ -651,9 +645,6 @@ importers:
       '@types/node':
         specifier: ^25.9.1
         version: 25.9.5
-      '@types/react-window':
-        specifier: ^1.8.8
-        version: 1.8.8
       cross-env:
         specifier: 10.1.0
         version: 10.1.0
@@ -5751,12 +5742,6 @@ packages:
   range-parser@1.2.1:
     resolution: {integrity: sha512-Hrgsx+orqoygnmhFbKaHE6c296J+HTAQXoxEF6gNupROmmGJRoyzfG3ccAveqCBrwr/2yxQ5BVd/GTl5agOwSg==}
     engines: {node: '>= 0.6'}
-
-  react-data-table-component@8.8.0:
-    resolution: {integrity: sha512-DmQL6LMDvIYSnZHMLMsCMlwgRDWLQRUeK6YjQMWwfd09EdJ+NvPViPOQMKadhWxEQJ/jJjRryCTBz0DVOW1UPA==}
-    peerDependencies:
-      react: '>=18.0.0'
-      react-dom: '>=18.0.0'
 
   react-devtools-core@6.1.5:
     resolution: {integrity: sha512-ePrwPfxAnB+7hgnEr8vpKxL9cmnp7F322t8oqcPshbIQQhDKgFDW4tjhF2wjVbdXF9O/nyuy3sQWd9JGpiLPvA==}
@@ -12671,11 +12656,6 @@ snapshots:
     optional: true
 
   range-parser@1.2.1: {}
-
-  react-data-table-component@8.8.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8):
-    dependencies:
-      react: 19.2.8
-      react-dom: 19.2.8(react@19.2.8)
 
   react-devtools-core@6.1.5:
     dependencies:

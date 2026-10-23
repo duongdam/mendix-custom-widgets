@@ -3,15 +3,15 @@ import { observer } from "mobx-react-lite";
 import { ValueStatus } from "mendix";
 import Big from "big.js";
 
-import { AxNewCustomTableContainerProps } from "../typings/AxNewCustomTableProps";
-import { TableStore } from "./store/TableStore";
-import { normalizeColumns, RawColumnInput } from "./utils/columnMapper";
-import { parseJsonObject } from "./utils/parseJson";
-import { parseDataJson, parseHeaderJson } from "./utils/parseTableJson";
-import { TableRow } from "./types/TableTypes";
-import { AxNewCustomTableContainer } from "./components/AxNewCustomTableContainer";
+import { AxNewCustomTableContainerProps } from "../../typings/AxNewCustomTableProps";
+import { TableStore } from "../store/TableStore";
+import { normalizeColumns, RawColumnInput } from "../utils/columnMapper";
+import { parseJsonObject } from "../utils/parseRowValues";
+import { parseDataJson, parseHeaderJson } from "../utils/parseDynamicJson";
+import { TableRow } from "../types/tableTypes";
+import { TableContainer } from "./TableContainer";
 
-export interface AxNewCustomTableSyncProps extends AxNewCustomTableContainerProps {
+export interface TableDataSyncProps extends AxNewCustomTableContainerProps {
     store: TableStore;
 }
 
@@ -19,7 +19,7 @@ function bigToNumber(value: Big | undefined): number | undefined {
     return value === undefined ? undefined : value.toNumber();
 }
 
-function AxNewCustomTableSyncComponent(props: AxNewCustomTableSyncProps): ReactElement {
+function TableDataSyncComponent(props: TableDataSyncProps): ReactElement {
     const { store } = props;
     const isDynamic = props.prpDataMode === "dynamic";
 
@@ -149,7 +149,7 @@ function AxNewCustomTableSyncComponent(props: AxNewCustomTableSyncProps): ReactE
     }
 
     return (
-        <AxNewCustomTableContainer
+        <TableContainer
             {...props}
             store={store}
             onSelectionChange={handleSelectionChange}
@@ -159,4 +159,4 @@ function AxNewCustomTableSyncComponent(props: AxNewCustomTableSyncProps): ReactE
     );
 }
 
-export const AxNewCustomTableSync = observer(AxNewCustomTableSyncComponent);
+export const TableDataSync = observer(TableDataSyncComponent);

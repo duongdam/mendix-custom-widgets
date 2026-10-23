@@ -1,4 +1,4 @@
-import { ColumnDef, TableRow } from "../types/TableTypes";
+import { ColumnDef, TableRow } from "../types/tableTypes";
 import { normalizeColumns, RawColumnInput } from "./columnMapper";
 
 export const ROW_KEY_FIELD = "RowKey";
@@ -84,6 +84,7 @@ export function parseHeaderJson(value: string | undefined | null): ColumnDef[] {
                 visible: isTrue(item.hidden) ? false : typeof item.visible === "boolean" ? item.visible : undefined,
                 align: asString(item.align),
                 wrap: typeof item.wrap === "boolean" ? item.wrap : undefined,
+                treeColumn: typeof item.treeColumn === "boolean" ? item.treeColumn : undefined,
                 formatType: asString(item.formatType),
                 formatPattern: asString(item.formatPattern),
                 badgeColors: toBadgeColors(item.badgeColors)

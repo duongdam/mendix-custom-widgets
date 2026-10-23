@@ -1,0 +1,132 @@
+.ax-custom-table-container {
+    width: 100%;
+}
+
+.ax-custom-table-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    padding-bottom: 8px;
+}
+
+.ax-custom-table-total {
+    color: rgba(0, 0, 0, 0.65);
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.ax-custom-table-search-input {
+    width: 100%;
+    max-width: 280px;
+    padding: 6px 10px;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.ax-custom-table-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background-color: #e6f4ff;
+    color: #1677ff;
+    font-size: 12px;
+    line-height: 18px;
+}
+
+.ax-custom-table-badge--green {
+    background-color: #f6ffed;
+    color: #389e0d;
+}
+
+.ax-custom-table-badge--red {
+    background-color: #fff1f0;
+    color: #cf1322;
+}
+
+.ax-custom-table-badge--orange {
+    background-color: #fff7e6;
+    color: #d46b08;
+}
+
+.ax-custom-table-badge--purple {
+    background-color: #f9f0ff;
+    color: #722ed1;
+}
+
+.ax-custom-table-badge--gray {
+    background-color: #f5f5f5;
+    color: #595959;
+}
+
+.ax-custom-table-load-more {
+    display: flex;
+    justify-content: center;
+    padding: 12px 0;
+}
+
+.ax-custom-table-load-more-button {
+    padding: 6px 16px;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    background-color: #fff;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.ax-custom-table-load-more-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.ax-custom-table-loading {
+    padding: 16px;
+    text-align: center;
+    color: #8c8c8c;
+}
+
+/* antd Table rows */
+.ax-custom-table-antd .ax-custom-table-row--striped > td.ant-table-cell {
+    background: #fafafa;
+}
+
+.ax-custom-table-antd .ax-custom-table-row--selected > td.ant-table-cell {
+    background: #e3f2fd;
+}
+
+.ax-custom-table-antd .ax-custom-table-row--pointer {
+    cursor: pointer;
+}
+
+.ax-custom-table-antd .ax-custom-table-row--invalid {
+    opacity: 0.5;
+    cursor: default;
+}
+
+.ax-custom-table-antd .ax-custom-table-row--invalid > td.ant-table-cell,
+.ax-custom-table-antd .ant-table-tbody > tr.ax-custom-table-row--invalid:hover > td.ant-table-cell {
+    background: #fafafa;
+}
+
+/* antd's disabled checkbox/radio show a "not-allowed" cursor; keep the default one. */
+.ax-custom-table-antd .ax-custom-table-row--invalid .ant-checkbox-wrapper,
+.ax-custom-table-antd .ax-custom-table-row--invalid .ant-checkbox-input,
+.ax-custom-table-antd .ax-custom-table-row--invalid .ant-checkbox-disabled,
+.ax-custom-table-antd .ax-custom-table-row--invalid .ant-radio-wrapper,
+.ax-custom-table-antd .ax-custom-table-row--invalid .ant-radio-input,
+.ax-custom-table-antd .ax-custom-table-row--invalid .ant-radio-disabled {
+    cursor: default;
+}
+
+/* "Highlight on hover" off: keep each row's own background while hovered. */
+.ax-custom-table-antd--no-hover .ant-table-tbody > tr.ant-table-row:hover > td.ant-table-cell {
+    background: inherit;
+}
+.ax-custom-table-antd--no-hover .ant-table-tbody > tr.ax-custom-table-row--striped:hover > td.ant-table-cell {
+    background: #fafafa;
+}
+.ax-custom-table-antd--no-hover .ant-table-tbody > tr.ax-custom-table-row--selected:hover > td.ant-table-cell {
+    background: #e3f2fd;
+}

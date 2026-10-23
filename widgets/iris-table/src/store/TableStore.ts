@@ -1,5 +1,5 @@
 import { makeAutoObservable, observable } from "mobx";
-import { ColumnDef, TableRow } from "../types/TableTypes";
+import { ColumnDef, TableRow } from "../types/tableTypes";
 
 export interface TableStoreInit {
     limit?: number;

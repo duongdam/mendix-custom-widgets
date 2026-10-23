@@ -20,9 +20,12 @@ export interface AxNewCustomTableContainerProps {
     tabIndex?: number;
     prpDataMode: PrpDataModeEnum;
     prpScrollMode: PrpScrollModeEnum;
+    prpIsLoading?: EditableValue<boolean>;
+    prpShowSearch: boolean;
+    prpSearchPlaceholder: string;
+    prpSearchDebounce: number;
     prpHeaderJson?: EditableValue<string>;
     prpDataJson?: EditableValue<string>;
-    prpIsLoading?: EditableValue<boolean>;
     prpColumns?: ListValue;
     prpColumnKeyAttr?: ListAttributeValue<string>;
     prpColumnLabelAttr?: ListAttributeValue<string>;
@@ -32,21 +35,18 @@ export interface AxNewCustomTableContainerProps {
     prpDataItems?: ListValue;
     prpRowKeyAttr?: ListAttributeValue<string | Big>;
     prpRowValuesAttr?: ListAttributeValue<string>;
-    prpEnableServerPagination: boolean;
-    prpPaginationMode: PrpPaginationModeEnum;
-    prpDefaultPageSize: number;
-    prpPageSizeOptions: string;
     prpFetchDataAction?: ActionValue;
     prpOffsetAttribute?: EditableValue<Big>;
     prpLimitAttribute?: EditableValue<Big>;
     prpTotalCountAttribute?: EditableValue<Big>;
-    prpShowSearch: boolean;
-    prpSearchPlaceholder: string;
-    prpSearchDebounce: number;
     prpFilterTextAttribute?: EditableValue<string>;
+    prpEnableServerPagination: boolean;
+    prpPaginationMode: PrpPaginationModeEnum;
+    prpDefaultPageSize: number;
+    prpPageSizeOptions: string;
     prpEnableRowSelection: boolean;
-    prpSelectableRowsHighlight: boolean;
     prpSelectableRowsSingle: boolean;
+    prpSelectableRowsHighlight: boolean;
     prpOnSelectionChangeAction?: ActionValue<{ selectedKeys: Option<string> }>;
     prpExpandableRows: boolean;
     prpExpandOnRowClicked: boolean;
@@ -62,6 +62,8 @@ export interface AxNewCustomTableContainerProps {
     prpPersistTableHead: boolean;
     prpNoDataText: string;
     prpLoadingText: string;
+    prpTotalText: string;
+    prpLoadMoreText: string;
 }
 
 export interface AxNewCustomTablePreviewProps {
@@ -77,9 +79,12 @@ export interface AxNewCustomTablePreviewProps {
     translate: (text: string) => string;
     prpDataMode: PrpDataModeEnum;
     prpScrollMode: PrpScrollModeEnum;
+    prpIsLoading: string;
+    prpShowSearch: boolean;
+    prpSearchPlaceholder: string;
+    prpSearchDebounce: number | null;
     prpHeaderJson: string;
     prpDataJson: string;
-    prpIsLoading: string;
     prpColumns: {} | { caption: string } | { type: string } | null;
     prpColumnKeyAttr: string;
     prpColumnLabelAttr: string;
@@ -89,21 +94,18 @@ export interface AxNewCustomTablePreviewProps {
     prpDataItems: {} | { caption: string } | { type: string } | null;
     prpRowKeyAttr: string;
     prpRowValuesAttr: string;
-    prpEnableServerPagination: boolean;
-    prpPaginationMode: PrpPaginationModeEnum;
-    prpDefaultPageSize: number | null;
-    prpPageSizeOptions: string;
     prpFetchDataAction: {} | null;
     prpOffsetAttribute: string;
     prpLimitAttribute: string;
     prpTotalCountAttribute: string;
-    prpShowSearch: boolean;
-    prpSearchPlaceholder: string;
-    prpSearchDebounce: number | null;
     prpFilterTextAttribute: string;
+    prpEnableServerPagination: boolean;
+    prpPaginationMode: PrpPaginationModeEnum;
+    prpDefaultPageSize: number | null;
+    prpPageSizeOptions: string;
     prpEnableRowSelection: boolean;
-    prpSelectableRowsHighlight: boolean;
     prpSelectableRowsSingle: boolean;
+    prpSelectableRowsHighlight: boolean;
     prpOnSelectionChangeAction: {} | null;
     prpExpandableRows: boolean;
     prpExpandOnRowClicked: boolean;
@@ -119,4 +121,6 @@ export interface AxNewCustomTablePreviewProps {
     prpPersistTableHead: boolean;
     prpNoDataText: string;
     prpLoadingText: string;
+    prpTotalText: string;
+    prpLoadMoreText: string;
 }
