@@ -124,6 +124,24 @@ function AntdTableComponent(props: AntdTableProps): ReactElement {
         return () => observer.disconnect();
     }, [virtual]);
 
+    // antd's virtual scrollbar ends a thumb drag only on a `mouseup` that reaches `window`. Inside Mendix
+    // that event can be swallowed (a page handler stopping propagation, or the button released over
+    // another frame), so the drag never ends and the table keeps scrolling with the mouse. Mouse moves
+    // do still arrive, so a move with no button pressed while the thumb is "moving" means the release
+    // was lost: replay it.
+    useEffect(() => {
+        if (!virtual) {
+            return;
+        }
+        const releaseLostDrag = (event: globalThis.MouseEvent): void => {
+            if (event.buttons === 0 && wrapperRef.current?.querySelector('[class*="scrollbar-thumb-moving"]')) {
+                window.dispatchEvent(new globalThis.MouseEvent("mouseup"));
+            }
+        };
+        window.addEventListener("mousemove", releaseLostDrag, { passive: true });
+        return () => window.removeEventListener("mousemove", releaseLostDrag);
+    }, [virtual]);
+
     const selectionWidth = widgetProps.prpEnableRowSelection ? CHECKBOX_COLUMN_WIDTH : 0;
     const virtualColumnWidths = useMemo(
         () => (virtual ? virtualWidths(store.columns, containerWidth - selectionWidth) : undefined),
