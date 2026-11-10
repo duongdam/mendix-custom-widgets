@@ -6,10 +6,10 @@ import { createActionValue, createDynamicValue, createEditableValue } from "./mo
 import { PRIORITY_CAPTIONS, PRIORITY_KEYS } from "./mocks/antdFixtures";
 
 const VIEW_OPTIONS = [
-    { value: "day", caption: createDynamicValue("Day") as DynamicValue<string> },
-    { value: "week", caption: createDynamicValue("Week") as DynamicValue<string> },
-    { value: "month", caption: createDynamicValue("Month") as DynamicValue<string> },
-    { value: "year", caption: createDynamicValue("Year") as DynamicValue<string> },
+    { prpValue: "day", prpCaption: createDynamicValue("Day") as DynamicValue<string> },
+    { prpValue: "week", prpCaption: createDynamicValue("Week") as DynamicValue<string> },
+    { prpValue: "month", prpCaption: createDynamicValue("Month") as DynamicValue<string> },
+    { prpValue: "year", prpCaption: createDynamicValue("Year") as DynamicValue<string> },
 ];
 
 export function IRISSegmentedDemo() {
@@ -41,29 +41,29 @@ export function IRISSegmentedDemo() {
             <IRISSegmented
                 name="iris-segmented-enum"
                 class=""
-                attribute={createEditableValue<string>(priority, setPriority, {
+                prpAttribute={createEditableValue<string>(priority, setPriority, {
                     universe: PRIORITY_KEYS,
                     format: (v) => (v ? (PRIORITY_CAPTIONS[v] ?? v) : ""),
                 })}
-                optionsSource="attribute"
-                staticOptions={[]}
-                size="medium"
-                block={block}
-                vertical={false}
-                onChangeAction={onChangeAction}
+                prpOptionsSource="attribute"
+                prpStaticOptions={[]}
+                prpSize="medium"
+                prpBlock={block}
+                prpVertical={false}
+                prpOnChange={onChangeAction}
             />
 
             <h3>Static options</h3>
             <IRISSegmented
                 name="iris-segmented-static"
                 class=""
-                attribute={createEditableValue<string>(view, setView)}
-                optionsSource="static"
-                staticOptions={VIEW_OPTIONS}
-                size="large"
-                block={block}
-                vertical={false}
-                onChangeAction={onChangeAction}
+                prpAttribute={createEditableValue<string>(view, setView)}
+                prpOptionsSource="static"
+                prpStaticOptions={VIEW_OPTIONS}
+                prpSize="large"
+                prpBlock={block}
+                prpVertical={false}
+                prpOnChange={onChangeAction}
             />
         </section>
     );

@@ -11,8 +11,8 @@ export interface IRISCardContainerProps {
     class: string;
     style?: CSSProperties;
     tabIndex?: number;
-    title: EditableValue<string>;
-    items?: ListValue;
+    prpTitle: EditableValue<string>;
+    prpItems?: ListValue;
 }
 
 export interface IRISCardPreviewProps {
@@ -26,6 +26,6 @@ export interface IRISCardPreviewProps {
     readOnly: boolean;
     renderMode: "design" | "xray" | "structure";
     translate: (text: string) => string;
-    title: string;
-    items: {} | { caption: string } | { type: string } | null;
+    prpTitle: string;
+    prpItems: {} | { caption: string } | { type: string } | null;
 }

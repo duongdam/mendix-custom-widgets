@@ -5,9 +5,9 @@ import { IRISPanelPreviewProps } from "../typings/IRISPanelProps";
 
 import "./ui/IRISPanel.css";
 
-export function preview({ title }: IRISPanelPreviewProps): ReactElement {
+export function preview({ prpTitle }: IRISPanelPreviewProps): ReactElement {
     return (
-        <Card className="iris-panel" title={title || "IRIS Panel"}>
+        <Card className="iris-panel" title={prpTitle || "IRIS Panel"}>
             <Empty description="Widget scaffold — add your feature here" />
         </Card>
     );

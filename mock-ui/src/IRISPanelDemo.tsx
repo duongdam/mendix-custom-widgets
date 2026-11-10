@@ -29,7 +29,7 @@ export function IRISPanelDemo() {
             <IRISPanel
                 name="iris-panel-preview"
                 class=""
-                title={createDynamicValue<string>(
+                prpTitle={createDynamicValue<string>(
                     PANEL_TITLE_PRESETS[titleIndex] ?? PANEL_TITLE_PRESETS[0]!,
                 )}
             />

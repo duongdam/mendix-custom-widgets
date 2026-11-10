@@ -3,10 +3,10 @@ import { IRISCardPreviewProps } from "../typings/IRISCardProps";
 
 import "./ui/IRISCard.css";
 
-export function preview({ title }: IRISCardPreviewProps): ReactElement {
+export function preview({ prpTitle }: IRISCardPreviewProps): ReactElement {
     return (
         <div className="iris-card">
-            <div className="iris-card__title">{title || "Card title"}</div>
+            <div className="iris-card__title">{prpTitle || "Card title"}</div>
             <div className="iris-card__count">0 item(s)</div>
         </div>
     );

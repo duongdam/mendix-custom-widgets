@@ -27,19 +27,24 @@ export function toDayjs(date: Date | undefined): Dayjs | null {
     return date ? dayjs(date) : null;
 }
 
+// Presets are rebuilt on every render so "today" is never stale. Ranges are inclusive of today:
+// "Last 7 days" = today-6 … today, "Next 2 weeks" = today … today+13.
 export const SINGLE_PRESETS = (): Array<{ label: string; value: Dayjs }> => [
     { label: "Today", value: dayjs() },
-    { label: "Yesterday", value: dayjs().subtract(1, "day") },
-    { label: "Start of month", value: dayjs().startOf("month") }
+    { label: "Start of month", value: dayjs().startOf("month") },
+    { label: "End of month", value: dayjs().endOf("month") }
 ];
 
-export const RANGE_PRESETS = (): Array<{ label: string; value: [Dayjs, Dayjs] }> => [
-    { label: "Today", value: [dayjs(), dayjs()] },
-    { label: "Last 7 days", value: [dayjs().subtract(6, "day"), dayjs()] },
-    { label: "Last 30 days", value: [dayjs().subtract(29, "day"), dayjs()] },
-    { label: "This month", value: [dayjs().startOf("month"), dayjs().endOf("month")] },
-    {
-        label: "Last month",
-        value: [dayjs().subtract(1, "month").startOf("month"), dayjs().subtract(1, "month").endOf("month")]
-    }
-];
+export const RANGE_PRESETS = (): Array<{ label: string; value: [Dayjs, Dayjs] }> => {
+    const today = dayjs();
+    const lastMonth = today.subtract(1, "month");
+    return [
+        { label: "Last 7 days", value: [today.subtract(6, "day"), today] },
+        { label: "Last 30 days", value: [today.subtract(29, "day"), today] },
+        { label: "This week", value: [today.startOf("week"), today.endOf("week")] },
+        { label: "This month", value: [today.startOf("month"), today.endOf("month")] },
+        { label: "Last month", value: [lastMonth.startOf("month"), lastMonth.endOf("month")] },
+        { label: "Next 2 weeks", value: [today, today.add(2, "week").subtract(1, "day")] },
+        { label: "Next 1 month", value: [today, today.add(1, "month").subtract(1, "day")] }
+    ];
+};

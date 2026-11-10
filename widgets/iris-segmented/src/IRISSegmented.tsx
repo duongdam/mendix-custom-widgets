@@ -1,5 +1,5 @@
 import { ReactElement, useMemo } from "react";
-import { enumOptions, executeAction, isEditable, OptionItem, validationOf } from "@iris/antd-kit";
+import { enumOptions, executeAction, isEditable, OptionItem, validationOf } from "./utils";
 
 import { IRISSegmentedContainerProps } from "../typings/IRISSegmentedProps";
 import { SegmentedView } from "./components/SegmentedView";
@@ -7,15 +7,15 @@ import { SegmentedView } from "./components/SegmentedView";
 import "./ui/IRISSegmented.css";
 
 export function IRISSegmented(props: IRISSegmentedContainerProps): ReactElement {
-    const { attribute, optionsSource, staticOptions } = props;
+    const { prpAttribute: attribute, prpOptionsSource: optionsSource, prpStaticOptions: staticOptions } = props;
 
     const options = useMemo<OptionItem[]>(
         () =>
             optionsSource === "attribute"
                 ? enumOptions(attribute)
                 : staticOptions.map(option => ({
-                      value: option.value,
-                      label: option.caption?.value || option.value
+                      value: option.prpValue,
+                      label: option.prpCaption?.value || option.prpValue
                   })),
         [optionsSource, attribute, staticOptions]
     );
@@ -25,7 +25,7 @@ export function IRISSegmented(props: IRISSegmentedContainerProps): ReactElement 
             return;
         }
         attribute.setValue(value);
-        executeAction(props.onChangeAction);
+        executeAction(props.prpOnChange);
     };
 
     return (
@@ -35,9 +35,9 @@ export function IRISSegmented(props: IRISSegmentedContainerProps): ReactElement 
             options={options}
             value={attribute.value}
             disabled={!isEditable(attribute)}
-            size={props.size}
-            block={props.block}
-            vertical={props.vertical}
+            size={props.prpSize}
+            block={props.prpBlock}
+            vertical={props.prpVertical}
             validation={validationOf(attribute)}
             onChange={handleChange}
         />

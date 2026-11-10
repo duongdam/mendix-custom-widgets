@@ -32,9 +32,9 @@ export function IRISButtonDemo() {
             <IRISButton
                 name="iris-button-preview"
                 class=""
-                caption={createDynamicValue(preset.caption)}
-                variant={preset.variant}
-                onClick={createActionValue(() => setClickCount((count) => count + 1))}
+                prpCaption={createDynamicValue(preset.caption)}
+                prpVariant={preset.variant}
+                prpOnClick={createActionValue(() => setClickCount((count) => count + 1))}
             />
             <p>Clicked {clickCount} time(s)</p>
         </section>

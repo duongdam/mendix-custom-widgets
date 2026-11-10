@@ -10,16 +10,15 @@ export function preview(props: IRISProgressPreviewProps): ReactElement {
         <ProgressView
             className={props.class}
             style={props.styleObject}
-            type={props.progressType}
+            type={props.prpProgressType}
             percent={60}
-            successPercent={props.successValue ? 30 : undefined}
-            status={props.status === "auto" ? undefined : props.status}
-            showInfo={props.showInfo}
-            label={props.label || undefined}
-            lineSize={props.lineSize}
-            circleSize={props.circleSize ?? 120}
-            steps={props.steps ?? 0}
-            strokeLinecap={props.strokeLinecap}
+            successPercent={props.prpSuccessValue ? 30 : undefined}
+            status={props.prpStatus === "auto" ? undefined : props.prpStatus}
+            showInfo={props.prpShowInfo}
+            label={props.prpLabel || undefined}
+            lineSize={props.prpLineSize}
+            circleSize={props.prpCircleSize ?? 120}
+            steps={props.prpSteps ?? 0}
         />
     );
 }

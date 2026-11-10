@@ -1,8 +1,8 @@
 {
-  "name": "irisdatepicker",
-  "widgetName": "IRISDatePicker",
+  "name": "axnewdatepicker",
+  "widgetName": "AxNewDatePicker",
   "version": "1.0.0",
-  "description": "IRIS Date Picker widget — Ant Design DatePicker / RangePicker bound to DateTime attributes.",
+  "description": "Ax New Date Picker widget — Ant Design DatePicker / RangePicker bound to DateTime attributes.",
   "copyright": "IRIS Project",
   "license": "Apache-2.0",
   "packagePath": "com.iris.widgets",
@@ -10,9 +10,9 @@
     "projectPath": ""
   },
   "mxpackage": {
-    "name": "IRISDatePicker",
+    "name": "AxNewDatePicker",
     "type": "widget",
-    "mpkName": "IRISDatePicker.mpk"
+    "mpkName": "AxNewDatePicker.mpk"
   },
   "testProject": {
     "githubUrl": ""
@@ -37,7 +37,6 @@
     "typescript": "5.9.3"
   },
   "dependencies": {
-    "@iris/antd-kit": "workspace:*",
     "antd": "6.5.4",
     "big.js": "^6.2.2",
     "classnames": "^2.5.1",

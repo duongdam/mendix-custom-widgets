@@ -3,7 +3,7 @@ import Big from "big.js";
 import type { ObjectItem, Option } from "mendix";
 
 import { IRISGantt } from "../../widgets/iris-gantt/src/IRISGantt";
-import type { ScaleEnum } from "../../widgets/iris-gantt/typings/IRISGanttProps";
+import type { PrpScaleEnum } from "../../widgets/iris-gantt/typings/IRISGanttProps";
 import { createListAttributeValue, createListValue } from "./mocks/mendixMocks";
 import {
     GANTT_SIZES,
@@ -56,7 +56,7 @@ export function IRISGanttDemo() {
     const [tasks, setTasks] = useState<MockGanttTask[]>(initial.tasks);
     const [links, setLinks] = useState<MockGanttLink[]>(initial.links);
     const [rejectEdits, setRejectEdits] = useState(false);
-    const [scale] = useState<ScaleEnum>("week");
+    const [scale] = useState<PrpScaleEnum>("week");
     const [log, setLog] = useState<string[]>([]);
     const [renderMs, setRenderMs] = useState<number | undefined>();
     // Lazy initializer: runs once, before the first (10k) render — the initial measurement.
@@ -93,52 +93,52 @@ export function IRISGanttDemo() {
 
     const attrs = useMemo(
         () => ({
-            taskIdAttr: createListAttributeValue<string | Big>(
+            prpTaskIdAttr: createListAttributeValue<string | Big>(
                 "mock.Id",
                 (i) => (i as TaskItem).taskId,
             ),
-            taskParentIdAttr: createListAttributeValue<string | Big>(
+            prpTaskParentIdAttr: createListAttributeValue<string | Big>(
                 "mock.ParentId",
                 (i) => (i as TaskItem).parentId,
             ),
-            taskTextAttr: createListAttributeValue<string>(
+            prpTaskTextAttr: createListAttributeValue<string>(
                 "mock.Name",
                 (i) => (i as TaskItem).name,
             ),
-            taskTypeAttr: createListAttributeValue<string>(
+            prpTaskTypeAttr: createListAttributeValue<string>(
                 "mock.Type",
                 (i) => (i as TaskItem).type,
             ),
-            taskStartAttr: createListAttributeValue<Date>(
+            prpTaskStartAttr: createListAttributeValue<Date>(
                 "mock.Start",
                 (i) => (i as TaskItem).start,
             ),
-            taskEndAttr: createListAttributeValue<Date>("mock.End", (i) => (i as TaskItem).end),
-            taskProgressAttr: createListAttributeValue<Big>(
+            prpTaskEndAttr: createListAttributeValue<Date>("mock.End", (i) => (i as TaskItem).end),
+            prpTaskProgressAttr: createListAttributeValue<Big>(
                 "mock.Progress",
                 (i) => new Big((i as TaskItem).progress),
             ),
-            taskOrderAttr: createListAttributeValue<Big>(
+            prpTaskOrderAttr: createListAttributeValue<Big>(
                 "mock.Order",
                 (i) => new Big((i as TaskItem).order),
             ),
-            taskColorAttr: createListAttributeValue<string>(
+            prpTaskColorAttr: createListAttributeValue<string>(
                 "mock.Color",
                 (i) => (i as TaskItem).color,
             ),
-            linkIdAttr: createListAttributeValue<string | Big>(
+            prpLinkIdAttr: createListAttributeValue<string | Big>(
                 "mock.LinkId",
                 (i) => (i as LinkItem).linkId,
             ),
-            linkSourceAttr: createListAttributeValue<string | Big>(
+            prpLinkSourceAttr: createListAttributeValue<string | Big>(
                 "mock.Source",
                 (i) => (i as LinkItem).source,
             ),
-            linkTargetAttr: createListAttributeValue<string | Big>(
+            prpLinkTargetAttr: createListAttributeValue<string | Big>(
                 "mock.Target",
                 (i) => (i as LinkItem).target,
             ),
-            linkTypeAttr: createListAttributeValue<string>(
+            prpLinkTypeAttr: createListAttributeValue<string>(
                 "mock.LinkType",
                 (i) => (i as LinkItem).type,
             ),
@@ -148,7 +148,7 @@ export function IRISGanttDemo() {
 
     const actions = useMemo(
         () => ({
-            onTaskChange: action(
+            prpOnTaskChange: action(
                 (v: {
                     taskId: Option<string>;
                     startDate: Option<Date>;
@@ -193,7 +193,7 @@ export function IRISGanttDemo() {
                     }, MICROFLOW_DELAY_MS);
                 },
             ),
-            onLinkCreate: action(
+            prpOnLinkCreate: action(
                 (v: {
                     sourceId: Option<string>;
                     targetId: Option<string>;
@@ -217,7 +217,7 @@ export function IRISGanttDemo() {
                     }, MICROFLOW_DELAY_MS);
                 },
             ),
-            onLinkDelete: action((v: { linkId: Option<string> }) => {
+            prpOnLinkDelete: action((v: { linkId: Option<string> }) => {
                 window.setTimeout(() => {
                     if (rejectEdits) {
                         addLog(`✗ rejected delete of ${v.linkId}`);
@@ -227,8 +227,8 @@ export function IRISGanttDemo() {
                     setLinks((current) => current.filter((l) => l.linkId !== v.linkId));
                 }, MICROFLOW_DELAY_MS);
             }),
-            onTaskClick: action((v: { taskId: Option<string> }) => addLog(`click ${v.taskId}`)),
-            onTaskDoubleClick: action((v: { taskId: Option<string> }) =>
+            prpOnTaskClick: action((v: { taskId: Option<string> }) => addLog(`click ${v.taskId}`)),
+            prpOnTaskDoubleClick: action((v: { taskId: Option<string> }) =>
                 addLog(`double click ${v.taskId} (open popup)`),
             ),
         }),
@@ -267,29 +267,27 @@ export function IRISGanttDemo() {
             <IRISGantt
                 name="iris-gantt-demo"
                 class=""
-                tasks={tasksValue}
+                prpTasks={tasksValue}
                 {...attrs}
-                summaryTypes="block,group"
-                typeHierarchy="block>group>task"
-                openLevel={1}
-                links={linksValue}
-                allowDragMove
-                allowResize
-                allowProgressDrag
-                allowReorder
-                allowLinkEdit
+                prpSummaryTypes="block,group"
+                prpTypeHierarchy="block>group>task"
+                prpOpenLevel={1}
+                prpLinks={linksValue}
+                prpAllowDragMove
+                prpAllowResize
+                prpAllowProgressDrag
+                prpAllowReorder
+                prpAllowLinkEdit
                 {...actions}
-                scale={scale}
-                durationUnit="day"
-                showToolbar
-                locale="en"
-                height="560px"
-                gridWidth={380}
-                rowHeight={32}
-                showStartColumn
-                showDurationColumn
-                showProgress
-                logPerformance
+                prpScale={scale}
+                prpDurationUnit="day"
+                prpShowToolbar
+                prpLocale="en"
+                prpHeight="560px"
+                prpShowStartColumn
+                prpShowDurationColumn
+                prpShowProgress
+                prpLogPerformance
             />
 
             <table className="app__log-table">

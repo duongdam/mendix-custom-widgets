@@ -1,6 +1,5 @@
 import { ReactElement, useEffect, useMemo, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { IrisAntdProvider } from "@iris/antd-kit";
 
 import { AxNewCustomTableContainerProps } from "../../typings/AxNewCustomTableProps";
 import { TableStore } from "../store/TableStore";
@@ -108,7 +107,6 @@ function TableContainerComponent(props: TableContainerProps): ReactElement {
     const isVirtual = isDynamic && props.prpScrollMode === "virtual";
 
     return (
-        <IrisAntdProvider>
             <div className="ax-custom-table-container">
                 {(totalText || props.prpShowSearch) && (
                     <div className="ax-custom-table-toolbar">
@@ -150,7 +148,6 @@ function TableContainerComponent(props: TableContainerProps): ReactElement {
                     </div>
                 )}
             </div>
-        </IrisAntdProvider>
     );
 }
 

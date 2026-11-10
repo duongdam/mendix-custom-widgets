@@ -3,14 +3,14 @@ import { IRISButtonContainerProps } from "../typings/IRISButtonProps";
 
 import "./ui/IRISButton.css";
 
-export function IRISButton({ caption, variant, onClick }: IRISButtonContainerProps): ReactElement {
+export function IRISButton({ prpCaption, prpVariant, prpOnClick }: IRISButtonContainerProps): ReactElement {
     return (
         <button
-            className={`iris-button iris-button--${variant}`}
-            onClick={() => onClick?.canExecute && onClick.execute()}
-            disabled={onClick != null && !onClick.canExecute}
+            className={`iris-button iris-button--${prpVariant}`}
+            onClick={() => prpOnClick?.canExecute && prpOnClick.execute()}
+            disabled={prpOnClick != null && !prpOnClick.canExecute}
         >
-            {caption.value ?? ""}
+            {prpCaption.value ?? ""}
         </button>
     );
 }

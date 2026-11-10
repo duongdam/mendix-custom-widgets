@@ -8,14 +8,14 @@ import { PanelStore } from "./store/PanelStore";
 
 import "./ui/IRISPanel.css";
 
-function IRISPanelComponent({ class: className, style, title }: IRISPanelContainerProps): ReactElement {
+function IRISPanelComponent({ class: className, style, prpTitle }: IRISPanelContainerProps): ReactElement {
     const [store] = useState(() => new PanelStore());
 
     return (
         <Card
             className={classNames("iris-panel", className)}
             style={style}
-            title={title?.status === "available" ? title.value : "IRIS Panel"}
+            title={prpTitle?.status === "available" ? prpTitle.value : "IRIS Panel"}
             extra={
                 <Button size="small" onClick={() => store.toggleCollapsed()}>
                     {store.collapsed ? "Expand" : "Collapse"}

@@ -7,34 +7,30 @@ import { ActionValue, DynamicValue } from "mendix";
 import { Big } from "big.js";
 import { CSSProperties } from "react";
 
-export type ProgressTypeEnum = "line" | "circle" | "dashboard";
+export type PrpProgressTypeEnum = "line" | "circle" | "dashboard";
 
-export type StatusEnum = "auto" | "normal" | "active" | "success" | "exception";
+export type PrpStatusEnum = "auto" | "normal" | "active" | "success" | "exception";
 
-export type LineSizeEnum = "medium" | "small";
-
-export type StrokeLinecapEnum = "round" | "square" | "butt";
+export type PrpLineSizeEnum = "medium" | "small";
 
 export interface IRISProgressContainerProps {
     name: string;
     class: string;
     style?: CSSProperties;
     tabIndex?: number;
-    value: DynamicValue<Big>;
-    maxValue?: DynamicValue<Big>;
-    successValue?: DynamicValue<Big>;
-    progressType: ProgressTypeEnum;
-    showInfo: boolean;
-    label?: DynamicValue<string>;
-    status: StatusEnum;
-    exceptionWhen?: DynamicValue<boolean>;
-    lineSize: LineSizeEnum;
-    circleSize: number;
-    steps: number;
-    strokeColor?: DynamicValue<string>;
-    railColor?: DynamicValue<string>;
-    strokeLinecap: StrokeLinecapEnum;
-    onClick?: ActionValue;
+    prpValue: DynamicValue<Big>;
+    prpMaxValue?: DynamicValue<Big>;
+    prpSuccessValue?: DynamicValue<Big>;
+    prpProgressType: PrpProgressTypeEnum;
+    prpShowInfo: boolean;
+    prpLabel?: DynamicValue<string>;
+    prpStatus: PrpStatusEnum;
+    prpExceptionWhen?: DynamicValue<boolean>;
+    prpLineSize: PrpLineSizeEnum;
+    prpCircleSize: number;
+    prpSteps: number;
+    prpStrokeColor?: DynamicValue<string>;
+    prpOnClick?: ActionValue;
 }
 
 export interface IRISProgressPreviewProps {
@@ -48,19 +44,17 @@ export interface IRISProgressPreviewProps {
     readOnly: boolean;
     renderMode: "design" | "xray" | "structure";
     translate: (text: string) => string;
-    value: string;
-    maxValue: string;
-    successValue: string;
-    progressType: ProgressTypeEnum;
-    showInfo: boolean;
-    label: string;
-    status: StatusEnum;
-    exceptionWhen: string;
-    lineSize: LineSizeEnum;
-    circleSize: number | null;
-    steps: number | null;
-    strokeColor: string;
-    railColor: string;
-    strokeLinecap: StrokeLinecapEnum;
-    onClick: {} | null;
+    prpValue: string;
+    prpMaxValue: string;
+    prpSuccessValue: string;
+    prpProgressType: PrpProgressTypeEnum;
+    prpShowInfo: boolean;
+    prpLabel: string;
+    prpStatus: PrpStatusEnum;
+    prpExceptionWhen: string;
+    prpLineSize: PrpLineSizeEnum;
+    prpCircleSize: number | null;
+    prpSteps: number | null;
+    prpStrokeColor: string;
+    prpOnClick: {} | null;
 }

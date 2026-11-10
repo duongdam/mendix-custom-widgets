@@ -1,8 +1,8 @@
 {
-  "name": "irisselect",
-  "widgetName": "IRISSelect",
+  "name": "axnewselecter",
+  "widgetName": "AxNewSelecter",
   "version": "1.0.0",
-  "description": "IRIS Select widget — Ant Design Select bound to a String/Enum attribute.",
+  "description": "Ax New Selecter widget — Ant Design Select (single or multiple).",
   "copyright": "IRIS Project",
   "license": "Apache-2.0",
   "packagePath": "com.iris.widgets",
@@ -10,9 +10,9 @@
     "projectPath": ""
   },
   "mxpackage": {
-    "name": "IRISSelect",
+    "name": "AxNewSelecter",
     "type": "widget",
-    "mpkName": "IRISSelect.mpk"
+    "mpkName": "AxNewSelecter.mpk"
   },
   "testProject": {
     "githubUrl": ""
@@ -37,7 +37,6 @@
     "typescript": "5.9.3"
   },
   "dependencies": {
-    "@iris/antd-kit": "workspace:*",
     "antd": "6.5.4",
     "big.js": "^6.2.2",
     "classnames": "^2.5.1"

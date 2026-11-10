@@ -6,16 +6,16 @@
 import { ActionValue, DynamicValue } from "mendix";
 import { CSSProperties } from "react";
 
-export type VariantEnum = "primary" | "secondary";
+export type PrpVariantEnum = "primary" | "secondary";
 
 export interface IRISButtonContainerProps {
     name: string;
     class: string;
     style?: CSSProperties;
     tabIndex?: number;
-    caption: DynamicValue<string>;
-    variant: VariantEnum;
-    onClick?: ActionValue;
+    prpCaption: DynamicValue<string>;
+    prpVariant: PrpVariantEnum;
+    prpOnClick?: ActionValue;
 }
 
 export interface IRISButtonPreviewProps {
@@ -29,7 +29,7 @@ export interface IRISButtonPreviewProps {
     readOnly: boolean;
     renderMode: "design" | "xray" | "structure";
     translate: (text: string) => string;
-    caption: string;
-    variant: VariantEnum;
-    onClick: {} | null;
+    prpCaption: string;
+    prpVariant: PrpVariantEnum;
+    prpOnClick: {} | null;
 }

@@ -8,14 +8,14 @@
     <icon/>
     <properties>
         <propertyGroup caption="General">
-            <property key="title" type="attribute" required="true">
+            <property key="prpTitle" type="attribute" required="true">
                 <caption>Title attribute</caption>
                 <description>Editable attribute shown as the card title.</description>
                 <attributeTypes>
                     <attributeType name="String"/>
                 </attributeTypes>
             </property>
-            <property key="items" type="datasource" isList="true" required="false">
+            <property key="prpItems" type="datasource" isList="true" required="false">
                 <caption>Items</caption>
                 <description>Data source whose item count is shown on the card.</description>
             </property>

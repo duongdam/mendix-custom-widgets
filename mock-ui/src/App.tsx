@@ -6,10 +6,10 @@ import { AX_COMMON_VERSION } from "@iris/ax-common";
 // import { IRISCardDemo } from "./IRISCardDemo";
 import { IRISPanelDemo } from "./IRISPanelDemo";
 import { IRISProgressDemo } from "./IRISProgressDemo";
-import { IRISSelectDemo } from "./IRISSelectDemo";
-import { IRISDatePickerDemo } from "./IRISDatePickerDemo";
+import { AxNewDatePickerDemo } from "./AxNewDatePickerDemo";
 import { IRISSegmentedDemo } from "./IRISSegmentedDemo";
 import { IRISStepsDemo } from "./IRISStepsDemo";
+import { AxNewSelecterDemo } from "./AxNewSelecterDemo";
 import { AxMultiSelectDemo } from "./AxMultiSelectDemo";
 import { AxNewCustomTableDatasourceDemo } from "./AxNewCustomTableDatasourceDemo";
 import { AxNewCustomTableDynamicDemo } from "./AxNewCustomTableDynamicDemo";
@@ -31,8 +31,8 @@ const DEMOS: [DemoEntry, ...DemoEntry[]] = [
     { key: "gantt", label: "IRISGantt", component: IRISGanttDemo },
     { key: "panel", label: "IRISPanel", component: IRISPanelDemo },
     { key: "progress", label: "IRISProgress", component: IRISProgressDemo },
-    { key: "select", label: "IRISSelect", component: IRISSelectDemo },
-    { key: "date-picker", label: "IRISDatePicker", component: IRISDatePickerDemo },
+    { key: "select", label: "AxNewSelecter", component: AxNewSelecterDemo },
+    { key: "date-picker", label: "AxNewDatePicker", component: AxNewDatePickerDemo },
     { key: "segmented", label: "IRISSegmented", component: IRISSegmentedDemo },
     { key: "steps", label: "IRISSteps", component: IRISStepsDemo },
     { key: "multi-select", label: "AxMultiSelect", component: AxMultiSelectDemo },

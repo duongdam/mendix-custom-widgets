@@ -7,7 +7,7 @@ import { GanttStore } from "./store/GanttStore";
 import "./styles/IRISGantt.css";
 
 export function IRISGantt(props: IRISGanttContainerProps): ReactElement {
-    const [store] = useState(() => new GanttStore(props.scale));
+    const [store] = useState(() => new GanttStore(props.prpScale));
 
     return <GanttSync {...props} store={store} />;
 }

@@ -3,17 +3,17 @@ import { IRISCardContainerProps } from "../typings/IRISCardProps";
 
 import "./ui/IRISCard.css";
 
-export function IRISCard({ title, items }: IRISCardContainerProps): ReactElement {
-    const isLoading = title.status === "loading" || items?.status === "loading";
-    const count = items?.items?.length ?? 0;
+export function IRISCard({ prpTitle, prpItems }: IRISCardContainerProps): ReactElement {
+    const isLoading = prpTitle.status === "loading" || prpItems?.status === "loading";
+    const count = prpItems?.items?.length ?? 0;
 
     return (
         <div className="iris-card">
             <input
                 className="iris-card__title"
-                value={title.value ?? ""}
-                readOnly={title.readOnly}
-                onChange={event => title.setValue(event.target.value)}
+                value={prpTitle.value ?? ""}
+                readOnly={prpTitle.readOnly}
+                onChange={event => prpTitle.setValue(event.target.value)}
             />
             <div className="iris-card__count">{isLoading ? "Loading…" : `${count} item(s)`}</div>
         </div>

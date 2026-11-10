@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<widget
+    id="com.iris.widgets.AxNewSelecter"
+    pluginWidget="true"
+    needsEntityContext="true"
+    offlineCapable="true"
+    supportedPlatform="Web"
+    xmlns="http://www.mendix.com/widget/1.0/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.mendix.com/widget/1.0/ ../node_modules/mendix/custom_widget.xsd"
+>
+    <name>Ax New Selecter</name>
+    <description>Ant Design Select (single or multiple) with virtualized options for large lists.</description>
+    <icon />
+    <properties>
+        <propertyGroup caption="General">
+            <property key="prpMode" type="enumeration" defaultValue="single">
+                <caption>Mode</caption>
+                <description>Single: one item can be selected. Multiple: several items can be selected.</description>
+                <enumerationValues>
+                    <enumerationValue key="single">Single</enumerationValue>
+                    <enumerationValue key="multiple">Multiple</enumerationValue>
+                </enumerationValues>
+            </property>
+            <property key="prpPlaceholder" type="expression" required="false">
+                <caption>Placeholder</caption>
+                <description />
+                <returnType type="String" />
+            </property>
+            <property key="prpShowSearch" type="boolean" defaultValue="true">
+                <caption>Show Search</caption>
+                <description>Filter options by typing.</description>
+            </property>
+            <property key="prpAllowClear" type="boolean" defaultValue="true">
+                <caption>Allow Clear</caption>
+                <description>Shows a clear button that empties the selection.</description>
+            </property>
+            <property key="prpSize" type="enumeration" defaultValue="medium">
+                <caption>Size</caption>
+                <description />
+                <enumerationValues>
+                    <enumerationValue key="small">Small</enumerationValue>
+                    <enumerationValue key="medium">Medium</enumerationValue>
+                    <enumerationValue key="large">Large</enumerationValue>
+                </enumerationValues>
+            </property>
+        </propertyGroup>
+
+        <propertyGroup caption="Data Source">
+            <propertyGroup caption="Selected Items">
+                <property key="prpSelectedItems" type="expression" required="false">
+                    <caption>Selected Items</caption>
+                    <description>Comma separated keys of the selected items (example: "123,456,789").</description>
+                    <returnType type="String" />
+                </property>
+            </propertyGroup>
+            <propertyGroup caption="Items">
+                <property key="prpItems" type="datasource" isList="true" required="true">
+                    <caption>Items</caption>
+                    <description>Datasource containing the items list.</description>
+                </property>
+                <property key="prpKeyAttribute" type="attribute" dataSource="prpItems" required="true">
+                    <caption>Key Attribute</caption>
+                    <description />
+                    <attributeTypes>
+                        <attributeType name="Long" />
+                        <attributeType name="String" />
+                    </attributeTypes>
+                </property>
+                <property key="prpNameAttribute" type="attribute" dataSource="prpItems" required="true">
+                    <caption>Display Attribute</caption>
+                    <description />
+                    <attributeTypes>
+                        <attributeType name="String" />
+                    </attributeTypes>
+                </property>
+            </propertyGroup>
+        </propertyGroup>
+
+        <propertyGroup caption="Events">
+            <property key="prpOnChange" type="action" required="false">
+                <caption>On Change</caption>
+                <description>Action executed whenever the selected items change</description>
+                <actionVariables>
+                    <actionVariable key="selectedKeys" type="String" required="true" caption="Selected Keys" />
+                </actionVariables>
+            </property>
+        </propertyGroup>
+    </properties>
+</widget>

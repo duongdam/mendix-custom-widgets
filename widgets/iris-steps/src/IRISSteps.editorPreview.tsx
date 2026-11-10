@@ -9,11 +9,11 @@ const SAMPLE_ITEMS = ["Step 1", "Step 2", "Step 3"].map(title => ({ key: title, 
 
 export function preview(props: IRISStepsPreviewProps): ReactElement {
     const items =
-        props.itemsSource === "static" && props.staticItems.length > 0
-            ? props.staticItems.map((item, index) => ({
+        props.prpItemsSource === "static" && props.prpStaticItems.length > 0
+            ? props.prpStaticItems.map((item, index) => ({
                   key: String(index),
-                  title: item.title,
-                  description: item.description || undefined
+                  title: item.prpTitle,
+                  description: item.prpDescription || undefined
               }))
             : SAMPLE_ITEMS;
 
@@ -23,11 +23,10 @@ export function preview(props: IRISStepsPreviewProps): ReactElement {
             style={props.styleObject}
             items={items}
             current={0}
-            status={props.status}
-            type={props.stepsType}
-            orientation={props.orientation}
-            titlePlacement={props.titlePlacement}
-            size={props.size}
+            status={"process"}
+            type={props.prpStepsType}
+            orientation={props.prpOrientation}
+            size={props.prpSize}
         />
     );
 }

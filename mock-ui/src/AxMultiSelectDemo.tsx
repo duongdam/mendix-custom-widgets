@@ -111,12 +111,12 @@ export function AxMultiSelectDemo() {
                 prpPlaceholder={createDynamicValue("Search...")}
                 prpShowSearch={createDynamicValue(true)}
                 prpTextSearch={createDynamicValue("")}
-                type={type}
+                prpType={type}
                 prpSelectedItems={createDynamicValue(externalSelectedItems)}
-                items={createListValue(records)}
-                keyAttribute={keyAttribute}
-                nameAttribute={nameAttribute}
-                onChange={onChange}
+                prpItems={createListValue(records)}
+                prpKeyAttribute={keyAttribute}
+                prpNameAttribute={nameAttribute}
+                prpOnChange={onChange}
             />
             <p>
                 Last change: <code>{summarizeKeys(lastChange)}</code> ({changeCount} time(s))

@@ -6,11 +6,11 @@ import { captureElement } from "./utils/capture";
 import "./ui/AxCapture.css";
 
 export function AxCapture({
-    targetName,
-    fileName,
-    format,
-    showButton,
-    buttonCaption
+    prpTargetName: targetName,
+    prpFileName: fileName,
+    prpFormat: format,
+    prpShowButton: showButton,
+    prpButtonCaption: buttonCaption
 }: AxCaptureContainerProps): ReactElement {
     const [isCapturing, setIsCapturing] = useState(false);
     const capturingRef = useRef(false);

@@ -1,6 +1,7 @@
 import { CSSProperties, ReactElement } from "react";
 import { Segmented } from "antd";
-import { FieldValidation, IrisAntdProvider, OptionItem } from "@iris/antd-kit";
+import { OptionItem } from "../utils";
+import { FieldValidation } from "./FieldValidation";
 import classNames from "classnames";
 
 export interface SegmentedViewProps {
@@ -18,7 +19,6 @@ export interface SegmentedViewProps {
 
 export function SegmentedView(props: SegmentedViewProps): ReactElement {
     return (
-        <IrisAntdProvider>
             <div className={classNames("iris-segmented", props.className)} style={props.style}>
                 <Segmented<string>
                     options={props.options}
@@ -33,6 +33,5 @@ export function SegmentedView(props: SegmentedViewProps): ReactElement {
                 />
                 <FieldValidation message={props.validation} />
             </div>
-        </IrisAntdProvider>
     );
 }

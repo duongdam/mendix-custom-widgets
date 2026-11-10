@@ -7,11 +7,20 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.mendix.com/widget/1.0/ ../node_modules/mendix/custom_widget.xsd"
 >
-    <name>Ax New Selecter</name>
+    <name>Ax Multi Select</name>
     <description>High performance multi-selecter widget with virtualization and debounced filter</description>
     <icon />
     <properties>
         <propertyGroup caption="General">
+            <property key="prpType" type="enumeration" required="true" defaultValue="multi">
+                <caption>Type</caption>
+                <description>Type of multi-select list</description>
+                <enumerationValues>
+                    <enumerationValue key="multi">Multi</enumerationValue>
+                    <enumerationValue key="single">Single</enumerationValue>
+                    <enumerationValue key="onlyView">Only View</enumerationValue>
+                </enumerationValues>
+            </property>
             <property key="prpHeight" type="expression" required="true" defaultValue="360">
                 <caption>Container Height (px)</caption>
                 <description />
@@ -32,22 +41,10 @@
                 <description />
                 <returnType type="Boolean" />
             </property>
-            <property key="prpTextSearch" type="expression" required="false" defaultValue="true">
-                <caption>Show Search</caption>
+            <property key="prpTextSearch" type="expression" required="false">
+                <caption>Initial Search Text</caption>
                 <description />
                 <returnType type="String" />
-            </property>
-        </propertyGroup>
-
-        <propertyGroup caption="Type">
-            <property key="type" type="enumeration" required="true" defaultValue="multi">
-                <caption>Type</caption>
-                <description>Type of multi-select list</description>
-                <enumerationValues>
-                    <enumerationValue key="multi">Multi</enumerationValue>
-                    <enumerationValue key="single">Single</enumerationValue>
-                    <enumerationValue key="onlyView">Only View</enumerationValue>
-                </enumerationValues>
             </property>
         </propertyGroup>
 
@@ -60,11 +57,11 @@
                 </property>
             </propertyGroup>
             <propertyGroup caption="Items">
-                <property key="items" type="datasource" isList="true" required="true">
+                <property key="prpItems" type="datasource" isList="true" required="true">
                     <caption>Items</caption>
                     <description>Datasource containing the items list</description>
                 </property>
-                <property key="keyAttribute" type="attribute" dataSource="items" required="true">
+                <property key="prpKeyAttribute" type="attribute" dataSource="prpItems" required="true">
                     <caption>Key Attribute</caption>
                     <description />
                     <attributeTypes>
@@ -72,7 +69,7 @@
                         <attributeType name="String" />
                     </attributeTypes>
                 </property>
-                <property key="nameAttribute" type="attribute" dataSource="items" required="true">
+                <property key="prpNameAttribute" type="attribute" dataSource="prpItems" required="true">
                     <caption>Display Attribute</caption>
                     <description />
                     <attributeTypes>
@@ -83,7 +80,7 @@
         </propertyGroup>
 
         <propertyGroup caption="Events">
-            <property key="onChange" type="action" required="false">
+            <property key="prpOnChange" type="action" required="false">
                 <caption>On Change</caption>
                 <description>Action executed whenever the selected items change</description>
                 <actionVariables>

@@ -1,6 +1,5 @@
 import { CSSProperties, ReactElement } from "react";
 import { Steps } from "antd";
-import { IrisAntdProvider } from "@iris/antd-kit";
 import classNames from "classnames";
 
 export interface StepItem {
@@ -19,7 +18,6 @@ export interface StepsViewProps {
     status: StepStatus;
     type: "default" | "navigation" | "dot" | "inline" | "panel";
     orientation: "horizontal" | "vertical";
-    titlePlacement: "horizontal" | "vertical";
     size: "medium" | "small";
     /** When set, steps are clickable. */
     onChange?: (current: number) => void;
@@ -27,7 +25,6 @@ export interface StepsViewProps {
 
 export function StepsView(props: StepsViewProps): ReactElement {
     return (
-        <IrisAntdProvider>
             <div className={classNames("iris-steps", props.className)} style={props.style}>
                 <Steps
                     // antd v6 renamed the step item's `description` to `content`.
@@ -36,11 +33,9 @@ export function StepsView(props: StepsViewProps): ReactElement {
                     status={props.status}
                     type={props.type}
                     orientation={props.orientation}
-                    titlePlacement={props.titlePlacement}
                     size={props.size}
                     onChange={props.onChange}
                 />
             </div>
-        </IrisAntdProvider>
     );
 }

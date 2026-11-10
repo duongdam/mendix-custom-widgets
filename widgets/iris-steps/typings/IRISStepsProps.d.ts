@@ -7,26 +7,22 @@ import { ActionValue, DynamicValue, EditableValue, ListExpressionValue, ListValu
 import { Big } from "big.js";
 import { CSSProperties } from "react";
 
-export type ItemsSourceEnum = "static" | "datasource";
+export type PrpItemsSourceEnum = "static" | "datasource";
 
-export interface StaticItemsType {
-    title: DynamicValue<string>;
-    description?: DynamicValue<string>;
+export interface PrpStaticItemsType {
+    prpTitle: DynamicValue<string>;
+    prpDescription?: DynamicValue<string>;
 }
 
-export type StatusEnum = "process" | "wait" | "finish" | "error";
+export type PrpStepsTypeEnum = "default" | "navigation" | "dot" | "inline" | "panel";
 
-export type StepsTypeEnum = "default" | "navigation" | "dot" | "inline" | "panel";
+export type PrpOrientationEnum = "horizontal" | "vertical";
 
-export type OrientationEnum = "horizontal" | "vertical";
+export type PrpSizeEnum = "medium" | "small";
 
-export type TitlePlacementEnum = "horizontal" | "vertical";
-
-export type SizeEnum = "medium" | "small";
-
-export interface StaticItemsPreviewType {
-    title: string;
-    description: string;
+export interface PrpStaticItemsPreviewType {
+    prpTitle: string;
+    prpDescription: string;
 }
 
 export interface IRISStepsContainerProps {
@@ -34,20 +30,18 @@ export interface IRISStepsContainerProps {
     class: string;
     style?: CSSProperties;
     tabIndex?: number;
-    current: EditableValue<Big>;
-    itemsSource: ItemsSourceEnum;
-    staticItems: StaticItemsType[];
-    itemsDatasource?: ListValue;
-    itemTitle?: ListExpressionValue<string>;
-    itemDescription?: ListExpressionValue<string>;
-    clickable: boolean;
-    status: StatusEnum;
-    errorWhen?: DynamicValue<boolean>;
-    stepsType: StepsTypeEnum;
-    orientation: OrientationEnum;
-    titlePlacement: TitlePlacementEnum;
-    size: SizeEnum;
-    onChangeAction?: ActionValue;
+    prpCurrent: EditableValue<Big>;
+    prpItemsSource: PrpItemsSourceEnum;
+    prpStaticItems: PrpStaticItemsType[];
+    prpItemsDatasource?: ListValue;
+    prpItemTitle?: ListExpressionValue<string>;
+    prpItemDescription?: ListExpressionValue<string>;
+    prpClickable: boolean;
+    prpErrorWhen?: DynamicValue<boolean>;
+    prpStepsType: PrpStepsTypeEnum;
+    prpOrientation: PrpOrientationEnum;
+    prpSize: PrpSizeEnum;
+    prpOnChange?: ActionValue;
 }
 
 export interface IRISStepsPreviewProps {
@@ -61,18 +55,16 @@ export interface IRISStepsPreviewProps {
     readOnly: boolean;
     renderMode: "design" | "xray" | "structure";
     translate: (text: string) => string;
-    current: string;
-    itemsSource: ItemsSourceEnum;
-    staticItems: StaticItemsPreviewType[];
-    itemsDatasource: {} | { caption: string } | { type: string } | null;
-    itemTitle: string;
-    itemDescription: string;
-    clickable: boolean;
-    status: StatusEnum;
-    errorWhen: string;
-    stepsType: StepsTypeEnum;
-    orientation: OrientationEnum;
-    titlePlacement: TitlePlacementEnum;
-    size: SizeEnum;
-    onChangeAction: {} | null;
+    prpCurrent: string;
+    prpItemsSource: PrpItemsSourceEnum;
+    prpStaticItems: PrpStaticItemsPreviewType[];
+    prpItemsDatasource: {} | { caption: string } | { type: string } | null;
+    prpItemTitle: string;
+    prpItemDescription: string;
+    prpClickable: boolean;
+    prpErrorWhen: string;
+    prpStepsType: PrpStepsTypeEnum;
+    prpOrientation: PrpOrientationEnum;
+    prpSize: PrpSizeEnum;
+    prpOnChange: {} | null;
 }

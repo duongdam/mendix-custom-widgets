@@ -79,36 +79,6 @@ importers:
         specifier: 7.3.6
         version: 7.3.6(@types/node@25.9.5)(lightningcss@1.33.0)(sass@1.102.0)(terser@5.49.2)(yaml@2.9.0)
 
-  shared/antd-kit:
-    devDependencies:
-      '@types/big.js':
-        specifier: 6.2.2
-        version: 6.2.2
-      '@types/react':
-        specifier: 19.2.18
-        version: 19.2.18
-      '@types/react-dom':
-        specifier: 19.2.4
-        version: 19.2.4(@types/react@19.2.18)
-      antd:
-        specifier: 6.5.4
-        version: 6.5.4(moment@2.30.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
-      big.js:
-        specifier: ^6.2.2
-        version: 6.2.2
-      mendix:
-        specifier: 11.13.0
-        version: 11.13.0
-      react:
-        specifier: 19.2.8
-        version: 19.2.8
-      react-dom:
-        specifier: 19.2.8
-        version: 19.2.8(react@19.2.8)
-      typescript:
-        specifier: 5.9.3
-        version: 5.9.3
-
   shared/ax-capture:
     dependencies:
       '@types/react':
@@ -213,9 +183,6 @@ importers:
 
   widgets/iris-datepicker:
     dependencies:
-      '@iris/antd-kit':
-        specifier: workspace:*
-        version: link:../../shared/antd-kit
       '@types/react':
         specifier: ^19.0.0
         version: 19.2.18
@@ -406,9 +373,6 @@ importers:
 
   widgets/iris-progress:
     dependencies:
-      '@iris/antd-kit':
-        specifier: workspace:*
-        version: link:../../shared/antd-kit
       '@types/react':
         specifier: ^19.0.0
         version: 19.2.18
@@ -455,9 +419,6 @@ importers:
 
   widgets/iris-segmented:
     dependencies:
-      '@iris/antd-kit':
-        specifier: workspace:*
-        version: link:../../shared/antd-kit
       '@types/react':
         specifier: ^19.0.0
         version: 19.2.18
@@ -504,9 +465,6 @@ importers:
 
   widgets/iris-select:
     dependencies:
-      '@iris/antd-kit':
-        specifier: workspace:*
-        version: link:../../shared/antd-kit
       '@types/react':
         specifier: ^19.0.0
         version: 19.2.18
@@ -553,9 +511,6 @@ importers:
 
   widgets/iris-steps:
     dependencies:
-      '@iris/antd-kit':
-        specifier: workspace:*
-        version: link:../../shared/antd-kit
       '@types/react':
         specifier: ^19.0.0
         version: 19.2.18
@@ -602,9 +557,6 @@ importers:
 
   widgets/iris-table:
     dependencies:
-      '@iris/antd-kit':
-        specifier: workspace:*
-        version: link:../../shared/antd-kit
       '@types/react':
         specifier: ^19.0.0
         version: 19.2.18

@@ -18,300 +18,279 @@
     <icon />
     <properties>
         <propertyGroup caption="Tasks">
-            <propertyGroup caption="Tasks">
-                <property key="tasks" type="datasource" isList="true" required="true">
-                    <caption>Tasks</caption>
-                    <description>All blocks, groups and tasks in one list, linked through Parent Id.</description>
-                </property>
-                <property key="taskIdAttr" type="attribute" dataSource="tasks" required="true">
-                    <caption>Id</caption>
-                    <description>Unique, stable id.</description>
-                    <attributeTypes>
-                        <attributeType name="String" />
-                        <attributeType name="Integer" />
-                        <attributeType name="Long" />
-                        <attributeType name="AutoNumber" />
-                    </attributeTypes>
-                </property>
-                <property key="taskParentIdAttr" type="attribute" dataSource="tasks" required="false">
-                    <caption>Parent Id</caption>
-                    <description>Id of the parent (empty for top-level blocks).</description>
-                    <attributeTypes>
-                        <attributeType name="String" />
-                        <attributeType name="Integer" />
-                        <attributeType name="Long" />
-                    </attributeTypes>
-                </property>
-                <property key="taskTextAttr" type="attribute" dataSource="tasks" required="true">
-                    <caption>Name</caption>
-                    <description />
-                    <attributeTypes>
-                        <attributeType name="String" />
-                    </attributeTypes>
-                </property>
-                <property key="taskTypeAttr" type="attribute" dataSource="tasks" required="false">
-                    <caption>Type</caption>
-                    <description>e.g. block / group / task. See Hierarchy settings.</description>
-                    <attributeTypes>
-                        <attributeType name="String" />
-                        <attributeType name="Enum" />
-                    </attributeTypes>
-                </property>
-                <property key="taskStartAttr" type="attribute" dataSource="tasks" required="true">
-                    <caption>Start Date</caption>
-                    <description>Ignored for summary types (their dates are computed from their children).</description>
-                    <attributeTypes>
-                        <attributeType name="DateTime" />
-                    </attributeTypes>
-                </property>
-                <property key="taskEndAttr" type="attribute" dataSource="tasks" required="false">
-                    <caption>End Date</caption>
-                    <description>Either End Date or Duration is required.</description>
-                    <attributeTypes>
-                        <attributeType name="DateTime" />
-                    </attributeTypes>
-                </property>
-                <property key="taskDurationAttr" type="attribute" dataSource="tasks" required="false">
-                    <caption>Duration</caption>
-                    <description>In Duration Unit. Only used when End Date is not set.</description>
-                    <attributeTypes>
-                        <attributeType name="Integer" />
-                        <attributeType name="Long" />
-                        <attributeType name="Decimal" />
-                    </attributeTypes>
-                </property>
-                <property key="taskProgressAttr" type="attribute" dataSource="tasks" required="false">
-                    <caption>Progress (%)</caption>
-                    <description>0 to 100.</description>
-                    <attributeTypes>
-                        <attributeType name="Integer" />
-                        <attributeType name="Long" />
-                        <attributeType name="Decimal" />
-                    </attributeTypes>
-                </property>
-                <property key="taskOrderAttr" type="attribute" dataSource="tasks" required="false">
-                    <caption>Sort Order</caption>
-                    <description>Order within the parent (ascending). Falls back to datasource order.</description>
-                    <attributeTypes>
-                        <attributeType name="Integer" />
-                        <attributeType name="Long" />
-                        <attributeType name="Decimal" />
-                    </attributeTypes>
-                </property>
-                <property key="taskColorAttr" type="attribute" dataSource="tasks" required="false">
-                    <caption>Color</caption>
-                    <description>CSS color of the bar, e.g. "#52c41a".</description>
-                    <attributeTypes>
-                        <attributeType name="String" />
-                    </attributeTypes>
-                </property>
-                <property key="taskReadOnlyAttr" type="attribute" dataSource="tasks" required="false">
-                    <caption>Read-only</caption>
-                    <description>When true, the task cannot be dragged or resized.</description>
-                    <attributeTypes>
-                        <attributeType name="Boolean" />
-                    </attributeTypes>
-                </property>
-            </propertyGroup>
-            <propertyGroup caption="Hierarchy">
-                <property key="summaryTypes" type="string" defaultValue="block,group">
-                    <caption>Summary Types</caption>
-                    <description>Comma-separated Type values rendered as summary bars spanning their children.</description>
-                </property>
-                <property key="typeHierarchy" type="string" defaultValue="block&gt;group&gt;task">
-                    <caption>Type Hierarchy</caption>
-                    <description>Allowed nesting, top to bottom, e.g. "block&gt;group&gt;task": a task may only be dropped under a group, a group under a block. Empty = no restriction.</description>
-                </property>
-                <property key="openLevel" type="integer" defaultValue="1">
-                    <caption>Expanded Levels</caption>
-                    <description>How many levels start expanded. 0 = all collapsed (fastest), 1 = blocks open, 99 = all open.</description>
-                </property>
-            </propertyGroup>
+            <property key="prpTasks" type="datasource" isList="true" required="true">
+                <caption>Tasks</caption>
+                <description>All blocks, groups and tasks in one list, linked through Parent Id.</description>
+            </property>
+            <property key="prpTaskIdAttr" type="attribute" dataSource="prpTasks" required="true">
+                <caption>Id</caption>
+                <description>Unique, stable id.</description>
+                <attributeTypes>
+                    <attributeType name="String" />
+                    <attributeType name="Integer" />
+                    <attributeType name="Long" />
+                    <attributeType name="AutoNumber" />
+                </attributeTypes>
+            </property>
+            <property key="prpTaskParentIdAttr" type="attribute" dataSource="prpTasks" required="false">
+                <caption>Parent Id</caption>
+                <description>Id of the parent (empty for top-level blocks).</description>
+                <attributeTypes>
+                    <attributeType name="String" />
+                    <attributeType name="Integer" />
+                    <attributeType name="Long" />
+                </attributeTypes>
+            </property>
+            <property key="prpTaskTextAttr" type="attribute" dataSource="prpTasks" required="true">
+                <caption>Name</caption>
+                <description>Task label.</description>
+                <attributeTypes>
+                    <attributeType name="String" />
+                </attributeTypes>
+            </property>
+            <property key="prpTaskTypeAttr" type="attribute" dataSource="prpTasks" required="false">
+                <caption>Type</caption>
+                <description>e.g. block / group / task. See Hierarchy settings.</description>
+                <attributeTypes>
+                    <attributeType name="String" />
+                    <attributeType name="Enum" />
+                </attributeTypes>
+            </property>
+            <property key="prpTaskStartAttr" type="attribute" dataSource="prpTasks" required="true">
+                <caption>Start Date</caption>
+                <description>Ignored for summary types (their dates are computed from their children).</description>
+                <attributeTypes>
+                    <attributeType name="DateTime" />
+                </attributeTypes>
+            </property>
+            <property key="prpTaskEndAttr" type="attribute" dataSource="prpTasks" required="false">
+                <caption>End Date</caption>
+                <description>Either End Date or Duration is required.</description>
+                <attributeTypes>
+                    <attributeType name="DateTime" />
+                </attributeTypes>
+            </property>
+            <property key="prpTaskDurationAttr" type="attribute" dataSource="prpTasks" required="false">
+                <caption>Duration</caption>
+                <description>In Duration Unit. Only used when End Date is not set.</description>
+                <attributeTypes>
+                    <attributeType name="Integer" />
+                    <attributeType name="Long" />
+                    <attributeType name="Decimal" />
+                </attributeTypes>
+            </property>
+            <property key="prpTaskProgressAttr" type="attribute" dataSource="prpTasks" required="false">
+                <caption>Progress (%)</caption>
+                <description>0 to 100.</description>
+                <attributeTypes>
+                    <attributeType name="Integer" />
+                    <attributeType name="Long" />
+                    <attributeType name="Decimal" />
+                </attributeTypes>
+            </property>
+            <property key="prpTaskOrderAttr" type="attribute" dataSource="prpTasks" required="false">
+                <caption>Sort Order</caption>
+                <description>Order within the parent (ascending). Falls back to datasource order.</description>
+                <attributeTypes>
+                    <attributeType name="Integer" />
+                    <attributeType name="Long" />
+                    <attributeType name="Decimal" />
+                </attributeTypes>
+            </property>
+            <property key="prpTaskColorAttr" type="attribute" dataSource="prpTasks" required="false">
+                <caption>Color</caption>
+                <description>CSS color of the bar, e.g. "#52c41a".</description>
+                <attributeTypes>
+                    <attributeType name="String" />
+                </attributeTypes>
+            </property>
+            <property key="prpTaskReadOnlyAttr" type="attribute" dataSource="prpTasks" required="false">
+                <caption>Read-only</caption>
+                <description>When true, the task cannot be dragged or resized.</description>
+                <attributeTypes>
+                    <attributeType name="Boolean" />
+                </attributeTypes>
+            </property>
         </propertyGroup>
 
         <propertyGroup caption="Links">
-            <propertyGroup caption="Links">
-                <property key="links" type="datasource" isList="true" required="false">
-                    <caption>Links</caption>
-                    <description>Optional dependencies between tasks.</description>
-                </property>
-                <property key="linkIdAttr" type="attribute" dataSource="links" required="false">
-                    <caption>Id</caption>
-                    <description />
-                    <attributeTypes>
-                        <attributeType name="String" />
-                        <attributeType name="Integer" />
-                        <attributeType name="Long" />
-                        <attributeType name="AutoNumber" />
-                    </attributeTypes>
-                </property>
-                <property key="linkSourceAttr" type="attribute" dataSource="links" required="false">
-                    <caption>Source Task Id</caption>
-                    <description />
-                    <attributeTypes>
-                        <attributeType name="String" />
-                        <attributeType name="Integer" />
-                        <attributeType name="Long" />
-                    </attributeTypes>
-                </property>
-                <property key="linkTargetAttr" type="attribute" dataSource="links" required="false">
-                    <caption>Target Task Id</caption>
-                    <description />
-                    <attributeTypes>
-                        <attributeType name="String" />
-                        <attributeType name="Integer" />
-                        <attributeType name="Long" />
-                    </attributeTypes>
-                </property>
-                <property key="linkTypeAttr" type="attribute" dataSource="links" required="false">
-                    <caption>Type</caption>
-                    <description>"FS" (default), "SS", "FF" or "SF".</description>
-                    <attributeTypes>
-                        <attributeType name="String" />
-                        <attributeType name="Enum" />
-                    </attributeTypes>
-                </property>
-            </propertyGroup>
+            <property key="prpLinks" type="datasource" isList="true" required="false">
+                <caption>Links</caption>
+                <description>Optional dependencies between tasks.</description>
+            </property>
+            <property key="prpLinkIdAttr" type="attribute" dataSource="prpLinks" required="false">
+                <caption>Id</caption>
+                <description>Unique id of the link.</description>
+                <attributeTypes>
+                    <attributeType name="String" />
+                    <attributeType name="Integer" />
+                    <attributeType name="Long" />
+                    <attributeType name="AutoNumber" />
+                </attributeTypes>
+            </property>
+            <property key="prpLinkSourceAttr" type="attribute" dataSource="prpLinks" required="false">
+                <caption>Source Task Id</caption>
+                <description>Id of the task at this end of the link.</description>
+                <attributeTypes>
+                    <attributeType name="String" />
+                    <attributeType name="Integer" />
+                    <attributeType name="Long" />
+                </attributeTypes>
+            </property>
+            <property key="prpLinkTargetAttr" type="attribute" dataSource="prpLinks" required="false">
+                <caption>Target Task Id</caption>
+                <description>Id of the task at this end of the link.</description>
+                <attributeTypes>
+                    <attributeType name="String" />
+                    <attributeType name="Integer" />
+                    <attributeType name="Long" />
+                </attributeTypes>
+            </property>
+            <property key="prpLinkTypeAttr" type="attribute" dataSource="prpLinks" required="false">
+                <caption>Type</caption>
+                <description>"FS" (default), "SS", "FF" or "SF".</description>
+                <attributeTypes>
+                    <attributeType name="String" />
+                    <attributeType name="Enum" />
+                </attributeTypes>
+            </property>
         </propertyGroup>
 
-        <propertyGroup caption="Editing">
-            <propertyGroup caption="Drag &amp; drop">
-                <property key="allowDragMove" type="boolean" defaultValue="true">
-                    <caption>Move Bars</caption>
-                    <description />
-                </property>
-                <property key="allowResize" type="boolean" defaultValue="true">
-                    <caption>Resize Bars</caption>
-                    <description />
-                </property>
-                <property key="allowProgressDrag" type="boolean" defaultValue="true">
-                    <caption>Drag Progress</caption>
-                    <description />
-                </property>
-                <property key="allowReorder" type="boolean" defaultValue="true">
-                    <caption>Reorder / Re-parent Rows</caption>
-                    <description>Drag rows in the grid; validated against Type Hierarchy.</description>
-                </property>
-                <property key="allowLinkEdit" type="boolean" defaultValue="true">
-                    <caption>Create / Delete Links</caption>
-                    <description />
-                </property>
-            </propertyGroup>
-            <propertyGroup caption="Actions">
-                <property key="onTaskChange" type="action" required="false">
-                    <caption>On Task Change</caption>
-                    <description>After a bar is moved/resized/its progress dragged, or a row is re-ordered. Commit the new values; if the change is rejected (values unchanged), the bar snaps back.</description>
-                    <actionVariables>
-                        <actionVariable key="taskId" type="String" required="true" caption="Task Id" />
-                        <actionVariable key="startDate" type="DateTime" required="true" caption="Start Date" />
-                        <actionVariable key="endDate" type="DateTime" required="true" caption="End Date" />
-                        <actionVariable key="progress" type="Decimal" required="true" caption="Progress (%)" />
-                        <actionVariable key="parentId" type="String" required="false" caption="Parent Id" />
-                        <actionVariable key="sortOrder" type="Integer" required="true" caption="Index In Parent" />
-                    </actionVariables>
-                </property>
-                <property key="onLinkCreate" type="action" required="false">
-                    <caption>On Link Create</caption>
-                    <description />
-                    <actionVariables>
-                        <actionVariable key="sourceId" type="String" required="true" caption="Source Task Id" />
-                        <actionVariable key="targetId" type="String" required="true" caption="Target Task Id" />
-                        <actionVariable key="linkType" type="String" required="true" caption="Link Type" />
-                    </actionVariables>
-                </property>
-                <property key="onLinkDelete" type="action" required="false">
-                    <caption>On Link Delete</caption>
-                    <description />
-                    <actionVariables>
-                        <actionVariable key="linkId" type="String" required="true" caption="Link Id" />
-                    </actionVariables>
-                </property>
-                <property key="onTaskClick" type="action" required="false">
-                    <caption>On Task Click</caption>
-                    <description />
-                    <actionVariables>
-                        <actionVariable key="taskId" type="String" required="true" caption="Task Id" />
-                    </actionVariables>
-                </property>
-                <property key="onTaskDoubleClick" type="action" required="false">
-                    <caption>On Task Double Click</caption>
-                    <description>e.g. open an edit popup.</description>
-                    <actionVariables>
-                        <actionVariable key="taskId" type="String" required="true" caption="Task Id" />
-                    </actionVariables>
-                </property>
-                <property key="selectedTaskIdAttr" type="attribute" required="false">
-                    <caption>Selected Task Id</caption>
-                    <description>Written with the id of the clicked task.</description>
-                    <attributeTypes>
-                        <attributeType name="String" />
-                    </attributeTypes>
-                </property>
-            </propertyGroup>
+        <propertyGroup caption="Behavior">
+            <property key="prpSummaryTypes" type="string" defaultValue="block,group">
+                <caption>Summary Types</caption>
+                <description>Comma-separated Type values rendered as summary bars spanning their children.</description>
+            </property>
+            <property key="prpTypeHierarchy" type="string" defaultValue="block&gt;group&gt;task">
+                <caption>Type Hierarchy</caption>
+                <description>Allowed nesting, top to bottom, e.g. "block&gt;group&gt;task": a task may only be dropped under a group, a group under a block. Empty = no restriction.</description>
+            </property>
+            <property key="prpOpenLevel" type="integer" defaultValue="1">
+                <caption>Expanded Levels</caption>
+                <description>How many levels start expanded. 0 = all collapsed (fastest), 1 = blocks open, 99 = all open.</description>
+            </property>
+            <property key="prpAllowDragMove" type="boolean" defaultValue="true">
+                <caption>Move Bars</caption>
+                <description />
+            </property>
+            <property key="prpAllowResize" type="boolean" defaultValue="true">
+                <caption>Resize Bars</caption>
+                <description />
+            </property>
+            <property key="prpAllowProgressDrag" type="boolean" defaultValue="true">
+                <caption>Drag Progress</caption>
+                <description />
+            </property>
+            <property key="prpAllowReorder" type="boolean" defaultValue="true">
+                <caption>Reorder / Re-parent Rows</caption>
+                <description>Drag rows in the grid; validated against Type Hierarchy.</description>
+            </property>
+            <property key="prpAllowLinkEdit" type="boolean" defaultValue="true">
+                <caption>Create / Delete Links</caption>
+                <description />
+            </property>
         </propertyGroup>
 
-        <propertyGroup caption="View">
-            <propertyGroup caption="Timeline">
-                <property key="scale" type="enumeration" defaultValue="week">
-                    <caption>Default Scale</caption>
-                    <description>Wider scales render fewer columns — prefer week/month for multi-year plans.</description>
-                    <enumerationValues>
-                        <enumerationValue key="day">Day</enumerationValue>
-                        <enumerationValue key="week">Week</enumerationValue>
-                        <enumerationValue key="month">Month</enumerationValue>
-                        <enumerationValue key="quarter">Quarter</enumerationValue>
-                        <enumerationValue key="year">Year</enumerationValue>
-                    </enumerationValues>
-                </property>
-                <property key="durationUnit" type="enumeration" defaultValue="day">
-                    <caption>Duration Unit</caption>
-                    <description />
-                    <enumerationValues>
-                        <enumerationValue key="day">Day</enumerationValue>
-                        <enumerationValue key="hour">Hour</enumerationValue>
-                    </enumerationValues>
-                </property>
-                <property key="showToolbar" type="boolean" defaultValue="true">
-                    <caption>Show Toolbar</caption>
-                    <description>Scale switcher, expand/collapse all and "Today".</description>
-                </property>
-                <property key="locale" type="string" defaultValue="en">
-                    <caption>Locale</caption>
-                    <description>DHTMLX locale code, e.g. "en", "vi", "ja", "de".</description>
-                </property>
-            </propertyGroup>
-            <propertyGroup caption="Layout">
-                <property key="height" type="string" defaultValue="600px">
-                    <caption>Height</caption>
-                    <description>CSS height of the chart, e.g. "600px" or "70vh".</description>
-                </property>
-                <property key="gridWidth" type="integer" defaultValue="380">
-                    <caption>Grid Width (px)</caption>
-                    <description />
-                </property>
-                <property key="rowHeight" type="integer" defaultValue="32">
-                    <caption>Row Height (px)</caption>
-                    <description />
-                </property>
-                <property key="showStartColumn" type="boolean" defaultValue="true">
-                    <caption>Start Column</caption>
-                    <description />
-                </property>
-                <property key="showDurationColumn" type="boolean" defaultValue="true">
-                    <caption>Duration Column</caption>
-                    <description />
-                </property>
-                <property key="showProgress" type="boolean" defaultValue="true">
-                    <caption>Show Progress</caption>
-                    <description />
-                </property>
-            </propertyGroup>
-            <propertyGroup caption="Diagnostics">
-                <property key="logPerformance" type="boolean" defaultValue="false">
-                    <caption>Log Performance</caption>
-                    <description>Logs data-mapping and render timings to the browser console.</description>
-                </property>
-            </propertyGroup>
+        <propertyGroup caption="Events">
+            <property key="prpOnTaskChange" type="action" required="false">
+                <caption>On Task Change</caption>
+                <description>After a bar is moved/resized/its progress dragged, or a row is re-ordered. Commit the new values; if the change is rejected (values unchanged), the bar snaps back.</description>
+                <actionVariables>
+                    <actionVariable key="taskId" type="String" required="true" caption="Task Id" />
+                    <actionVariable key="startDate" type="DateTime" required="true" caption="Start Date" />
+                    <actionVariable key="endDate" type="DateTime" required="true" caption="End Date" />
+                    <actionVariable key="progress" type="Decimal" required="true" caption="Progress (%)" />
+                    <actionVariable key="parentId" type="String" required="false" caption="Parent Id" />
+                    <actionVariable key="sortOrder" type="Integer" required="true" caption="Index In Parent" />
+                </actionVariables>
+            </property>
+            <property key="prpOnLinkCreate" type="action" required="false">
+                <caption>On Link Create</caption>
+                <description />
+                <actionVariables>
+                    <actionVariable key="sourceId" type="String" required="true" caption="Source Task Id" />
+                    <actionVariable key="targetId" type="String" required="true" caption="Target Task Id" />
+                    <actionVariable key="linkType" type="String" required="true" caption="Link Type" />
+                </actionVariables>
+            </property>
+            <property key="prpOnLinkDelete" type="action" required="false">
+                <caption>On Link Delete</caption>
+                <description />
+                <actionVariables>
+                    <actionVariable key="linkId" type="String" required="true" caption="Link Id" />
+                </actionVariables>
+            </property>
+            <property key="prpOnTaskClick" type="action" required="false">
+                <caption>On Task Click</caption>
+                <description />
+                <actionVariables>
+                    <actionVariable key="taskId" type="String" required="true" caption="Task Id" />
+                </actionVariables>
+            </property>
+            <property key="prpOnTaskDoubleClick" type="action" required="false">
+                <caption>On Task Double Click</caption>
+                <description>e.g. open an edit popup.</description>
+                <actionVariables>
+                    <actionVariable key="taskId" type="String" required="true" caption="Task Id" />
+                </actionVariables>
+            </property>
+            <property key="prpSelectedTaskIdAttr" type="attribute" required="false">
+                <caption>Selected Task Id</caption>
+                <description>Written with the id of the clicked task.</description>
+                <attributeTypes>
+                    <attributeType name="String" />
+                </attributeTypes>
+            </property>
+        </propertyGroup>
+
+        <propertyGroup caption="Appearance">
+            <property key="prpScale" type="enumeration" defaultValue="week">
+                <caption>Default Scale</caption>
+                <description>Wider scales render fewer columns — prefer week/month for multi-year plans.</description>
+                <enumerationValues>
+                    <enumerationValue key="day">Day</enumerationValue>
+                    <enumerationValue key="week">Week</enumerationValue>
+                    <enumerationValue key="month">Month</enumerationValue>
+                    <enumerationValue key="quarter">Quarter</enumerationValue>
+                    <enumerationValue key="year">Year</enumerationValue>
+                </enumerationValues>
+            </property>
+            <property key="prpDurationUnit" type="enumeration" defaultValue="day">
+                <caption>Duration Unit</caption>
+                <description />
+                <enumerationValues>
+                    <enumerationValue key="day">Day</enumerationValue>
+                    <enumerationValue key="hour">Hour</enumerationValue>
+                </enumerationValues>
+            </property>
+            <property key="prpShowToolbar" type="boolean" defaultValue="true">
+                <caption>Show Toolbar</caption>
+                <description>Scale switcher, expand/collapse all and "Today".</description>
+            </property>
+            <property key="prpLocale" type="string" defaultValue="en">
+                <caption>Locale</caption>
+                <description>DHTMLX locale code, e.g. "en", "vi", "ja", "de".</description>
+            </property>
+            <property key="prpHeight" type="string" defaultValue="600px">
+                <caption>Height</caption>
+                <description>CSS height of the chart, e.g. "600px" or "70vh".</description>
+            </property>
+            <property key="prpShowStartColumn" type="boolean" defaultValue="true">
+                <caption>Start Column</caption>
+                <description />
+            </property>
+            <property key="prpShowDurationColumn" type="boolean" defaultValue="true">
+                <caption>Duration Column</caption>
+                <description />
+            </property>
+            <property key="prpShowProgress" type="boolean" defaultValue="true">
+                <caption>Show Progress</caption>
+                <description />
+            </property>
+            <property key="prpLogPerformance" type="boolean" defaultValue="false">
+                <caption>Log Performance</caption>
+                <description>Logs data-mapping and render timings to the browser console.</description>
+            </property>
         </propertyGroup>
     </properties>
 </widget>

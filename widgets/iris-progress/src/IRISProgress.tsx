@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import { bigToNumber, clamp, valueOrUndefined } from "@iris/antd-kit";
+import { bigToNumber, clamp, valueOrUndefined } from "./utils";
 
 import { IRISProgressContainerProps } from "../typings/IRISProgressProps";
 import { ProgressView, ProgressViewStatus } from "./components/ProgressView";
@@ -16,39 +16,37 @@ function toPercent(value: number | undefined, max: number): number | undefined {
 }
 
 export function IRISProgress(props: IRISProgressContainerProps): ReactElement {
-    const max = bigToNumber(valueOrUndefined(props.maxValue)) ?? DEFAULT_MAX;
-    const valueLoading = props.value.status !== "available";
-    const percent = toPercent(bigToNumber(valueOrUndefined(props.value)), max) ?? 0;
-    const successPercent = toPercent(bigToNumber(valueOrUndefined(props.successValue)), max);
+    const max = bigToNumber(valueOrUndefined(props.prpMaxValue)) ?? DEFAULT_MAX;
+    const valueLoading = props.prpValue.status !== "available";
+    const percent = toPercent(bigToNumber(valueOrUndefined(props.prpValue)), max) ?? 0;
+    const successPercent = toPercent(bigToNumber(valueOrUndefined(props.prpSuccessValue)), max);
 
-    let status: ProgressViewStatus | undefined = props.status === "auto" ? undefined : props.status;
-    if (valueOrUndefined(props.exceptionWhen) === true) {
+    let status: ProgressViewStatus | undefined = props.prpStatus === "auto" ? undefined : props.prpStatus;
+    if (valueOrUndefined(props.prpExceptionWhen) === true) {
         status = "exception";
     }
 
-    const label = valueOrUndefined(props.label) || undefined;
-    const canClick = props.onClick?.canExecute === true;
+    const label = valueOrUndefined(props.prpLabel) || undefined;
+    const canClick = props.prpOnClick?.canExecute === true;
 
     return (
         <ProgressView
             className={props.class}
             style={props.style}
             tabIndex={props.tabIndex}
-            type={props.progressType}
+            type={props.prpProgressType}
             percent={percent}
             successPercent={successPercent}
             status={status}
             // Hide "0%" while the value is still loading instead of flashing a wrong number.
-            showInfo={props.showInfo && !valueLoading}
+            showInfo={props.prpShowInfo && !valueLoading}
             label={label}
-            lineSize={props.lineSize}
-            circleSize={props.circleSize}
-            steps={props.steps}
-            strokeColor={valueOrUndefined(props.strokeColor) || undefined}
-            railColor={valueOrUndefined(props.railColor) || undefined}
-            strokeLinecap={props.strokeLinecap}
+            lineSize={props.prpLineSize}
+            circleSize={props.prpCircleSize}
+            steps={props.prpSteps}
+            strokeColor={valueOrUndefined(props.prpStrokeColor) || undefined}
             ariaLabel={label ?? `${Math.round(percent)}%`}
-            onClick={canClick ? () => props.onClick?.execute() : undefined}
+            onClick={canClick ? () => props.prpOnClick?.execute() : undefined}
         />
     );
 }

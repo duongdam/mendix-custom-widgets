@@ -3,19 +3,19 @@ import Big from "big.js";
 
 import { IRISProgress } from "../../widgets/iris-progress/src/IRISProgress";
 import type {
-    ProgressTypeEnum,
-    StatusEnum,
+    PrpProgressTypeEnum,
+    PrpStatusEnum,
 } from "../../widgets/iris-progress/typings/IRISProgressProps";
 import { createActionValue, createDynamicValue } from "./mocks/mendixMocks";
 
-const TYPES: ProgressTypeEnum[] = ["line", "circle", "dashboard"];
-const STATUSES: StatusEnum[] = ["auto", "normal", "active", "success", "exception"];
+const TYPES: PrpProgressTypeEnum[] = ["line", "circle", "dashboard"];
+const STATUSES: PrpStatusEnum[] = ["auto", "normal", "active", "success", "exception"];
 
 export function IRISProgressDemo() {
     const [value, setValue] = useState(7);
     const [max, setMax] = useState(10);
-    const [type, setType] = useState<ProgressTypeEnum>("line");
-    const [status, setStatus] = useState<StatusEnum>("auto");
+    const [type, setType] = useState<PrpProgressTypeEnum>("line");
+    const [status, setStatus] = useState<PrpStatusEnum>("auto");
     const [exception, setException] = useState(false);
     const [steps, setSteps] = useState(0);
     const [withSuccess, setWithSuccess] = useState(false);
@@ -50,7 +50,7 @@ export function IRISProgressDemo() {
                     Type{" "}
                     <select
                         value={type}
-                        onChange={(e) => setType(e.target.value as ProgressTypeEnum)}
+                        onChange={(e) => setType(e.target.value as PrpProgressTypeEnum)}
                     >
                         {TYPES.map((t) => (
                             <option key={t}>{t}</option>
@@ -61,7 +61,7 @@ export function IRISProgressDemo() {
                     Status{" "}
                     <select
                         value={status}
-                        onChange={(e) => setStatus(e.target.value as StatusEnum)}
+                        onChange={(e) => setStatus(e.target.value as PrpStatusEnum)}
                     >
                         {STATUSES.map((s) => (
                             <option key={s}>{s}</option>
@@ -108,19 +108,18 @@ export function IRISProgressDemo() {
             <IRISProgress
                 name="iris-progress-preview"
                 class=""
-                value={createDynamicValue(new Big(value))}
-                maxValue={createDynamicValue(new Big(max))}
-                successValue={withSuccess ? createDynamicValue(new Big(value / 2)) : undefined}
-                progressType={type}
-                showInfo
-                label={withLabel ? createDynamicValue(`${value} / ${max} tasks`) : undefined}
-                status={status}
-                exceptionWhen={createDynamicValue(exception)}
-                lineSize="medium"
-                circleSize={120}
-                steps={steps}
-                strokeLinecap="round"
-                onClick={createActionValue(() => setClicks((c) => c + 1))}
+                prpValue={createDynamicValue(new Big(value))}
+                prpMaxValue={createDynamicValue(new Big(max))}
+                prpSuccessValue={withSuccess ? createDynamicValue(new Big(value / 2)) : undefined}
+                prpProgressType={type}
+                prpShowInfo
+                prpLabel={withLabel ? createDynamicValue(`${value} / ${max} tasks`) : undefined}
+                prpStatus={status}
+                prpExceptionWhen={createDynamicValue(exception)}
+                prpLineSize="medium"
+                prpCircleSize={120}
+                prpSteps={steps}
+                prpOnClick={createActionValue(() => setClicks((c) => c + 1))}
             />
         </section>
     );

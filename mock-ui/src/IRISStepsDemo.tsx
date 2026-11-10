@@ -4,23 +4,23 @@ import type { DynamicValue } from "mendix";
 
 import { IRISSteps } from "../../widgets/iris-steps/src/IRISSteps";
 import type {
-    OrientationEnum,
-    StepsTypeEnum,
+    PrpOrientationEnum,
+    PrpStepsTypeEnum,
 } from "../../widgets/iris-steps/typings/IRISStepsProps";
 import { createActionValue, createDynamicValue, createEditableValue } from "./mocks/mendixMocks";
 import { WIZARD_STEPS } from "./mocks/antdFixtures";
 
-const TYPES: StepsTypeEnum[] = ["default", "navigation", "dot", "inline", "panel"];
+const TYPES: PrpStepsTypeEnum[] = ["default", "navigation", "dot", "inline", "panel"];
 
 const STATIC_ITEMS = WIZARD_STEPS.map((step) => ({
-    title: createDynamicValue(step.title) as DynamicValue<string>,
-    description: createDynamicValue(step.description) as DynamicValue<string>,
+    prpTitle: createDynamicValue(step.title) as DynamicValue<string>,
+    prpDescription: createDynamicValue(step.description) as DynamicValue<string>,
 }));
 
 export function IRISStepsDemo() {
     const [current, setCurrent] = useState(1);
-    const [type, setType] = useState<StepsTypeEnum>("default");
-    const [orientation, setOrientation] = useState<OrientationEnum>("horizontal");
+    const [type, setType] = useState<PrpStepsTypeEnum>("default");
+    const [orientation, setOrientation] = useState<PrpOrientationEnum>("horizontal");
     const [clickable, setClickable] = useState(true);
     const [error, setError] = useState(false);
     const [changes, setChanges] = useState(0);
@@ -40,7 +40,7 @@ export function IRISStepsDemo() {
                 </button>
                 <label>
                     Type{" "}
-                    <select value={type} onChange={(e) => setType(e.target.value as StepsTypeEnum)}>
+                    <select value={type} onChange={(e) => setType(e.target.value as PrpStepsTypeEnum)}>
                         {TYPES.map((t) => (
                             <option key={t}>{t}</option>
                         ))}
@@ -50,7 +50,7 @@ export function IRISStepsDemo() {
                     Orientation{" "}
                     <select
                         value={orientation}
-                        onChange={(e) => setOrientation(e.target.value as OrientationEnum)}
+                        onChange={(e) => setOrientation(e.target.value as PrpOrientationEnum)}
                     >
                         <option>horizontal</option>
                         <option>vertical</option>
@@ -80,19 +80,17 @@ export function IRISStepsDemo() {
             <IRISSteps
                 name="iris-steps-demo"
                 class=""
-                current={createEditableValue<Big>(new Big(current), (v) =>
+                prpCurrent={createEditableValue<Big>(new Big(current), (v) =>
                     setCurrent(v ? Number(v.toString()) : 0),
                 )}
-                itemsSource="static"
-                staticItems={STATIC_ITEMS}
-                clickable={clickable}
-                status="process"
-                errorWhen={createDynamicValue(error)}
-                stepsType={type}
-                orientation={orientation}
-                titlePlacement="horizontal"
-                size="medium"
-                onChangeAction={createActionValue(() => setChanges((c) => c + 1))}
+                prpItemsSource="static"
+                prpStaticItems={STATIC_ITEMS}
+                prpClickable={clickable}
+                prpErrorWhen={createDynamicValue(error)}
+                prpStepsType={type}
+                prpOrientation={orientation}
+                prpSize="medium"
+                prpOnChange={createActionValue(() => setChanges((c) => c + 1))}
             />
         </section>
     );

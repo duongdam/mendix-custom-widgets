@@ -6,18 +6,18 @@
 import { DynamicValue } from "mendix";
 import { CSSProperties } from "react";
 
-export type FormatEnum = "png" | "pdf";
+export type PrpFormatEnum = "png" | "pdf";
 
 export interface AxCaptureContainerProps {
     name: string;
     class: string;
     style?: CSSProperties;
     tabIndex?: number;
-    targetName: string;
-    fileName: string;
-    format: FormatEnum;
-    showButton: boolean;
-    buttonCaption: DynamicValue<string>;
+    prpTargetName: string;
+    prpFileName: string;
+    prpFormat: PrpFormatEnum;
+    prpShowButton: boolean;
+    prpButtonCaption: DynamicValue<string>;
 }
 
 export interface AxCapturePreviewProps {
@@ -31,9 +31,9 @@ export interface AxCapturePreviewProps {
     readOnly: boolean;
     renderMode: "design" | "xray" | "structure";
     translate: (text: string) => string;
-    targetName: string;
-    fileName: string;
-    format: FormatEnum;
-    showButton: boolean;
-    buttonCaption: string;
+    prpTargetName: string;
+    prpFileName: string;
+    prpFormat: PrpFormatEnum;
+    prpShowButton: boolean;
+    prpButtonCaption: string;
 }

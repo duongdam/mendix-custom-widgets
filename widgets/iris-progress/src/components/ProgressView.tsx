@@ -1,6 +1,5 @@
 import { CSSProperties, KeyboardEvent, ReactElement } from "react";
 import { Progress } from "antd";
-import { IrisAntdProvider } from "@iris/antd-kit";
 import classNames from "classnames";
 
 export type ProgressViewType = "line" | "circle" | "dashboard";
@@ -22,8 +21,6 @@ export interface ProgressViewProps {
     circleSize: number;
     steps: number;
     strokeColor?: string;
-    railColor?: string;
-    strokeLinecap: "round" | "square" | "butt";
     ariaLabel?: string;
     onClick?: () => void;
 }
@@ -43,7 +40,6 @@ export function ProgressView(props: ProgressViewProps): ReactElement {
     };
 
     return (
-        <IrisAntdProvider>
             <div
                 className={classNames("iris-progress", `iris-progress--${type}`, props.className, {
                     "iris-progress--clickable": !!onClick
@@ -64,11 +60,8 @@ export function ProgressView(props: ProgressViewProps): ReactElement {
                     size={isLine ? props.lineSize : props.circleSize}
                     steps={isLine && props.steps > 0 ? props.steps : undefined}
                     strokeColor={props.strokeColor}
-                    railColor={props.railColor}
-                    strokeLinecap={props.strokeLinecap}
                     aria-label={props.ariaLabel}
                 />
             </div>
-        </IrisAntdProvider>
     );
 }

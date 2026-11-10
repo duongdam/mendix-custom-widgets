@@ -8,7 +8,7 @@
     <icon/>
     <properties>
         <propertyGroup caption="General">
-            <property key="title" type="expression" required="false">
+            <property key="prpTitle" type="expression" required="false">
                 <caption>Title</caption>
                 <description>Optional panel title.</description>
                 <returnType type="String"/>

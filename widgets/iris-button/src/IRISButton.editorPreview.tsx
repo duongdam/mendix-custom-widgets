@@ -3,8 +3,8 @@ import { IRISButtonPreviewProps } from "../typings/IRISButtonProps";
 
 import "./ui/IRISButton.css";
 
-export function preview({ caption, variant }: IRISButtonPreviewProps): ReactElement {
-    return <button className={`iris-button iris-button--${variant}`}>{caption || "Button"}</button>;
+export function preview({ prpCaption, prpVariant }: IRISButtonPreviewProps): ReactElement {
+    return <button className={`iris-button iris-button--${prpVariant}`}>{prpCaption || "Button"}</button>;
 }
 
 export function getPreviewCss(): string {

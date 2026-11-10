@@ -11,7 +11,7 @@ export interface IRISPanelContainerProps {
     class: string;
     style?: CSSProperties;
     tabIndex?: number;
-    title?: DynamicValue<string>;
+    prpTitle?: DynamicValue<string>;
 }
 
 export interface IRISPanelPreviewProps {
@@ -25,5 +25,5 @@ export interface IRISPanelPreviewProps {
     readOnly: boolean;
     renderMode: "design" | "xray" | "structure";
     translate: (text: string) => string;
-    title: string;
+    prpTitle: string;
 }

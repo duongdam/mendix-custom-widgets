@@ -9,8 +9,8 @@ const SAMPLE_OPTIONS = ["Option 1", "Option 2", "Option 3"].map(label => ({ valu
 
 export function preview(props: IRISSegmentedPreviewProps): ReactElement {
     const options =
-        props.optionsSource === "static" && props.staticOptions.length > 0
-            ? props.staticOptions.map(option => ({ value: option.value, label: option.caption || option.value }))
+        props.prpOptionsSource === "static" && props.prpStaticOptions.length > 0
+            ? props.prpStaticOptions.map(option => ({ value: option.prpValue, label: option.prpCaption || option.prpValue }))
             : SAMPLE_OPTIONS;
 
     return (
@@ -20,9 +20,9 @@ export function preview(props: IRISSegmentedPreviewProps): ReactElement {
             options={options}
             value={options[0]?.value}
             disabled={props.readOnly}
-            size={props.size}
-            block={props.block}
-            vertical={props.vertical}
+            size={props.prpSize}
+            block={props.prpBlock}
+            vertical={props.prpVertical}
         />
     );
 }

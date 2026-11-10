@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<widget id="com.iris.widgets.AxNewDatePicker" pluginWidget="true" offlineCapable="true"
+        supportedPlatform="Web"
+        xmlns="http://www.mendix.com/widget/1.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.mendix.com/widget/1.0/ ../node_modules/mendix/custom_widget.xsd">
+    <name>Ax New Date Picker</name>
+    <description>Ant Design DatePicker (single or range; date, week, month, quarter, year).</description>
+    <icon/>
+    <properties>
+        <propertyGroup caption="General">
+            <property key="prpMode" type="enumeration" defaultValue="single">
+                <caption>Mode</caption>
+                <description>Single: pick one date / week / month… Range: pick a start and an end.</description>
+                <enumerationValues>
+                    <enumerationValue key="single">Single</enumerationValue>
+                    <enumerationValue key="range">Range</enumerationValue>
+                </enumerationValues>
+            </property>
+            <property key="prpPicker" type="enumeration" defaultValue="date">
+                <caption>Picker</caption>
+                <description>Granularity. Without time, the start is the beginning (and the end is the end) of the chosen day/week/month/quarter/year.</description>
+                <enumerationValues>
+                    <enumerationValue key="date">Date</enumerationValue>
+                    <enumerationValue key="week">Week</enumerationValue>
+                    <enumerationValue key="month">Month</enumerationValue>
+                    <enumerationValue key="quarter">Quarter</enumerationValue>
+                    <enumerationValue key="year">Year</enumerationValue>
+                </enumerationValues>
+            </property>
+            <property key="prpShowTime" type="boolean" defaultValue="false">
+                <caption>Show Time</caption>
+                <description>Also pick hours and minutes (Date picker only).</description>
+            </property>
+            <property key="prpShowPresets" type="boolean" defaultValue="false">
+                <caption>Show Presets</caption>
+                <description>Quick picks such as Today / Last 7 days (Date picker only).</description>
+            </property>
+            <property key="prpFormat" type="string" required="false">
+                <caption>Display Format</caption>
+                <description>dayjs format, e.g. DD/MM/YYYY or DD/MM/YYYY HH:mm. Leave empty for the default of the picker.</description>
+            </property>
+            <property key="prpAllowClear" type="boolean" defaultValue="true">
+                <caption>Allow Clear</caption>
+                <description>Show a button to clear the selection.</description>
+            </property>
+        </propertyGroup>
+        <propertyGroup caption="Data">
+            <property key="prpStartDate" type="expression" required="false">
+                <caption>Start Date</caption>
+                <description>The selected date, or the range start in Range mode.</description>
+                <returnType type="DateTime"/>
+            </property>
+            <property key="prpEndDate" type="expression" required="false">
+                <caption>End Date</caption>
+                <description>The range end. Range mode only.</description>
+                <returnType type="DateTime"/>
+            </property>
+            <property key="prpMinDate" type="expression" required="false">
+                <caption>Minimum Date</caption>
+                <description>Earliest date that can be selected.</description>
+                <returnType type="DateTime"/>
+            </property>
+            <property key="prpMaxDate" type="expression" required="false">
+                <caption>Maximum Date</caption>
+                <description>Latest date that can be selected.</description>
+                <returnType type="DateTime"/>
+            </property>
+        </propertyGroup>
+        <propertyGroup caption="Appearance">
+            <property key="prpPlaceholder" type="expression" required="false">
+                <caption>Placeholder</caption>
+                <description>Text shown while empty (range start in Range mode).</description>
+                <returnType type="String"/>
+            </property>
+            <property key="prpEndPlaceholder" type="expression" required="false">
+                <caption>End Placeholder</caption>
+                <description>Range mode only.</description>
+                <returnType type="String"/>
+            </property>
+            <property key="prpSize" type="enumeration" defaultValue="medium">
+                <caption>Size</caption>
+                <description/>
+                <enumerationValues>
+                    <enumerationValue key="small">Small</enumerationValue>
+                    <enumerationValue key="medium">Medium</enumerationValue>
+                    <enumerationValue key="large">Large</enumerationValue>
+                </enumerationValues>
+            </property>
+            <property key="prpFullWidth" type="boolean" defaultValue="true">
+                <caption>Full Width</caption>
+                <description>Stretch the input to fill the container.</description>
+            </property>
+        </propertyGroup>
+        <propertyGroup caption="Events">
+            <property key="prpOnChange" type="action" required="false">
+                <caption>On Change</caption>
+                <description>Runs after the selected date (or range) changes.</description>
+                <actionVariables>
+                    <actionVariable key="startDate" type="DateTime" required="false" caption="Start Date" />
+                    <actionVariable key="endDate" type="DateTime" required="false" caption="End Date" />
+                </actionVariables>
+            </property>
+        </propertyGroup>
+    </properties>
+</widget>

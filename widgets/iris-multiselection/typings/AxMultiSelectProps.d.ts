@@ -7,24 +7,24 @@ import { ActionValue, DynamicValue, ListAttributeValue, ListValue, Option } from
 import { Big } from "big.js";
 import { CSSProperties } from "react";
 
-export type TypeEnum = "multi" | "single" | "onlyView";
+export type PrpTypeEnum = "multi" | "single" | "onlyView";
 
 export interface AxMultiSelectContainerProps {
     name: string;
     class: string;
     style?: CSSProperties;
     tabIndex?: number;
+    prpType: PrpTypeEnum;
     prpHeight: DynamicValue<Big>;
     prpItemHeight: DynamicValue<Big>;
     prpPlaceholder?: DynamicValue<string>;
     prpShowSearch?: DynamicValue<boolean>;
     prpTextSearch?: DynamicValue<string>;
-    type: TypeEnum;
     prpSelectedItems?: DynamicValue<string>;
-    items: ListValue;
-    keyAttribute: ListAttributeValue<Big | string>;
-    nameAttribute: ListAttributeValue<string>;
-    onChange?: ActionValue<{ selectedKeys: Option<string> }>;
+    prpItems: ListValue;
+    prpKeyAttribute: ListAttributeValue<Big | string>;
+    prpNameAttribute: ListAttributeValue<string>;
+    prpOnChange?: ActionValue<{ selectedKeys: Option<string> }>;
 }
 
 export interface AxMultiSelectPreviewProps {
@@ -38,15 +38,15 @@ export interface AxMultiSelectPreviewProps {
     readOnly: boolean;
     renderMode: "design" | "xray" | "structure";
     translate: (text: string) => string;
+    prpType: PrpTypeEnum;
     prpHeight: string;
     prpItemHeight: string;
     prpPlaceholder: string;
     prpShowSearch: string;
     prpTextSearch: string;
-    type: TypeEnum;
     prpSelectedItems: string;
-    items: {} | { caption: string } | { type: string } | null;
-    keyAttribute: string;
-    nameAttribute: string;
-    onChange: {} | null;
+    prpItems: {} | { caption: string } | { type: string } | null;
+    prpKeyAttribute: string;
+    prpNameAttribute: string;
+    prpOnChange: {} | null;
 }

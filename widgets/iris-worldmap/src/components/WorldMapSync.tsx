@@ -18,16 +18,16 @@ function WorldMapSyncComponent(props: WorldMapSyncProps): ReactElement | null {
 
     // --- Regions: Mendix `regions` datasource -> store.regions ---
     const regions = useMemo<Region[]>(() => {
-        if (props.regions.status !== ValueStatus.Available || !props.regions.items) {
+        if (props.prpRegions.status !== ValueStatus.Available || !props.prpRegions.items) {
             return [];
         }
-        return props.regions.items
+        return props.prpRegions.items
             .map((item): Region | undefined => {
-                const id = props.regionIdAttr.get(item)?.value;
-                const countryCode = normalizeCountryCode(props.regionCountryCodeAttr.get(item)?.value ?? "");
-                const name = props.regionNameAttr.get(item)?.value;
-                const latitude = bigToNumber(props.regionLatitudeAttr.get(item)?.value);
-                const longitude = bigToNumber(props.regionLongitudeAttr.get(item)?.value);
+                const id = props.prpRegionIdAttr.get(item)?.value;
+                const countryCode = normalizeCountryCode(props.prpRegionCountryCodeAttr.get(item)?.value ?? "");
+                const name = props.prpRegionNameAttr.get(item)?.value;
+                const latitude = bigToNumber(props.prpRegionLatitudeAttr.get(item)?.value);
+                const longitude = bigToNumber(props.prpRegionLongitudeAttr.get(item)?.value);
                 if (id === undefined || !countryCode || !name || latitude === undefined || longitude === undefined) {
                     return undefined;
                 }
@@ -37,71 +37,71 @@ function WorldMapSyncComponent(props: WorldMapSyncProps): ReactElement | null {
                     name,
                     latitude,
                     longitude,
-                    status: props.regionStatusAttr?.get(item)?.value,
-                    category: props.regionCategoryAttr?.get(item)?.value,
-                    value: bigToNumber(props.regionValueAttr?.get(item)?.value)
+                    status: props.prpRegionStatusAttr?.get(item)?.value,
+                    category: props.prpRegionCategoryAttr?.get(item)?.value,
+                    value: bigToNumber(props.prpRegionValueAttr?.get(item)?.value)
                 };
             })
             .filter((region): region is Region => region !== undefined);
     }, [
-        props.regions,
-        props.regionIdAttr,
-        props.regionCountryCodeAttr,
-        props.regionNameAttr,
-        props.regionLatitudeAttr,
-        props.regionLongitudeAttr,
-        props.regionStatusAttr,
-        props.regionCategoryAttr,
-        props.regionValueAttr
+        props.prpRegions,
+        props.prpRegionIdAttr,
+        props.prpRegionCountryCodeAttr,
+        props.prpRegionNameAttr,
+        props.prpRegionLatitudeAttr,
+        props.prpRegionLongitudeAttr,
+        props.prpRegionStatusAttr,
+        props.prpRegionCategoryAttr,
+        props.prpRegionValueAttr
     ]);
 
     useEffect(() => {
-        if (props.regions.status === ValueStatus.Available) {
+        if (props.prpRegions.status === ValueStatus.Available) {
             store.setRegions(regions);
         }
-    }, [regions, props.regions.status, store]);
+    }, [regions, props.prpRegions.status, store]);
 
     // --- Connections: Mendix `connections` datasource -> store.connections ---
     const connections = useMemo<RegionConnection[]>(() => {
-        if (!props.connections || props.connections.status !== ValueStatus.Available || !props.connections.items) {
+        if (!props.prpConnections || props.prpConnections.status !== ValueStatus.Available || !props.prpConnections.items) {
             return [];
         }
-        return props.connections.items
+        return props.prpConnections.items
             .map((item): RegionConnection | undefined => {
-                const fromCountryCode = normalizeCountryCode(props.connectionFromCodeAttr?.get(item)?.value ?? "");
-                const toCountryCode = normalizeCountryCode(props.connectionToCodeAttr?.get(item)?.value ?? "");
+                const fromCountryCode = normalizeCountryCode(props.prpConnectionFromCodeAttr?.get(item)?.value ?? "");
+                const toCountryCode = normalizeCountryCode(props.prpConnectionToCodeAttr?.get(item)?.value ?? "");
                 if (!fromCountryCode || !toCountryCode) {
                     return undefined;
                 }
                 return { fromCountryCode, toCountryCode };
             })
             .filter((connection): connection is RegionConnection => connection !== undefined);
-    }, [props.connections, props.connectionFromCodeAttr, props.connectionToCodeAttr]);
+    }, [props.prpConnections, props.prpConnectionFromCodeAttr, props.prpConnectionToCodeAttr]);
 
     useEffect(() => {
-        if (!props.connections || props.connections.status === ValueStatus.Available) {
+        if (!props.prpConnections || props.prpConnections.status === ValueStatus.Available) {
             store.setConnections(connections);
         }
-    }, [connections, props.connections, store]);
+    }, [connections, props.prpConnections, store]);
 
     // --- Selection: click -> store + Mendix attribute/action ---
     const handleRegionClick = useCallback(
         (region: Region) => {
             store.setSelectedRegion(region.id);
-            props.selectedRegionIdAttribute?.setValue(region.id);
-            if (props.onRegionClick?.canExecute) {
-                props.onRegionClick.execute({ regionId: region.id, countryCode: region.countryCode });
+            props.prpSelectedRegionIdAttribute?.setValue(region.id);
+            if (props.prpOnRegionClick?.canExecute) {
+                props.prpOnRegionClick.execute({ regionId: region.id, countryCode: region.countryCode });
             }
         },
-        [props.selectedRegionIdAttribute, props.onRegionClick, store]
+        [props.prpSelectedRegionIdAttribute, props.prpOnRegionClick, store]
     );
 
     const fills: CountryFillConfig = {
-        default: props.defaultCountryFill,
-        stroke: props.countryStroke
+        default: "#E5E9F0",
+        stroke: "#FFFFFF"
     };
 
-    if (props.regions.status !== ValueStatus.Available) {
+    if (props.prpRegions.status !== ValueStatus.Available) {
         return null;
     }
 
@@ -111,15 +111,15 @@ function WorldMapSyncComponent(props: WorldMapSyncProps): ReactElement | null {
             style={props.style}
             store={store}
             fills={fills}
-            markerColor={props.markerColor}
-            markerColorMode={props.markerColorMode}
-            minMarkerSize={props.minMarkerSize}
-            maxMarkerSize={props.maxMarkerSize}
-            showLabels={props.showLabels}
-            showConnectionLines={props.showConnectionLines}
-            connectionLineColor={props.connectionLineColor}
-            connectionLineWidth={bigToNumber(props.connectionLineWidth) ?? 1.5}
-            enableZoom={props.enableZoom}
+            markerColor={props.prpMarkerColor}
+            markerColorMode={props.prpMarkerColorMode}
+            minMarkerSize={props.prpMinMarkerSize}
+            maxMarkerSize={props.prpMaxMarkerSize}
+            showLabels={props.prpShowLabels}
+            showConnectionLines
+            connectionLineColor="#334155"
+            connectionLineWidth={1.5}
+            enableZoom={props.prpEnableZoom}
             onRegionClick={handleRegionClick}
         />
     );

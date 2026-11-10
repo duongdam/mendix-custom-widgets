@@ -63,11 +63,11 @@ export function AxCaptureDemo() {
                 <AxCapture
                     name="AxCaptureDemo1"
                     class=""
-                    targetName={TARGET_NAME}
-                    fileName={fileName}
-                    format={format}
-                    showButton={showButton}
-                    buttonCaption={buttonCaption}
+                    prpTargetName={TARGET_NAME}
+                    prpFileName={fileName}
+                    prpFormat={format}
+                    prpShowButton={showButton}
+                    prpButtonCaption={buttonCaption}
                 />
             </div>
             {!showButton && (

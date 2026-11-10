@@ -13,6 +13,8 @@ export interface GanttSyncProps extends IRISGanttContainerProps {
     store: GanttStore;
 }
 
+const GRID_WIDTH = 380;
+const ROW_HEIGHT = 32;
 const EMPTY_TASKS: GanttTaskRecord[] = [];
 const EMPTY_LINKS: GanttLinkRecord[] = [];
 
@@ -27,8 +29,8 @@ function logTiming(enabled: boolean, label: string, startedAt: number, count: nu
 }
 
 function GanttSyncComponent(props: GanttSyncProps): ReactElement {
-    const { store, tasks, links, logPerformance } = props;
-    const summaryTypes = useMemo(() => parseTypeList(props.summaryTypes), [props.summaryTypes]);
+    const { store, prpTasks: tasks, prpLinks: links, prpLogPerformance: logPerformance } = props;
+    const summaryTypes = useMemo(() => parseTypeList(props.prpSummaryTypes), [props.prpSummaryTypes]);
 
     // --- Tasks: Mendix datasource -> plain records (one pass over up to ~10k items) ---
     const mappedTasks = useMemo<GanttTaskRecord[] | undefined>(() => {
@@ -38,8 +40,11 @@ function GanttSyncComponent(props: GanttSyncProps): ReactElement {
         // Diagnostics only (Log Performance) — the timestamp never affects what is rendered.
         // eslint-disable-next-line react-hooks/purity
         const startedAt = performance.now();
-        const { taskIdAttr, taskParentIdAttr, taskTextAttr, taskTypeAttr, taskStartAttr, taskEndAttr } = props;
-        const { taskDurationAttr, taskProgressAttr, taskOrderAttr, taskColorAttr, taskReadOnlyAttr } = props;
+        const { prpTaskIdAttr: taskIdAttr, prpTaskParentIdAttr: taskParentIdAttr, prpTaskTextAttr: taskTextAttr } = props;
+        const { prpTaskTypeAttr: taskTypeAttr, prpTaskStartAttr: taskStartAttr, prpTaskEndAttr: taskEndAttr } = props;
+        const { prpTaskDurationAttr: taskDurationAttr, prpTaskProgressAttr: taskProgressAttr } = props;
+        const { prpTaskOrderAttr: taskOrderAttr, prpTaskColorAttr: taskColorAttr } = props;
+        const { prpTaskReadOnlyAttr: taskReadOnlyAttr } = props;
 
         const raw = [];
         for (let index = 0; index < tasks.items.length; index++) {
@@ -83,7 +88,8 @@ function GanttSyncComponent(props: GanttSyncProps): ReactElement {
         // Diagnostics only (Log Performance) — the timestamp never affects what is rendered.
         // eslint-disable-next-line react-hooks/purity
         const startedAt = performance.now();
-        const { linkIdAttr, linkSourceAttr, linkTargetAttr, linkTypeAttr } = props;
+        const { prpLinkIdAttr: linkIdAttr, prpLinkSourceAttr: linkSourceAttr } = props;
+        const { prpLinkTargetAttr: linkTargetAttr, prpLinkTypeAttr: linkTypeAttr } = props;
         const records: GanttLinkRecord[] = [];
         for (const item of links.items) {
             const id = linkIdAttr?.get(item).value;
@@ -116,7 +122,9 @@ function GanttSyncComponent(props: GanttSyncProps): ReactElement {
     }
 
     // --- Chart events -> Mendix actions (the widget never writes the task objects itself) ---
-    const { onTaskChange, onLinkCreate, onLinkDelete, onTaskClick, onTaskDoubleClick, selectedTaskIdAttr } = props;
+    const { prpOnTaskChange: onTaskChange, prpOnLinkCreate: onLinkCreate, prpOnLinkDelete: onLinkDelete } = props;
+    const { prpOnTaskClick: onTaskClick, prpOnTaskDoubleClick: onTaskDoubleClick } = props;
+    const { prpSelectedTaskIdAttr: selectedTaskIdAttr } = props;
 
     const handleTaskChange = useCallback(
         (change: TaskChange) => {
@@ -186,22 +194,22 @@ function GanttSyncComponent(props: GanttSyncProps): ReactElement {
             // the optimistic position instead of snapping back to the (not yet updated) data.
             editPending={onTaskChange?.isExecuting === true || onLinkCreate?.isExecuting === true}
             config={{
-                typeHierarchy: props.typeHierarchy,
-                openLevel: props.openLevel,
-                durationUnit: props.durationUnit,
-                locale: props.locale,
-                height: props.height,
-                gridWidth: props.gridWidth,
-                rowHeight: props.rowHeight,
-                showStartColumn: props.showStartColumn,
-                showDurationColumn: props.showDurationColumn,
-                showProgress: props.showProgress,
-                showToolbar: props.showToolbar,
-                allowDragMove: props.allowDragMove && !!onTaskChange,
-                allowResize: props.allowResize && !!onTaskChange,
-                allowProgressDrag: props.allowProgressDrag && !!onTaskChange,
-                allowReorder: props.allowReorder && !!onTaskChange,
-                allowLinkEdit: props.allowLinkEdit && (!!onLinkCreate || !!onLinkDelete),
+                typeHierarchy: props.prpTypeHierarchy,
+                openLevel: props.prpOpenLevel,
+                durationUnit: props.prpDurationUnit,
+                locale: props.prpLocale,
+                height: props.prpHeight,
+                gridWidth: GRID_WIDTH,
+                rowHeight: ROW_HEIGHT,
+                showStartColumn: props.prpShowStartColumn,
+                showDurationColumn: props.prpShowDurationColumn,
+                showProgress: props.prpShowProgress,
+                showToolbar: props.prpShowToolbar,
+                allowDragMove: props.prpAllowDragMove && !!onTaskChange,
+                allowResize: props.prpAllowResize && !!onTaskChange,
+                allowProgressDrag: props.prpAllowProgressDrag && !!onTaskChange,
+                allowReorder: props.prpAllowReorder && !!onTaskChange,
+                allowLinkEdit: props.prpAllowLinkEdit && (!!onLinkCreate || !!onLinkDelete),
                 logPerformance
             }}
             onTaskChange={handleTaskChange}

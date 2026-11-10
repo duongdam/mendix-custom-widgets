@@ -37,7 +37,6 @@
     "typescript": "5.9.3"
   },
   "dependencies": {
-    "@iris/antd-kit": "workspace:*",
     "antd": "6.5.4",
     "big.js": "^6.2.2",
     "classnames": "^2.5.1"

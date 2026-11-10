@@ -1,6 +1,6 @@
 import { ReactElement, useMemo } from "react";
 import Big from "big.js";
-import { bigToNumber, executeAction, isEditable, valueOrUndefined } from "@iris/antd-kit";
+import { bigToNumber, executeAction, isEditable, valueOrUndefined } from "./utils";
 
 import { IRISStepsContainerProps } from "../typings/IRISStepsProps";
 import { StepItem, StepsView } from "./components/StepsView";
@@ -8,36 +8,36 @@ import { StepItem, StepsView } from "./components/StepsView";
 import "./ui/IRISSteps.css";
 
 function useItems(props: IRISStepsContainerProps): StepItem[] {
-    const { itemsSource, staticItems, itemsDatasource, itemTitle, itemDescription } = props;
+    const { prpItemsSource, prpStaticItems, prpItemsDatasource, prpItemTitle, prpItemDescription } = props;
 
     return useMemo(() => {
-        if (itemsSource === "static") {
-            return staticItems.map((item, index) => ({
+        if (prpItemsSource === "static") {
+            return prpStaticItems.map((item, index) => ({
                 key: String(index),
-                title: valueOrUndefined(item.title) ?? "",
-                description: valueOrUndefined(item.description) || undefined
+                title: valueOrUndefined(item.prpTitle) ?? "",
+                description: valueOrUndefined(item.prpDescription) || undefined
             }));
         }
-        return (itemsDatasource?.items ?? []).map(item => ({
+        return (prpItemsDatasource?.items ?? []).map(item => ({
             key: item.id,
-            title: itemTitle?.get(item).value ?? "",
-            description: itemDescription?.get(item).value || undefined
+            title: prpItemTitle?.get(item).value ?? "",
+            description: prpItemDescription?.get(item).value || undefined
         }));
-    }, [itemsSource, staticItems, itemsDatasource, itemTitle, itemDescription]);
+    }, [prpItemsSource, prpStaticItems, prpItemsDatasource, prpItemTitle, prpItemDescription]);
 }
 
 export function IRISSteps(props: IRISStepsContainerProps): ReactElement {
-    const { current } = props;
+    const { prpCurrent: current } = props;
     const items = useItems(props);
     const currentIndex = bigToNumber(current.value) ?? 0;
-    const status = valueOrUndefined(props.errorWhen) === true ? "error" : props.status;
+    const status = valueOrUndefined(props.prpErrorWhen) === true ? "error" : "process";
 
     const handleChange = (next: number): void => {
         if (next === currentIndex) {
             return;
         }
         current.setValue(new Big(next));
-        executeAction(props.onChangeAction);
+        executeAction(props.prpOnChange);
     };
 
     return (
@@ -47,11 +47,10 @@ export function IRISSteps(props: IRISStepsContainerProps): ReactElement {
             items={items}
             current={currentIndex}
             status={status}
-            type={props.stepsType}
-            orientation={props.orientation}
-            titlePlacement={props.titlePlacement}
-            size={props.size}
-            onChange={props.clickable && isEditable(current) ? handleChange : undefined}
+            type={props.prpStepsType}
+            orientation={props.prpOrientation}
+            size={props.prpSize}
+            onChange={props.prpClickable && isEditable(current) ? handleChange : undefined}
         />
     );
 }

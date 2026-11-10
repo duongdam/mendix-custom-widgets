@@ -6,18 +6,18 @@
 import { ActionValue, DynamicValue, EditableValue } from "mendix";
 import { CSSProperties } from "react";
 
-export type OptionsSourceEnum = "attribute" | "static";
+export type PrpOptionsSourceEnum = "attribute" | "static";
 
-export interface StaticOptionsType {
-    value: string;
-    caption?: DynamicValue<string>;
+export interface PrpStaticOptionsType {
+    prpValue: string;
+    prpCaption?: DynamicValue<string>;
 }
 
-export type SizeEnum = "medium" | "small" | "large";
+export type PrpSizeEnum = "medium" | "small" | "large";
 
-export interface StaticOptionsPreviewType {
-    value: string;
-    caption: string;
+export interface PrpStaticOptionsPreviewType {
+    prpValue: string;
+    prpCaption: string;
 }
 
 export interface IRISSegmentedContainerProps {
@@ -25,13 +25,13 @@ export interface IRISSegmentedContainerProps {
     class: string;
     style?: CSSProperties;
     tabIndex?: number;
-    attribute: EditableValue<string>;
-    optionsSource: OptionsSourceEnum;
-    staticOptions: StaticOptionsType[];
-    size: SizeEnum;
-    block: boolean;
-    vertical: boolean;
-    onChangeAction?: ActionValue;
+    prpAttribute: EditableValue<string>;
+    prpOptionsSource: PrpOptionsSourceEnum;
+    prpStaticOptions: PrpStaticOptionsType[];
+    prpSize: PrpSizeEnum;
+    prpBlock: boolean;
+    prpVertical: boolean;
+    prpOnChange?: ActionValue;
 }
 
 export interface IRISSegmentedPreviewProps {
@@ -45,11 +45,11 @@ export interface IRISSegmentedPreviewProps {
     readOnly: boolean;
     renderMode: "design" | "xray" | "structure";
     translate: (text: string) => string;
-    attribute: string;
-    optionsSource: OptionsSourceEnum;
-    staticOptions: StaticOptionsPreviewType[];
-    size: SizeEnum;
-    block: boolean;
-    vertical: boolean;
-    onChangeAction: {} | null;
+    prpAttribute: string;
+    prpOptionsSource: PrpOptionsSourceEnum;
+    prpStaticOptions: PrpStaticOptionsPreviewType[];
+    prpSize: PrpSizeEnum;
+    prpBlock: boolean;
+    prpVertical: boolean;
+    prpOnChange: {} | null;
 }

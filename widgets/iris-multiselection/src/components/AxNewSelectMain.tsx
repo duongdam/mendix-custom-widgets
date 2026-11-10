@@ -29,17 +29,17 @@ export const AxNewSelectMain = (props: AxMultiSelectContainerProps): ReactElemen
 
     const isInternalUpdateRef = useRef(false);
 
-    const loading = props.items.status !== ValueStatus.Available;
+    const loading = props.prpItems.status !== ValueStatus.Available;
 
     const itemsList = useMemo<ItemSelect[]>(() => {
-        if (props.items.status !== ValueStatus.Available || !props.items.items) {
+        if (props.prpItems.status !== ValueStatus.Available || !props.prpItems.items) {
             return [];
         }
-        return props.items.items.map(item => ({
-            keyAttribute: props.keyAttribute.get(item)?.value ?? "",
-            nameAttribute: props.nameAttribute.get(item)?.value ?? ""
+        return props.prpItems.items.map(item => ({
+            keyAttribute: props.prpKeyAttribute.get(item)?.value ?? "",
+            nameAttribute: props.prpNameAttribute.get(item)?.value ?? ""
         }));
-    }, [props.items, props.keyAttribute, props.nameAttribute]);
+    }, [props.prpItems, props.prpKeyAttribute, props.prpNameAttribute]);
 
     const options = useMemo<WidgetOption | undefined>(() => {
         if (
@@ -57,7 +57,7 @@ export const AxNewSelectMain = (props: AxMultiSelectContainerProps): ReactElemen
             prpPlaceholder: props.prpPlaceholder?.value ? props.prpPlaceholder.value : "Search...",
             prpShowSearch: props.prpShowSearch?.value == null ? true : props.prpShowSearch.value,
             prpTextSearch: props.prpTextSearch?.value ? props.prpTextSearch.value : "",
-            prpType: props.type === "multi" ? "multi" : "onlyView"
+            prpType: props.prpType === "multi" ? "multi" : "onlyView"
         };
     }, [
         props.prpHeight,
@@ -65,7 +65,7 @@ export const AxNewSelectMain = (props: AxMultiSelectContainerProps): ReactElemen
         props.prpPlaceholder,
         props.prpShowSearch,
         props.prpTextSearch,
-        props.type
+        props.prpType
     ]);
 
     const isMulti = options?.prpType === "multi";
@@ -127,11 +127,11 @@ export const AxNewSelectMain = (props: AxMultiSelectContainerProps): ReactElemen
     const onActionChange = useCallback(
         (newSelectedIds: Set<string>) => {
             isInternalUpdateRef.current = true;
-            if (props.onChange && props.onChange.canExecute && !props.onChange.isExecuting) {
-                props.onChange.execute({ selectedKeys: Array.from(newSelectedIds).join(",") });
+            if (props.prpOnChange && props.prpOnChange.canExecute && !props.prpOnChange.isExecuting) {
+                props.prpOnChange.execute({ selectedKeys: Array.from(newSelectedIds).join(",") });
             }
         },
-        [props.onChange]
+        [props.prpOnChange]
     );
 
     const handleToggle = useCallback(
@@ -194,9 +194,9 @@ export const AxNewSelectMain = (props: AxMultiSelectContainerProps): ReactElemen
             getItemKey,
             getItemLabel,
             onToggle: handleToggle,
-            selectionType: options?.prpType ?? props.type
+            selectionType: options?.prpType ?? props.prpType
         }),
-        [filteredItems, selectedIds, getItemKey, getItemLabel, handleToggle, options?.prpType, props.type]
+        [filteredItems, selectedIds, getItemKey, getItemLabel, handleToggle, options?.prpType, props.prpType]
     );
 
     if (loading || !options) {
